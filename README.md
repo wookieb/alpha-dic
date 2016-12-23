@@ -3,29 +3,29 @@
 Dependency injection container for node.js
 
 Features:
-* Supports names annotations with properties
+* Supports named annotations with properties
 * Supports service dependencies
 * Allows to define service as constructor, factory, asynchronous factory
 * Detects cycle dependencies
 * Uses promises and callbacks - pick your favorite style
-* Caches services when needed and prevents race condition for attempts of concurrent service requests
+* Caches services when needed and prevents race condition for concurrent service requests
 
-
+## Table of contents
 * [Alpha DIC](#alpha-dic)
-      * [Installation](#installation)
-      * [Example](#example)
-      * [Getting instances of services](#getting-instances-of-services)
-         * [One service](#one-service)
-         * [Multiple services](#multiple-services)
-         * [By annotation](#by-annotation)
-      * [Defining services](#defining-services)
-         * [As constructor](#as-constructor)
-         * [As factory](#as-factory)
-         * [As asynchronous factory](#as-asynchronous-factory)
-      * [Defining dependencies](#defining-dependencies)
-      * [Annotations](#annotations)
-      * [API](#api)
-      * [Contribution](#contribution)
+  * [Installation](#installation)
+  * [Example](#example)
+  * [Getting instances of services](#getting-instances-of-services)
+     * [One service](#one-service)
+     * [Multiple services](#multiple-services)
+     * [By annotation](#by-annotation)
+  * [Defining services](#defining-services)
+     * [As constructor](#as-constructor)
+     * [As factory](#as-factory)
+     * [As asynchronous factory](#as-asynchronous-factory)
+  * [Defining dependencies](#defining-dependencies)
+  * [Annotations](#annotations)
+  * [API](#api)
+  * [Contribution](#contribution)
       
 ## Installation
 ```bash
@@ -145,7 +145,7 @@ dic.get('A')
 ```
 
 ### As asynchronous factory
-It's possible to asynchronously define service using promised and _serviceAsFactory_ but this method is created for people that prefers callbacks over promises.
+It's possible to asynchronously create instance of service using promises and _serviceAsFactory_ but this method is recommended for people that prefers callbacks over promises.
 
 ```javascript
 
