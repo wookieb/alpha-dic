@@ -10,6 +10,23 @@ Features:
 * Uses promises and callbacks - pick your favorite style
 * Caches services when needed and prevents race condition for attempts of concurrent service requests
 
+
+* [Alpha DIC](#alpha-dic)
+      * [Installation](#installation)
+      * [Example](#example)
+      * [Getting instances of services](#getting-instances-of-services)
+         * [One service](#one-service)
+         * [Multiple services](#multiple-services)
+         * [By annotation](#by-annotation)
+      * [Defining services](#defining-services)
+         * [As constructor](#as-constructor)
+         * [As factory](#as-factory)
+         * [As asynchronous factory](#as-asynchronous-factory)
+      * [Defining dependencies](#defining-dependencies)
+      * [Annotations](#annotations)
+      * [API](#api)
+      * [Contribution](#contribution)
+      
 ## Installation
 ```bash
 npm install alpha-dic
@@ -87,7 +104,7 @@ See [annotations section](#annotations)
 ## Defining services
 
 ### As constructor
-```
+```javascript
 class ServiceClass {
 
 }
@@ -100,7 +117,7 @@ dic.get('A')
 ```
 
 ### As factory
-```
+```javascript
 dic.serviceAsFactory('A', () => {
     return {service: 'A'};
 }); 
@@ -175,3 +192,12 @@ dic.getByPredicate((service) => {
         services[1]; // instance of listener-3 service
     });
 ```
+
+## API
+See JSDoc
+* [AlphaDIC](src/AlphaDIC.js)
+* [Service](src/Service.js)
+ 
+ 
+## Contribution
+I don't have any specific guidelines for contributors for now. Just create an issue and I'll do my best to help you.
