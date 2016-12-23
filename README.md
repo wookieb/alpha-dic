@@ -1,5 +1,7 @@
 # Alpha DIC
 
+[![CircleCI](https://circleci.com/gh/wookieb/alpha-dic.svg?style=svg)](https://circleci.com/gh/wookieb/alpha-dic)
+
 Dependency injection container for node.js
 
 Features:
