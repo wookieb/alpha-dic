@@ -16,7 +16,7 @@ npm install alpha-dic
 ```
 
 ## Example
-```js
+```javascript
 const dic = require('alpha-dic').create();
 
 dic.serviceAsFactory('my-service', () => {
@@ -35,7 +35,7 @@ dic.get('my-service', (err, service) => {
 ```
 
 Example with dependencies
-```js 
+```javascript 
 
 const dic = require('alpha-dic').create();
 
@@ -61,13 +61,13 @@ dic.get('my-service').then((service) => {
 ## Getting instances of services
 
 ### One service
-```js
+```javascript
 dic.get('service-name')
     .then(/* ... */)
 ```
 
 ### Multiple services
-```js
+```javascript
 dic.serviceAsFactory('A-service', /* ... */);
 dic.serviceAsFactory('A-service-2', /* ... */);
 dic.serviceAsFactory('B-service', /* ... */);
@@ -112,7 +112,7 @@ dic.get('A')
 ```
 
 Since _alpha-dic_ uses Promises internally it's possible to return promise from regular factory.
-```js
+```javascript
 dic.serviceAsFactory('A', () => {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -130,7 +130,7 @@ dic.get('A')
 ### As asynchronous factory
 It's possible to asynchronously define service using promised and _serviceAsFactory_ but this method is created for people that prefers callbacks over promises.
 
-```js
+```javascript
 
 dic.serviceAsAsyncFactory('A', (callback) => {
     setTimeout(() => {
@@ -145,7 +145,7 @@ dic.get('A')
 ```
 
 ## Defining dependencies
-```js 
+```javascript 
 dic.serviceAsConstructor('A', ServiceClass, ['B', 'C']);
 // same as
 dic.createAsConstructor('A', ServiceClass).dependsOn('B', 'C');
@@ -155,7 +155,7 @@ dic.createAsConstructor('A', ServiceClass).dependsOn('B', 'C');
 Each service might have any number of named annotations along with some properties.
 This is especially useful for aggregations of related services.
 
-```js
+```javascript
 dic.serviceAsConstructor('listener-1', EventListener1)
     .annotate('EventListener', {event: 'new-user'});
 
