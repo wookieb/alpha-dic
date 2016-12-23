@@ -1,0 +1,37 @@
+{
+  "name": "alpha-dic",
+  "version": "0.1.0",
+  "description": "Asynchronous dependency injection container",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "engines": {
+    "node": ">=4.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wookieb/alpha-dic.git"
+  },
+  "keywords": [
+    "dic",
+    "async",
+    "asynchronous",
+    "promise",
+    "callback",
+    "tag",
+    "annotations",
+    "annotation"
+  ],
+  "author": "Łukasz Kużyński <lukasz.kuzynski@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wookieb/alpha-dic/issues"
+  },
+  "homepage": "https://github.com/wookieb/alpha-dic#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "sinon": "^1.17.6"
+  }
+}
