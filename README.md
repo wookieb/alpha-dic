@@ -17,6 +17,7 @@ Features:
 * [Alpha DIC](#alpha-dic)
   * [Table of contents](#table-of-contents)
   * [Installation](#installation)
+  * [Usage in browsers](#usage-in-browsers)
   * [Example](#example)
   * [Getting instances of services](#getting-instances-of-services)
      * [One service](#one-service)
@@ -41,6 +42,13 @@ Features:
 ```bash
 npm install alpha-dic
 ```
+
+## Usage in browsers
+_Alpha-dic_ requires globally available Promise object to work properly.
+```javascript
+require('es6-promise').polyfill();
+```
+Additionally a transpiler (like Babel) is required to make sure the code is compatible with target browser environment.
 
 ## Example
 ```javascript
