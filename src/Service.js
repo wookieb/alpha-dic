@@ -21,7 +21,6 @@ class Service {
          */
         this.annotations = Object.create(null);
         /**
-         *
          * @type {Array<string>}
          */
         this.dependencies = [];
@@ -35,35 +34,49 @@ class Service {
     }
     
     /**
-     * Sets constructor function used to create instance of service.
+     * Sets constructor value used to create instance of service.
      *
      * @param {Function} constructorFunction
      * @returns {Service}
      */
     useConstructor(constructorFunction) {
         this.type = Service.TYPE_CONSTRUCTOR;
-        this.function = constructorFunction;
+        this.value = constructorFunction;
         return this;
     }
     
     /**
-     * Sets factory function used to create instance of service.
-     * The function should return promise in case of asynchronous service creation.
-     * The factory function is called in context of AlphaDIC.
+     * Sets factory value used to create instance of service.
+     * The value should return promise in case of asynchronous service creation.
+     * The factory value is called in context of AlphaDIC.
      *
      * @param {Function} factoryFunction
      * @returns {Service}
      */
     useFactory(factoryFunction) {
         this.type = Service.TYPE_FACTORY;
-        this.function = factoryFunction;
+        this.value = factoryFunction;
         return this;
     }
     
     /**
-     * Sets asynchronous factory function used to create instance of service.
-     * The function should call callback provided as last argument to the function (after dependencies)
-     * The factory function is called in context of AlphaDIC.
+     * Sets given argument as a value for the service.
+     * The service will be always resolved to given value.
+     *
+     *
+     * @param {*} value
+     * @returns {Service}
+     */
+    useValue(value) {
+        this.type = Service.TYPE_VALUE;
+        this.value = value;
+        return this;
+    }
+    
+    /**
+     * Sets asynchronous factory value used to create instance of service.
+     * The value should call callback provided as last argument to the value (after dependencies)
+     * The factory value is called in context of AlphaDIC.
      *
      * @example
      * const service = new Service('service')
@@ -78,12 +91,14 @@ class Service {
      */
     useAsyncFactory(factoryFunction) {
         this.type = Service.TYPE_ASYNC_FACTORY;
-        this.function = factoryFunction;
+        this.value = factoryFunction;
         return this;
     }
     
     /**
-     * @param {(Array<string>|...string)} services
+     * Defines dependencies that will be resolved and then injected to the service.
+     *
+     * @param {(string|Array<string>|...string)} services
      */
     dependsOn(services) {
         if (Array.isArray(services)) {
@@ -130,5 +145,6 @@ class Service {
 Service.TYPE_CONSTRUCTOR = 'constructor';
 Service.TYPE_FACTORY = 'factory';
 Service.TYPE_ASYNC_FACTORY = 'async-factory';
+Service.TYPE_VALUE = 'value';
 
 module.exports = Service;

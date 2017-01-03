@@ -441,7 +441,7 @@ describe('AlphaDIC', () => {
         });
     });
     
-    describe('fails for attempt of getting an instance of service without any function', () => {
+    describe('fails for attempt of getting an instance of service without any value', () => {
         const dic = new AlphaDIC;
         dic.service('A');
         
@@ -526,4 +526,46 @@ describe('AlphaDIC', () => {
             })
             .then(done, done);
     });
+    
+    it('service as a value', (done) => {
+        const dic = new AlphaDIC;
+        const serviceObject = {service: 'A'};
+        
+        dic.serviceAsValue('A', serviceObject);
+        
+        dic.get('A')
+            .then((service) => {
+                assert.strictEqual(service, serviceObject);
+            })
+            .then(done, done);
+    });
+    
+    it('getting definitions of services', () => {
+        const dic = new AlphaDIC;
+        
+        const serviceA = dic.service('A');
+        const serviceB = dic.service('B');
+        const serviceC = dic.service('C');
+        
+        assert.deepEqual(dic.getServicesDefinitions(), {
+            A: serviceA,
+            B: serviceB,
+            C: serviceC
+        });
+    });
+    
+    it('getting definitions of given name', () => {
+        const dic = new AlphaDIC;
+        
+        const serviceA = dic.service('A');
+        dic.service('B');
+        dic.service('C');
+        
+        assert.deepEqual(dic.getServiceDefinition('A'), serviceA);
+    });
+    
+    it('getting definition of undefined service', () => {
+        const dic = new AlphaDIC;
+        assert.isUndefined(dic.getServiceDefinition('A'));
+    })
 });

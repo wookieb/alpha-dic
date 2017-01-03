@@ -34,30 +34,39 @@ describe('Service', () => {
         assert.deepEqual(service.annotations, {name: {some: 'property'}});
     });
     
-    it('setting constructor function', () => {
+    it('setting constructor value', () => {
         const service = new Service('test');
         service.useConstructor(Error);
         
         assert.strictEqual(service.type, Service.TYPE_CONSTRUCTOR);
-        assert.strictEqual(service.function, Error);
+        assert.strictEqual(service.value, Error);
     });
     
-    it('setting factory function', () => {
+    it('setting factory value', () => {
         const NOOP = () => ({});
         const service = new Service('test');
         service.useFactory(NOOP);
         
         assert.strictEqual(service.type, Service.TYPE_FACTORY);
-        assert.strictEqual(service.function, NOOP);
+        assert.strictEqual(service.value, NOOP);
     });
     
-    it('setting async factory function', () => {
+    it('setting async factory value', () => {
         const NOOP = () => ({});
         const service = new Service('test');
         service.useAsyncFactory(NOOP);
         
         assert.strictEqual(service.type, Service.TYPE_ASYNC_FACTORY);
-        assert.strictEqual(service.function, NOOP);
+        assert.strictEqual(service.value, NOOP);
+    });
+    
+    it('setting anything as value', () => {
+        const service = new Service('test');
+        const VALUE = Math.random();
+        service.useValue(VALUE);
+        
+        assert.strictEqual(service.type, Service.TYPE_VALUE);
+        assert.strictEqual(service.value, VALUE);
     });
     
     it('cacheable by default', () => {

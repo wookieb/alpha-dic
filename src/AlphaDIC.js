@@ -65,11 +65,15 @@ const constructService = function(service, parents) {
         .then((dependencies) => {
             switch (service.type) {
                 case Service.TYPE_CONSTRUCTOR:
-                    return new (Function.prototype.bind.apply(service.function, [null].concat(dependencies)));
+                    return new (Function.prototype.bind.apply(service.value, [null].concat(dependencies)));
+                    break;
+                
+                case Service.TYPE_VALUE:
+                    return Promise.resolve(service.value);
                     break;
                 
                 case Service.TYPE_FACTORY:
-                    return service.function.apply(this, dependencies);
+                    return service.value.apply(this, dependencies);
                     break;
                 
                 case Service.TYPE_ASYNC_FACTORY:
@@ -81,7 +85,7 @@ const constructService = function(service, parents) {
                             }
                             resolve(service);
                         };
-                        service.function.apply(this, dependencies.concat([callback]));
+                        service.value.apply(this, dependencies.concat([callback]));
                     });
                     break;
             }
@@ -173,7 +177,7 @@ class AlphaDIC {
     }
     
     /**
-     * Defines and registers service with given name and provided function as constructor
+     * Defines and registers service with given name and provided value as constructor
      * Returns Service instance for further configuration
      *
      * @param {string} name
@@ -188,7 +192,7 @@ class AlphaDIC {
     }
     
     /**
-     * Defines and registers service with given name and provided function as factory
+     * Defines and registers service with given name and provided value as factory
      * Returns Service instance for further configuration
      *
      * @param {string} name
@@ -203,7 +207,7 @@ class AlphaDIC {
     }
     
     /**
-     * Defines and registers service with given name and provided function as async factory
+     * Defines and registers service with given name and provided value as async factory
      * Returns Service instance for further configuration
      *
      * @param {string} name
@@ -215,6 +219,39 @@ class AlphaDIC {
         return this.service(name)
             .useAsyncFactory(asyncFactoryFunction)
             .dependsOn(dependencies || []);
+    }
+    
+    
+    /**
+     * Defines and registers service with given and provided value as a value for the service.
+     * Returns Service instance for further configuration.
+     *
+     * @param {string} name
+     * @param {*} value
+     * @param {Array<string>} [dependencies=[]]
+     * @returns {Service}
+     */
+    serviceAsValue(name, value, dependencies) {
+        return this.service(name)
+            .useValue(value)
+            .dependsOn(dependencies || []);
+    }
+    
+    /**
+     * Returns all definitions of services
+     *
+     * @return {Object}
+     */
+    getServicesDefinitions() {
+        return this.services
+    }
+    
+    /**
+     * @param {string} name
+     * @returns {Service}
+     */
+    getServiceDefinition(name) {
+        return this.services[name];
     }
 }
 
