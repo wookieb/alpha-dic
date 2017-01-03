@@ -1,6 +1,6 @@
 {
   "name": "alpha-dic",
-  "version": "0.1.1-rc1",
+  "version": "0.1.1",
   "description": "Asynchronous dependency injection container",
   "main": "index.js",
   "scripts": {
