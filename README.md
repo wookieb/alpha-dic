@@ -24,6 +24,7 @@ Features:
      * [As constructor](#as-constructor)
      * [As factory](#as-factory)
      * [As asynchronous factory](#as-asynchronous-factory)
+     * [As value](#as-value)
   * [Defining dependencies](#defining-dependencies)
   * [Annotations](#annotations)
   * [API](#api)
@@ -160,6 +161,16 @@ dic.serviceAsAsyncFactory('A', (callback) => {
 dic.get('A')
     .then((service) => {
         service; // {service: 'A'}
+    });
+```
+
+### As value
+```javascript
+dic.serviceAsValue('config', {some: 'config'});
+
+dic.get('config')
+    .then((service) => {
+        service; // {some: 'config'}
     });
 ```
 
