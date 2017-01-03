@@ -5,37 +5,61 @@ const assert = require('chai').assert;
 const Service = require('../src/Service');
 
 describe('Service', () => {
+    let service;
+    
+    beforeEach(() => {
+        service = new Service('some-name');
+    });
+    
     it('defining name', () => {
-        const service = new Service('some-name');
         assert.strictEqual(service.name, 'some-name');
     });
     
     it('defining dependencies', () => {
-        const service = new Service('test');
         assert.strictEqual(service.dependsOn('a', 'b', 'c'), service, 'Broken method chaining for "dependsOn" method');
         assert.deepEqual(service.dependencies, ['a', 'b', 'c']);
     });
     
     it('defining dependencies as array', () => {
-        const service = new Service('test');
         assert.strictEqual(service.dependsOn(['a', 'b', 'c']), service, 'Broken method chaining for "dependsOn" method');
         assert.deepEqual(service.dependencies, ['a', 'b', 'c']);
     });
     
-    it('setting annotations without properties', () => {
-        const service = new Service('test');
-        assert.strictEqual(service.annotate('name'), service, 'Broken method chaining for "setAnnotations"');
-        assert.deepEqual(service.annotations, {name: {}});
-    });
-    
-    it('setting annotations with properties', () => {
-        const service = new Service('test');
-        assert.strictEqual(service.annotate('name', {some: 'property'}), service, 'Broken method chaining for "setAnnotations"');
-        assert.deepEqual(service.annotations, {name: {some: 'property'}});
+    describe('setting annotations', () => {
+        it('without properties', () => {
+            assert.strictEqual(service.annotate('name'), service, 'Broken method chaining for "annotate"');
+            assert.deepEqual(service.annotations, {name: {}});
+        });
+        
+        it('with properties', () => {
+            assert.strictEqual(service.annotate('name', {some: 'property'}), service, 'Broken method chaining for "annotate"');
+            assert.deepEqual(service.annotations, {name: {some: 'property'}});
+        });
+        
+        it('via object', () => {
+            const annotation = {name: 'annotation', withProperties: 1};
+            assert.strictEqual(service.annotate(annotation), service, 'Broken method chaining for "annotate"');
+            assert.deepEqual(service.annotations, {annotation: annotation});
+        });
+        
+        it('fails if no name provided', () => {
+            assert.throws(() => {
+                    service.annotate('');
+                },
+                /Annotation name has to be string or annotation object/
+            );
+        });
+        
+        it('fails for annotation objects without name property', () => {
+            assert.throws(() => {
+                    service.annotate({some: 'property'});
+                },
+                /Annotation object requires non-empty "name" property/
+            );
+        });
     });
     
     it('setting constructor value', () => {
-        const service = new Service('test');
         service.useConstructor(Error);
         
         assert.strictEqual(service.type, Service.TYPE_CONSTRUCTOR);
@@ -44,7 +68,6 @@ describe('Service', () => {
     
     it('setting factory value', () => {
         const NOOP = () => ({});
-        const service = new Service('test');
         service.useFactory(NOOP);
         
         assert.strictEqual(service.type, Service.TYPE_FACTORY);
@@ -53,7 +76,6 @@ describe('Service', () => {
     
     it('setting async factory value', () => {
         const NOOP = () => ({});
-        const service = new Service('test');
         service.useAsyncFactory(NOOP);
         
         assert.strictEqual(service.type, Service.TYPE_ASYNC_FACTORY);
@@ -61,7 +83,6 @@ describe('Service', () => {
     });
     
     it('setting anything as value', () => {
-        const service = new Service('test');
         const VALUE = Math.random();
         service.useValue(VALUE);
         
@@ -70,20 +91,16 @@ describe('Service', () => {
     });
     
     it('cacheable by default', () => {
-        const service = new Service('test');
         assert.ok(service.cacheable);
     });
     
     it('turning into non-cacheable', () => {
-        const service = new Service('test');
-        
         service.nonCacheable();
         
         assert.notOk(service.cacheable);
     });
     
     it('hasAnnotation', () => {
-        const service = new Service('test');
         service.annotate('empty')
             .annotate('non-empty', {property: 1});
         
@@ -93,7 +110,6 @@ describe('Service', () => {
     });
     
     it('getAnnotation', () => {
-        const service = new Service('test');
         const annotationProperties = {property: 1};
         service.annotate('empty')
             .annotate('non-empty', annotationProperties);

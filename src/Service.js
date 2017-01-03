@@ -110,14 +110,30 @@ class Service {
     }
     
     /**
+     * @typedef {Object} Annotation
+     * @property {string} name
+     */
+    
+    /**
      * Sets annotation with given name and properties
      *
-     * @param {string} name
+     * @param {(Annotation|string)} name
      * @param {Object} [properties={}]
      * @returns {Service}
      */
     annotate(name, properties) {
-        this.annotations[name] = properties || {};
+        if (!name) {
+            throw new Error('Annotation name has to be string or annotation object');
+        }
+        
+        if (typeof name === 'string') {
+            this.annotations[name] = properties || {};
+        } else {
+            if (!name.name) {
+                throw new Error('Annotation object requires non-empty "name" property');
+            }
+            this.annotations[name.name] = name;
+        }
         return this;
     }
     

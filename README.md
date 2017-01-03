@@ -10,10 +10,12 @@ Features:
 * Allows to define service as constructor, factory, asynchronous factory
 * Detects cycle dependencies
 * Uses promises and callbacks - pick your favorite style
-* Caches services when needed and prevents race condition for concurrent service requests
+* Caches services when needed
+* Prevents race condition for concurrent service requests
 
 ## Table of contents
 * [Alpha DIC](#alpha-dic)
+  * [Table of contents](#table-of-contents)
   * [Installation](#installation)
   * [Example](#example)
   * [Getting instances of services](#getting-instances-of-services)
@@ -26,6 +28,11 @@ Features:
      * [As asynchronous factory](#as-asynchronous-factory)
      * [As value](#as-value)
   * [Defining dependencies](#defining-dependencies)
+     * [For constructor](#for-constructor)
+     * [For factory](#for-factory)
+     * [For async factory](#for-async-factory)
+     * [For value](#for-value)
+  * [Cacheability](#cacheability)
   * [Annotations](#annotations)
   * [API](#api)
   * [Contribution](#contribution)
@@ -181,19 +188,82 @@ dic.serviceAsConstructor('A', ServiceClass, ['B', 'C']);
 dic.createAsConstructor('A', ServiceClass).dependsOn('B', 'C');
 ```
 
+### For constructor
+
+```javascript
+dic.serviceAsConstructor('A', ServiceClass, ['B', 'C']);
+
+class ServiceClass {
+    constructor(B, C) {
+        // use B, C dependencies
+    }
+}
+```
+### For factory
+
+```javascript
+dic.serviceAsFactory('A', function(B, C) {
+   // use B, C dependencies
+})
+    .dependsOn('B', 'C')
+```
+
+### For async factory
+```javascript
+dic.serviceAsAsyncFactory('A', function(B, C, callback) {
+   // use B, C dependencies
+})
+    .dependsOn('B', 'C')
+```
+
+### For value
+This kind of service ignores dependencies.
+If you need to produce final service value that relies on dependencies use Factory instead.
+
+## Cacheability
+_Alpha-dic_ allows to control whether new instance of should be created once and cached or create new instance every time.
+By default every service is cacheable. 
+
+The example how to disable cache for the service.
+```javascript
+let called = 0;
+dic.serviceAsAsyncFactory('A', function(callback) {
+    callback(null, ++called);
+})
+    .nonCacheable();
+    
+dic.get('A')
+    .then(s => {
+        s; // 1
+    });
+
+dic.get('A')
+    .then(s => {
+        s; // 2
+    });
+```
+
 ## Annotations
 Each service might have any number of named annotations along with some properties.
 This is especially useful for aggregations of related services.
 
 ```javascript
+
+const eventListener = (eventName) => {
+    return {
+        name: 'EventListener',
+        event: eventName
+    }
+};
+
 dic.serviceAsConstructor('listener-1', EventListener1)
-    .annotate('EventListener', {event: 'new-user'});
+    .annotate(eventListener('new-user'));
 
 dic.serviceAsConstructor('listener-2', EventListener2)
-    .annotate('EventListener', {event: 'new-article'});
+    .annotate(eventListener('new-article'));
 
 dic.serviceAsConstructor('listener-3', EventListener2)
-    .annotate('EventListener', {event: 'new-user'});
+    .annotate(eventListener('new-user'));
 
 
 dic.getByPredicate((service) => {
@@ -206,6 +276,14 @@ dic.getByPredicate((service) => {
     });
 ```
 
+You can use simpler API for simple annotations
+```javascript
+
+const service = dic.serviceAsValue('service', {some: 'service'})
+    .annotate('simple', {withSome: 'properties'});
+
+service.getAnnotation('simple'); // {withSome: 'properties'}
+```
 ## API
 See JSDoc
 * [AlphaDIC](src/AlphaDIC.js)
