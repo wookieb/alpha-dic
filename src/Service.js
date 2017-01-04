@@ -25,14 +25,14 @@ class Service {
          */
         this.dependencies = [];
     }
-    
+
     /**
      * Makes service non cacheable which means it will be created every time
      */
     nonCacheable() {
         this.cacheable = false;
     }
-    
+
     /**
      * Sets constructor value used to create instance of service.
      *
@@ -44,7 +44,7 @@ class Service {
         this.value = constructorFunction;
         return this;
     }
-    
+
     /**
      * Sets factory value used to create instance of service.
      * The value should return promise in case of asynchronous service creation.
@@ -58,7 +58,7 @@ class Service {
         this.value = factoryFunction;
         return this;
     }
-    
+
     /**
      * Sets given argument as a value for the service.
      * The service will be always resolved to given value.
@@ -72,7 +72,7 @@ class Service {
         this.value = value;
         return this;
     }
-    
+
     /**
      * Sets asynchronous factory value used to create instance of service.
      * The value should call callback provided as last argument to the value (after dependencies)
@@ -94,7 +94,7 @@ class Service {
         this.value = factoryFunction;
         return this;
     }
-    
+
     /**
      * Defines dependencies that will be resolved and then injected to the service.
      *
@@ -108,12 +108,12 @@ class Service {
         }
         return this;
     }
-    
+
     /**
      * @typedef {Object} Annotation
      * @property {string} name
      */
-    
+
     /**
      * Sets annotation with given name and properties
      *
@@ -125,7 +125,7 @@ class Service {
         if (!name) {
             throw new Error('Annotation name has to be string or annotation object');
         }
-        
+
         if (typeof name === 'string') {
             this.annotations[name] = properties || {};
         } else {
@@ -136,7 +136,7 @@ class Service {
         }
         return this;
     }
-    
+
     /**
      * Checks whether given annotation exists
      *
@@ -146,7 +146,7 @@ class Service {
     hasAnnotation(name) {
         return name in this.annotations;
     }
-    
+
     /**
      * Returns properties for given annotation
      *
@@ -155,6 +155,15 @@ class Service {
      */
     getAnnotation(name) {
         return this.annotations[name];
+    }
+
+    /**
+     * Returns all annotations
+     *
+     * @returns {Object}
+     */
+    getAnnotations() {
+        return this.annotations;
     }
 }
 

@@ -28,18 +28,18 @@ describe('Service', () => {
     describe('setting annotations', () => {
         it('without properties', () => {
             assert.strictEqual(service.annotate('name'), service, 'Broken method chaining for "annotate"');
-            assert.deepEqual(service.annotations, {name: {}});
+            assert.deepEqual(service.getAnnotations(), {name: {}});
         });
         
         it('with properties', () => {
             assert.strictEqual(service.annotate('name', {some: 'property'}), service, 'Broken method chaining for "annotate"');
-            assert.deepEqual(service.annotations, {name: {some: 'property'}});
+            assert.deepEqual(service.getAnnotations(), {name: {some: 'property'}});
         });
         
         it('via object', () => {
             const annotation = {name: 'annotation', withProperties: 1};
             assert.strictEqual(service.annotate(annotation), service, 'Broken method chaining for "annotate"');
-            assert.deepEqual(service.annotations, {annotation: annotation});
+            assert.deepEqual(service.getAnnotations(), {annotation: annotation});
         });
         
         it('fails if no name provided', () => {

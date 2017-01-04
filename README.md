@@ -274,14 +274,21 @@ dic.serviceAsConstructor('listener-3', EventListener2)
     .annotate(eventListener('new-user'));
 
 
-dic.getByPredicate((service) => {
-    return service.hasAnnotation('EventListener') 
-        && service.getAnnotation('EventListener').event === 'new-user';
-})
+// for simple aggregations
+dic.getByAnnotationName('EventListener')
+    .then((services) => {
+        services[0]; // instance of listener-1 service
+        services[1]; // instance of listener-2 service
+        services[2]; // instance of listener-3 service
+    });
+
+// for advanced aggregations
+dic.getMany(dic.findByAnnotation('EventListener', {event: 'new-user'}))
     .then((services) => {
         services[0]; // instance of listener-1 service
         services[1]; // instance of listener-3 service
     });
+
 ```
 
 You can use simpler API for simple annotations
