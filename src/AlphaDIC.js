@@ -20,7 +20,7 @@ const match = require('lodash._basematches');
  * @param {Array<string>} parents list of service parents - user for cycle dependency detection
  * @returns {Promise<*>}
  */
-const getService = function(serviceName, parents) {
+const getService = function (serviceName, parents) {
     const service = this.services[serviceName];
     if (!service) {
         return Promise.reject(new Error(`Undefined service ${serviceName}`));
@@ -57,7 +57,7 @@ const getService = function(serviceName, parents) {
  * @param {Array<string>} parents list of service parents - user for cycle dependency detection
  * @returns {Promise<*>}
  */
-const constructService = function(service, parents) {
+const constructService = function (service, parents) {
     if (parents.indexOf(service.name) !== -1) {
         return Promise.reject(
             new Error(`Cycle dependency detected for service ${service.name} - parents: ${parents.join(', ')}`)
@@ -102,7 +102,7 @@ const constructService = function(service, parents) {
         });
 };
 
-const useCallback = function(promise, callback) {
+const useCallback = function (promise, callback) {
     if (callback && callback instanceof Function) {
         promise.then(
             (result) => {

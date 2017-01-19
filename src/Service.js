@@ -46,6 +46,15 @@ class Service {
     }
 
     /**
+     * @alias useConstructor
+     * @returns {Service}
+     */
+    useClass(classObject) {
+        this.useConstructor(classObject);
+        return this;
+    }
+
+    /**
      * Sets factory value used to create instance of service.
      * The value should return promise in case of asynchronous service creation.
      * The factory value is called in context of AlphaDIC.
