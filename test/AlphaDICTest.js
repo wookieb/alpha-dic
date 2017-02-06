@@ -134,7 +134,7 @@ describe('AlphaDIC', () => {
         });
 
         it('defined as constructor', (done) => {
-            service.useConstructor(function() {
+            service.useConstructor(function () {
                 this.newProperty = 'it is new';
             });
 
@@ -147,6 +147,18 @@ describe('AlphaDIC', () => {
 
         it('defined as factory', (done) => {
             factory.returns(serviceObject);
+            service.useFactory(factory);
+
+            dic.get('test')
+                .then((service) => {
+                    sinon.assert.calledOn(factory, dic);
+                    assert.strictEqual(service, serviceObject);
+                })
+                .then(done, done);
+        });
+
+        it('defined as factory returning promise', (done) => {
+            factory.returns(Promise.resolve(serviceObject));
             service.useFactory(factory);
 
             dic.get('test')
@@ -221,7 +233,7 @@ describe('AlphaDIC', () => {
         });
 
         it('defined as constructor', (done) => {
-            serviceA.useConstructor(function(B) {
+            serviceA.useConstructor(function (B) {
                 assert.strictEqual(B, serviceObjectB);
                 this.newProperty = 'it is new';
             });
@@ -248,6 +260,20 @@ describe('AlphaDIC', () => {
                 .catch(done);
         });
 
+        it('defined as factory returning promise', (done) => {
+            factoryA.returns(Promise.resolve(serviceObjectA));
+            serviceA.useFactory(factoryA);
+
+            dic.get('A')
+                .then((service) => {
+                    sinon.assert.calledOn(factoryA, dic);
+                    sinon.assert.calledWith(factoryA, serviceObjectB);
+                    assert.strictEqual(service, serviceObjectA);
+                    done();
+                })
+                .catch(done);
+        });
+
         it('defined as async factory', (done) => {
             factoryA.yields(null, serviceObjectA);
             serviceA.useAsyncFactory(factoryA);
@@ -261,6 +287,7 @@ describe('AlphaDIC', () => {
                 })
                 .catch(done);
         });
+
     });
 
     describe('getting service with complex dependencies', () => {
@@ -306,7 +333,7 @@ describe('AlphaDIC', () => {
         });
 
         it('defined as constructor', (done) => {
-            serviceA.useConstructor(function(B) {
+            serviceA.useConstructor(function (B) {
                 assert.strictEqual(B, serviceObjectB);
                 this.newProperty = 'it is new';
             });
@@ -333,6 +360,20 @@ describe('AlphaDIC', () => {
                 .catch(done);
         });
 
+        it('defined as factory returning promise', (done) => {
+            factoryA.returns(Promise.resolve(serviceObjectA));
+            serviceA.useFactory(factoryA);
+
+            dic.get('A')
+                .then((service) => {
+                    sinon.assert.calledOn(factoryA, dic);
+                    sinon.assert.calledWith(factoryA, serviceObjectB);
+                    assert.strictEqual(service, serviceObjectA);
+                    done();
+                })
+                .catch(done);
+        });
+
         it('defined as async factory', (done) => {
             factoryA.yields(null, serviceObjectA);
             serviceA.useAsyncFactory(factoryA);
@@ -346,10 +387,10 @@ describe('AlphaDIC', () => {
                 })
                 .catch(done);
         });
+
     });
 
     describe('defining service', () => {
-
 
         it('simple one', () => {
             const service = dic.service('simple');

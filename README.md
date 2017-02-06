@@ -163,7 +163,7 @@ dic.get('A')
 ```
 
 ### As asynchronous factory
-It's possible to asynchronously create instance of service using promises and _serviceAsFactory_ but this method is recommended for people that prefers callbacks over promises.
+It's possible to asynchronously create instance of service using promises and _serviceAsFactory_. This method is recommended for people that prefers callbacks over promises.
 
 ```javascript
 

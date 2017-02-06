@@ -284,7 +284,8 @@ class AlphaDIC {
     }
 
     /**
-     * Defines and registers service with given name and provided value as async factory
+     * Defines and registers service with given name and provided value as async factory.
+     * Async factory is a function that should call a callback provided as a last argument to the function or return a promise.
      * Returns Service instance for further configuration
      *
      * @param {string} name

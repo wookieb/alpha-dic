@@ -1,44 +1,45 @@
 {
   "name": "alpha-dic",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Asynchronous dependency injection container",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
-	"test": "mocha"
+    "test": "mocha"
   },
   "engines": {
-	"node": ">=4.3.0"
+    "node": ">=4.3.0"
   },
   "repository": {
-	"type": "git",
-	"url": "git+https://github.com/wookieb/alpha-dic.git"
+    "type": "git",
+    "url": "git+https://github.com/wookieb/alpha-dic.git"
   },
   "keywords": [
-	"dic",
-	"async",
-	"asynchronous",
-	"promise",
-	"callback",
-	"tag",
-	"annotations",
-	"annotation",
-	"dependency",
-	"injection",
-	"container"
+    "dic",
+    "async",
+    "asynchronous",
+    "promise",
+    "callback",
+    "tag",
+    "annotations",
+    "annotation",
+    "dependency",
+    "injection",
+    "container"
   ],
   "author": "Łukasz Kużyński <lukasz.kuzynski@gmail.com>",
   "license": "MIT",
   "bugs": {
-	"url": "https://github.com/wookieb/alpha-dic/issues"
+    "url": "https://github.com/wookieb/alpha-dic/issues"
   },
   "homepage": "https://github.com/wookieb/alpha-dic#readme",
   "devDependencies": {
-	"chai": "^3.5.0",
-	"mocha": "^3.2.0",
-	"mocha-junit-reporter": "^1.12.1",
-	"sinon": "^1.17.6"
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "mocha-junit-reporter": "^1.12.1",
+    "sinon": "^1.17.6"
   },
   "dependencies": {
-	"lodash._basematches": "^3.2.0"
+    "lodash._basematches": "^3.2.0"
   }
 }

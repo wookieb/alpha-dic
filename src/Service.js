@@ -28,9 +28,12 @@ class Service {
 
     /**
      * Makes service non cacheable which means it will be created every time
+     *
+     * @returns {Service}
      */
     nonCacheable() {
         this.cacheable = false;
+        return this;
     }
 
     /**
