@@ -29,17 +29,54 @@ describe('Container', () => {
             .annotate(ANNOTATION2);
     });
 
-    it('registering definition', () => {
-        const def = new Definition('someName');
-        container.registerDefinition(def);
-        assert.strictEqual(container.findByName(def.name), def);
-    });
+    describe('defining services', () => {
+        const NAME = 'someServiceName';
 
-    it('creating with registration', () => {
-        const def = container.definition('someName');
-        assert.strictEqual(container.findByName(def.name), def);
-    });
 
+        it('registering definition', () => {
+            const def = new Definition(NAME);
+            container.registerDefinition(def);
+            assert.strictEqual(container.findByName(NAME), def);
+        });
+
+        it('creating with registration', () => {
+            const def = container.definition(NAME);
+            assert.strictEqual(container.findByName(NAME), def);
+        });
+
+        it('(as constructor) with registration', () => {
+            class Test {
+                public readonly args: any[];
+
+                constructor(...args: any[]) {
+                    this.args = args;
+                }
+            }
+
+            const definition = container.definitionAsConstructor(NAME, Test);
+            assert.strictEqual(container.findByName(NAME), definition);
+
+            assert.deepEqual(definition.factory(1, 2), new Test(1, 2));
+        });
+
+        it('creating (as factory) with registration', () => {
+            const factoryResult = {foo: 'bar'};
+            const factory = sinon.stub()
+                .returns(factoryResult);
+
+            const definition = container.definitionAsFactory(NAME, factory);
+            assert.strictEqual(container.findByName(NAME), definition);
+            assert.deepEqual(definition.factory(1, 2, 3), factoryResult);
+            sinon.assert.calledWithExactly(factory, 1, 2, 3);
+        });
+
+        it('creating (as value) with registration', () => {
+            const val = {foo: 'bar'};
+            const definition = container.definitionAsValue(NAME, val);
+            assert.strictEqual(container.findByName(NAME), definition);
+            assert.strictEqual(definition.factory(), val);
+        });
+    });
 
     describe('finding', () => {
         it('by name', () => {

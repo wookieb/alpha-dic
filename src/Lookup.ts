@@ -38,8 +38,6 @@ export class Lookup {
             case 'annotationPredicate':
                 return container.findByAnnotationPredicate(<AnnotationPredicate>this.value);
         }
-
-        throw new Error(`Unsupported lookup type: ${this.type}`);
     }
 
     toString() {

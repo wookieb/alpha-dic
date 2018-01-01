@@ -1,78 +1,40 @@
 # Alpha DIC
 
-[![CircleCI](https://circleci.com/gh/wookieb/alpha-dic.svg?style=svg)](https://circleci.com/gh/wookieb/alpha-dic)
+[![CircleCI](https://travis-ci.org/wookieb/alpha-dic.svg?branch=master)](https://travis-ci.org/wookieb/alpha-dic)
 
-Dependency injection container for node.js
+Flexible Dependency injection container that supports asynchronous service creation
 
 Features:
 * Supports named annotations with properties
 * Supports service dependencies
-* Allows to define service as constructor, factory, asynchronous factory
+* Allows to define service as constructor, (async) factory or any value
 * Detects cycle dependencies
-* Uses promises and callbacks - pick your favorite style
-* Caches services when needed
 * Prevents race condition for concurrent service requests
 
-## Table of contents
-* [Alpha DIC](#alpha-dic)
-  * [Table of contents](#table-of-contents)
-  * [Installation](#installation)
-  * [Usage in browsers](#usage-in-browsers)
-  * [Example](#example)
-  * [Getting instances of services](#getting-instances-of-services)
-     * [One service](#one-service)
-     * [Multiple services](#multiple-services)
-     * [By annotation](#by-annotation)
-  * [Defining services](#defining-services)
-     * [As constructor](#as-constructor)
-     * [As factory](#as-factory)
-     * [As asynchronous factory](#as-asynchronous-factory)
-     * [As value](#as-value)
-  * [Defining dependencies](#defining-dependencies)
-     * [For constructor](#for-constructor)
-     * [For factory](#for-factory)
-     * [For async factory](#for-async-factory)
-     * [For value](#for-value)
-  * [Cacheability](#cacheability)
-  * [Annotations](#annotations)
-  * [API](#api)
-  * [Contribution](#contribution)
-      
 ## Installation
 ```bash
 npm install alpha-dic
 ```
 
-## Usage in browsers
-_Alpha-dic_ requires globally available Promise object to work properly.
-```javascript
-require('es6-promise').polyfill();
-```
-Additionally a transpiler (like Babel) is required to make sure the code is compatible with target browser environment.
-
 ## Example
 ```javascript
 const dic = require('alpha-dic').create();
 
-dic.serviceAsFactory('my-service', () => {
-    return {my: 'service'};
-});
+dic.definition('my-service')
+    .useFactory(async () => {
+        const connection = new DatabaseConnection();
+        await connection.connect();
+        return connection;
+    });
 
-dic.get('my-service').then((service) => {
-    service; // {my: 'service'}
-});
-// or via callback
-dic.get('my-service', (err, service) => {
-    if (err) { /* ... */ }
-    service; // {my: 'service'}
+dic.get('my-service').then((connection) => {
+    // you can be sure that at connection to database is established as it was done in factory already
 });
 
 ```
 
 Example with dependencies
 ```javascript 
-
-const dic = require('alpha-dic').create();
 
 dic
     .serviceAsFactory('my-service', (serviceB) => {

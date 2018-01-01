@@ -1,4 +1,7 @@
-import {AnnotationName, AnnotationPredicate, ServiceName, DefinitionPredicate, Middleware} from "./types";
+import {
+    AnnotationName, AnnotationPredicate, ServiceName, DefinitionPredicate, Middleware,
+    ServiceFactory
+} from "./types";
 import {Definition} from "./Definition";
 import {isStringOrSymbol} from "./helpers";
 import * as errors from './errors';
@@ -24,7 +27,7 @@ export class Container {
     }
 
     /**
-     * Creates and automatically registers definition
+     * Creates and registers service definition
      *
      * Returns created definition for further configuration
      */
@@ -32,6 +35,30 @@ export class Container {
         const definition = new Definition(name);
         this.registerDefinition(definition);
         return definition;
+    }
+
+    /**
+     * Creates and registers service definition with given name, function as constructor
+     */
+    definitionAsConstructor(name: ServiceName, clazz: Function) {
+        return this.definition(name)
+            .useConstructor(clazz);
+    }
+
+    /**
+     * Creates and registers service definition with given name, function as factory
+     */
+    definitionAsFactory(name: ServiceName, factory: ServiceFactory) {
+        return this.definition(name)
+            .useFactory(factory);
+    }
+
+    /**
+     * Creates and registers service definition with given name and service value
+     */
+    definitionAsValue(name: ServiceName, value: any) {
+        return this.definition(name)
+            .useValue(value);
     }
 
     findByPredicate(predicate: DefinitionPredicate) {

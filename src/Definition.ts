@@ -87,4 +87,8 @@ export class Definition {
     getAnnotation(name: AnnotationName) {
         return this.annotations.get(name);
     }
+
+    static create(name: ServiceName) {
+        return new Definition(name);
+    }
 }

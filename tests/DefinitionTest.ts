@@ -12,6 +12,12 @@ describe('Annotation', () => {
         definition = new Definition('name');
     });
 
+    it('via static create', () => {
+        const def = Definition.create('name');
+
+        assert.propertyVal(def, 'name', 'name');
+    });
+
     it('using constructor', () => {
         const spy = sinon.spy();
 
