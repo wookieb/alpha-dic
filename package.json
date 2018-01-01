@@ -5,8 +5,10 @@
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "compile": "rm -rf compiled && tsc"
+    "test": "./node_modules/.bin/jest",
+    "prepublish": "npm run compile",
+    "compile": "rm -rf compiled && ./node_modules/.bin/tsc",
+    "test:ci": "npm test -- --coverage --testResultsProcessor ./node_modules/jest-junit && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -41,9 +43,12 @@
     "@types/sinon": "^4.1.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "coveralls": "^3.0.0",
     "jest": "^22.0.4",
+    "jest-junit": "^3.4.1",
     "sinon": "^4.1.3",
     "ts-jest": "^22.0.0",
+    "tslint": "^5.8.0",
     "typescript": "^2.6.2"
   },
   "dependencies": {
