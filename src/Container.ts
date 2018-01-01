@@ -95,7 +95,7 @@ export class Container {
         if (isStringOrSymbol(nameOrDefinition)) {
             definition = this.findByName(nameOrDefinition);
             if (!definition) {
-                return Promise.reject(errors.SERVICE_NOT_FOUND(`Service '${nameOrDefinition}' does not exist`));
+                return Promise.reject(errors.SERVICE_NOT_FOUND(`Service "${nameOrDefinition}" does not exist`));
             }
         } else {
             definition = nameOrDefinition;
@@ -115,7 +115,7 @@ export class Container {
         if (!definition.factory) {
             return Promise.reject(
                 errors.INCOMPLETE_DEFINITION(
-                    `Missing factory for service definition '${definition.name}'. Define it as constructor, factory or value`
+                    `Missing factory for service definition "${definition.name}". Define it as constructor, factory or value`
                 )
             );
         }
