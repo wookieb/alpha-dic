@@ -1,6 +1,6 @@
-import {Annotation, AnnotationName, ServiceFactory, ServiceName} from "./types";
+import {Annotation, AnnotationName, ServiceFactory, ServiceName} from './types';
 import * as factories from './serviceFactories';
-import {isStringOrSymbol} from "./helpers";
+import {isStringOrSymbol} from './helpers';
 
 export class Definition {
     public readonly annotations: Map<AnnotationName, Annotation> = new Map();

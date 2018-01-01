@@ -1,5 +1,5 @@
-import {ServiceName} from "./types";
-import {Reference} from "./Reference";
+import {ServiceName} from './types';
+import {Reference} from './Reference';
 
 export type ReferenceFunc = {
     (name: ServiceName): Reference;
@@ -8,7 +8,7 @@ export type ReferenceFunc = {
     annotation: typeof Reference.one.annotation,
     annotationPredicate: typeof Reference.one.annotationPredicate,
     multi: typeof Reference.multi
-}
+};
 
 export const reference = <ReferenceFunc>function (name: ServiceName) {
     return Reference.one.name(name);

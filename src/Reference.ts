@@ -1,9 +1,9 @@
-import {AnnotationName, AnnotationPredicate, ServiceName, DefinitionPredicate} from "./types";
-import {Container} from "./Container";
-import {Definition} from "./Definition";
+import {AnnotationName, AnnotationPredicate, ServiceName, DefinitionPredicate} from './types';
+import {Container} from './Container';
+import {Definition} from './Definition';
 import * as errors from './errors';
-import {Lookup} from "./Lookup";
-import {ContainerArg} from "./ContainerArg";
+import {Lookup} from './Lookup';
+import {ContainerArg} from './ContainerArg';
 
 export class Reference extends ContainerArg {
     static one = {

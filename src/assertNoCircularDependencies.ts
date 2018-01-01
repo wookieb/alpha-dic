@@ -1,6 +1,6 @@
-import {Container} from "./Container";
-import {Definition} from "./Definition";
-import {ContainerArg} from "./ContainerArg";
+import {Container} from './Container';
+import {Definition} from './Definition';
+import {ContainerArg} from './ContainerArg';
 import * as errors from './errors';
 
 export function assertNoCircularDependencies(container: Container, currentDefinition: Definition) {
@@ -19,7 +19,7 @@ function detectCircularDependencies(container: Container, definition: Definition
                     const names = previousDefinitions.concat([dependency]).map(d => d.name).join(' -> ');
                     throw errors.CIRCULAR_DEPENDENCY_DETECTED(
                         `Circular dependency found: ${names}`
-                    )
+                    );
                 } else {
                     detectCircularDependencies(container, dependency, previousDefinitions.concat([dependency]));
                 }

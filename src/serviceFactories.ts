@@ -1,9 +1,9 @@
-import {ServiceFactory} from "./types";
+import {ServiceFactory} from './types';
 
 export function fromConstructor(constructor: Function): ServiceFactory {
     return function createFromConstructor(...args: any[]) {
         return new (Function.prototype.bind.apply(constructor, [null].concat(args)));
-    }
+    };
 }
 
 export function fromFactory(factory: (...args: any[]) => any): ServiceFactory {
@@ -13,5 +13,5 @@ export function fromFactory(factory: (...args: any[]) => any): ServiceFactory {
 export function fromValue(value: any): ServiceFactory {
     return function createServiceFromValue() {
         return value;
-    }
+    };
 }

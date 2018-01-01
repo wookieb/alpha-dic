@@ -1,5 +1,5 @@
-import {Container} from "./Container";
-import {Definition} from "./Definition";
+import {Container} from './Container';
+import {Definition} from './Definition';
 
 export class ContainerArg {
     /**

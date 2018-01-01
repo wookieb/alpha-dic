@@ -1,6 +1,6 @@
-import {AnnotationName, AnnotationPredicate, ServiceName, DefinitionPredicate} from "./types";
-import {Container} from "./Container";
-import {Definition} from "./Definition";
+import {AnnotationName, AnnotationPredicate, ServiceName, DefinitionPredicate} from './types';
+import {Container} from './Container';
+import {Definition} from './Definition';
 
 export class Lookup {
     constructor(private readonly type: 'name' | 'predicate' | 'annotationName' | 'annotationPredicate',
