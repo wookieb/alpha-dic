@@ -2,13 +2,14 @@
   "name": "alpha-dic",
   "version": "0.2.2",
   "description": "Asynchronous dependency injection container",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "compiled/index.js",
+  "types": "compiled/index.d.ts",
   "scripts": {
-    "test": "mocha"
+    "test": "jest",
+    "compile": "rm -rf compiled && tsc"
   },
   "engines": {
-    "node": ">=4.3.0"
+    "node": ">=6.0.0"
   },
   "repository": {
     "type": "git",
@@ -34,12 +35,31 @@
   },
   "homepage": "https://github.com/wookieb/alpha-dic#readme",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "mocha-junit-reporter": "^1.12.1",
-    "sinon": "^1.17.6"
+    "@types/chai": "^4.0.10",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/jest": "^22.0.0",
+    "@types/sinon": "^4.1.2",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "jest": "^22.0.4",
+    "sinon": "^4.1.3",
+    "ts-jest": "^22.0.0",
+    "typescript": "^2.6.2"
   },
   "dependencies": {
-    "lodash._basematches": "^3.2.0"
+    "alpha-errors": "^0.2.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "mapCoverage": true,
+    "testEnvironment": "node",
+    "testRegex": "/tests/.*Test.ts$",
+    "setupTestFrameworkScriptFile": "./tests/bootstrap.ts",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
   }
 }
