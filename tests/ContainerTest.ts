@@ -88,14 +88,8 @@ describe('Container', () => {
         });
 
         it('by annotation name', () => {
-            assert.sameMembers(container.findByAnnotation(ANNOTATION.name), [
+            assert.sameMembers(container.findByAnnotation(a => a.name === ANNOTATION.name), [
                 definitionA
-            ]);
-        });
-
-        it('by annotation predicate', () => {
-            assert.sameMembers(container.findByAnnotationPredicate(a => a.name === ANNOTATION2.name), [
-                definitionB
             ]);
         });
     });
@@ -109,12 +103,8 @@ describe('Container', () => {
             assert.sameMembers(await container.getByPredicate(d => d.name === 'B'), [serviceB]);
         });
 
-        it('by annotation name', async () => {
-            assert.sameMembers(await container.getByAnnotation(ANNOTATION.name), [serviceA]);
-        });
-
-        it('by annotation predicate', async () => {
-            assert.sameMembers(await container.getByAnnotationPredicate(a => a.name === ANNOTATION2.name), [serviceB]);
+        it('by annotation', async () => {
+            assert.sameMembers(await container.getByAnnotation(a => a.name === ANNOTATION.name), [serviceA]);
         });
     });
 

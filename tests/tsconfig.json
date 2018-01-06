@@ -2,14 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "declaration": true,
-    "outDir": "compiled",
-    "noImplicitAny": true,
     "moduleResolution": "node",
-    "rootDir": "src",
     "experimentalDecorators": true
-  },
-  "include": [
-    "src"
-  ]
+  }
 }

@@ -1,4 +1,4 @@
-import {AnnotationName, AnnotationPredicate, ServiceName, DefinitionPredicate} from './types';
+import {AnnotationPredicate, ServiceName, DefinitionPredicate} from './types';
 import {Container} from './Container';
 import {Definition} from './Definition';
 import * as errors from './errors';
@@ -13,11 +13,8 @@ export class Reference extends ContainerArg {
         predicate(predicate: DefinitionPredicate) {
             return new Reference('one', Lookup.byServicePredicate(predicate));
         },
-        annotation(name: AnnotationName) {
-            return new Reference('one', Lookup.byAnnotationName(name));
-        },
-        annotationPredicate(predicate: AnnotationPredicate) {
-            return new Reference('one', Lookup.byAnnotationPredicate(predicate));
+        annotation(predicate: AnnotationPredicate) {
+            return new Reference('one', Lookup.byAnnotation(predicate));
         }
     };
 
@@ -25,11 +22,8 @@ export class Reference extends ContainerArg {
         predicate(predicate: DefinitionPredicate) {
             return new Reference('multi', Lookup.byServicePredicate(predicate));
         },
-        annotation(name: AnnotationName) {
-            return new Reference('multi', Lookup.byAnnotationName(name));
-        },
-        annotationPredicate(predicate: AnnotationPredicate) {
-            return new Reference('multi', Lookup.byAnnotationPredicate(predicate));
+        annotation(predicate: AnnotationPredicate) {
+            return new Reference('multi', Lookup.byAnnotation(predicate));
         }
     };
 

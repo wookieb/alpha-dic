@@ -1,10 +1,10 @@
-import {AnnotationName, AnnotationPredicate, ServiceName, DefinitionPredicate} from './types';
+import {AnnotationPredicate, ServiceName, DefinitionPredicate} from './types';
 import {Container} from './Container';
 import {Definition} from './Definition';
 
 export class Lookup {
     constructor(private readonly type: 'name' | 'predicate' | 'annotationName' | 'annotationPredicate',
-                private readonly value: ServiceName | DefinitionPredicate | AnnotationPredicate | AnnotationName) {
+                private readonly value: ServiceName | DefinitionPredicate | AnnotationPredicate) {
         Object.freeze(this);
     }
 
@@ -16,11 +16,7 @@ export class Lookup {
         return new Lookup('predicate', predicate);
     }
 
-    static byAnnotationName(name: AnnotationName) {
-        return new Lookup('annotationName', name);
-    }
-
-    static byAnnotationPredicate(predicate: AnnotationPredicate) {
+    static byAnnotation(predicate: AnnotationPredicate) {
         return new Lookup('annotationPredicate', predicate);
     }
 
@@ -32,24 +28,18 @@ export class Lookup {
             case 'predicate':
                 return container.findByPredicate(<DefinitionPredicate>this.value);
 
-            case 'annotationName':
-                return container.findByAnnotation(<AnnotationName>this.value);
-
             case 'annotationPredicate':
-                return container.findByAnnotationPredicate(<AnnotationPredicate>this.value);
+                return container.findByAnnotation(<AnnotationPredicate>this.value);
         }
     }
 
     toString() {
         switch (this.type) {
             case 'name':
-                return 'by service name: ' + this.value;
+                return 'by service name: ' + Object.prototype.toString.call(this.value);
 
             case 'predicate':
                 return 'by service predicate';
-
-            case 'annotationName':
-                return 'by annotation name: ' + this.value;
 
             case 'annotationPredicate':
                 return 'by annotation predicate';

@@ -1,3 +1,5 @@
-export function isStringOrSymbol<T = string | Symbol>(value: any): value is T {
-    return typeof value === 'string' || typeof value === 'symbol';
+import * as is from 'predicates';
+
+export function isStringOrSymbol(value: any): value is (string | symbol) {
+    return is.string(value) || is.symbol(value);
 }

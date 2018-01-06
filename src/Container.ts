@@ -1,5 +1,5 @@
 import {
-    AnnotationName, AnnotationPredicate, ServiceName, DefinitionPredicate, Middleware,
+    AnnotationPredicate, ServiceName, DefinitionPredicate, Middleware,
     ServiceFactory
 } from './types';
 import {Definition} from './Definition';
@@ -70,15 +70,8 @@ export class Container {
         return this.definitions.get(name);
     }
 
-    findByAnnotation(name: AnnotationName) {
-        return this.findByPredicate(d => d.hasAnnotation(name));
-    }
-
-    findByAnnotationPredicate(predicate: AnnotationPredicate) {
-        return this.findByPredicate((service => {
-            return Array.from(service.annotations.values())
-                .some(predicate);
-        }));
+    findByAnnotation(predicate: AnnotationPredicate) {
+        return this.findByPredicate(d => d.annotations.filter(predicate).length > 0);
     }
 
     /**
@@ -157,19 +150,9 @@ export class Container {
     /**
      * Returns all services that definition contains annotation with given name
      */
-    getByAnnotation(name: AnnotationName) {
+    getByAnnotation(predicate: AnnotationPredicate) {
         return Promise.all(
-            this.findByAnnotation(name)
-                .map(d => this.get(d))
-        );
-    }
-
-    /**
-     * Returns all services that definition contains annotation that satisfies given predicate
-     */
-    getByAnnotationPredicate(predicate: AnnotationPredicate) {
-        return Promise.all(
-            this.findByAnnotationPredicate(predicate)
+            this.findByAnnotation(predicate)
                 .map(d => this.get(d))
         );
     }

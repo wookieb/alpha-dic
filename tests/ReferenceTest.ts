@@ -11,14 +11,14 @@ describe('Reference', () => {
 
     const ANNOTATION_NAME = 'annotationName';
     const ANNOTATION = {name: 'ExtraAnnotation'};
-    const AMBIGUOUS_ANNOTATION = 'annotationName2';
+    const AMBIGUOUS_ANNOTATION = {name: 'ambiguous'};
 
     beforeEach(() => {
         container = new Container();
 
         container.definition('A')
             .useValue(serviceA)
-            .annotate(ANNOTATION_NAME)
+            .annotate({name: ANNOTATION_NAME})
             .annotate(AMBIGUOUS_ANNOTATION);
 
         container.definition('B')
@@ -62,44 +62,21 @@ describe('Reference', () => {
             }, /Multiple services found \(A, B\)/)
         });
 
-        it('by annotation name', async () => {
-            const ref = Reference.one.annotation(ANNOTATION_NAME);
+        it('by annotation', async () => {
+            const ref = Reference.one.annotation((a) => a.name === ANNOTATION_NAME);
             assert.strictEqual(ref.getDependentServices(container), container.findByName('A'));
             assert.strictEqual(await ref.getArgument(container), serviceA);
         });
 
-        it('by annotation name - not found', async () => {
-            const ref = Reference.one.annotation('non-existing-annotation');
+        it('by annotation - not found', async () => {
+            const ref = Reference.one.annotation(() => false);
             assert.throws(() => {
                 ref.getDependentServices(container);
             }, /No matching service/);
         });
 
-        it('by annotation name - ambiguous error', () => {
-            const ref = Reference.one.annotation(AMBIGUOUS_ANNOTATION);
-            assert.throws(() => {
-                ref.getDependentServices(container);
-            }, /Multiple services found \(A, B\)/)
-        });
-
-        it('by annotation predicate', async () => {
-            const ref = Reference.one.annotationPredicate(a => a === ANNOTATION);
-
-            assert.strictEqual(ref.getDependentServices(container), container.findByName('B'));
-            assert.strictEqual(await ref.getArgument(container), serviceB);
-        });
-
-        it('by annotation predicate - not found', async () => {
-            const ref = Reference.one.annotationPredicate(() => false);
-
-            assert.throws(() => {
-                ref.getDependentServices(container);
-            }, /No matching service/);
-        });
-
-        it('by annotation predicate - ambiguous error', async () => {
-            const ref = Reference.one.annotationPredicate(() => true);
-
+        it('by annotation- ambiguous error', () => {
+            const ref = Reference.one.annotation(a => a.name === AMBIGUOUS_ANNOTATION.name);
             assert.throws(() => {
                 ref.getDependentServices(container);
             }, /Multiple services found \(A, B\)/)
@@ -108,7 +85,7 @@ describe('Reference', () => {
 
     describe('multi', () => {
         it('by annotation', async () => {
-            const ref = Reference.multi.annotation(AMBIGUOUS_ANNOTATION);
+            const ref = Reference.multi.annotation(a => a.name === AMBIGUOUS_ANNOTATION.name);
 
             assert.sameMembers(<Definition[]>ref.getDependentServices(container), [
                 container.findByName('A'),
@@ -122,7 +99,7 @@ describe('Reference', () => {
         });
 
         it('by annotation - nothing found', async () => {
-            const ref = Reference.multi.annotation('non-existing-annotation');
+            const ref = Reference.multi.annotation(() => false);
 
             assert.sameMembers(<Definition[]>ref.getDependentServices(container), []);
             assert.sameMembers(await ref.getArgument(container), []);
@@ -144,22 +121,6 @@ describe('Reference', () => {
         it('by predicate - nothing found', async () => {
             const ref = Reference.multi.predicate(() => false);
 
-            assert.sameMembers(<Definition[]>ref.getDependentServices(container), []);
-            assert.sameMembers(await ref.getArgument(container), []);
-        });
-
-        it('by annotation predicate', async () => {
-            const ref = Reference.multi.annotationPredicate((a) => a.name === ANNOTATION_NAME);
-            assert.sameMembers(<Definition[]>ref.getDependentServices(container), [
-                container.findByName('A')
-            ]);
-            assert.sameMembers(await ref.getArgument(container), [
-                serviceA
-            ]);
-        });
-
-        it('by annotation predicate - nothing found', async () => {
-            const ref = Reference.multi.annotationPredicate(() => false);
             assert.sameMembers(<Definition[]>ref.getDependentServices(container), []);
             assert.sameMembers(await ref.getArgument(container), []);
         });

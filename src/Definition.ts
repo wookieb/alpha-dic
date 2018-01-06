@@ -1,9 +1,8 @@
-import {Annotation, AnnotationName, ServiceFactory, ServiceName} from './types';
+import {ServiceFactory, ServiceName} from './types';
 import * as factories from './serviceFactories';
-import {isStringOrSymbol} from './helpers';
 
 export class Definition {
-    public readonly annotations: Map<AnnotationName, Annotation> = new Map();
+    public readonly annotations: any[] = [];
     public factory: ServiceFactory;
     public args: any[] = [];
 
@@ -59,33 +58,9 @@ export class Definition {
      * Adds annotation to the service
      * Annotation is a simple metadata object assigned to service that you might use for different purposes
      */
-    annotate(name: AnnotationName): this;
-    annotate(name: AnnotationName, properties: object): this;
-    annotate(annotation: Annotation): this;
-    annotate(nameOrAnnotation: AnnotationName | Annotation, properties?: object): this {
-        if (!nameOrAnnotation) {
-            throw new Error('Annotation name has to be a non-empty string or annotation object');
-        }
-
-        let annotation: Annotation;
-        if (isStringOrSymbol(nameOrAnnotation)) {
-            annotation = Object.assign({}, properties, {name: nameOrAnnotation});
-        } else {
-            if (!nameOrAnnotation.name) {
-                throw new Error('Annotation object requires non-empty "name" property');
-            }
-            annotation = nameOrAnnotation;
-        }
-        this.annotations.set(annotation.name, annotation);
+    annotate(...annotations: any[]): this {
+        this.annotations.push(...annotations);
         return this;
-    }
-
-    hasAnnotation(name: AnnotationName) {
-        return this.annotations.has(name);
-    }
-
-    getAnnotation(name: AnnotationName) {
-        return this.annotations.get(name);
     }
 
     static create(name: ServiceName) {

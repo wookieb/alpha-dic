@@ -53,11 +53,18 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
-    "alpha-errors": "^0.2.0"
+    "alpha-errors": "^0.2.0",
+    "predicates": "^2.0.1",
+    "reflect-metadata": "^0.1.10"
   },
   "jest": {
     "transform": {
       "^.+\\.ts$": "ts-jest"
+    },
+    "globals": {
+        "ts-jest": {
+          "skipBabel": true
+        }
     },
     "mapCoverage": true,
     "testEnvironment": "node",
