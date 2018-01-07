@@ -6,7 +6,6 @@ import {fromConstructor} from '../serviceFactories';
 require('reflect-metadata');
 
 const KEY = Symbol('__alphaDic-ServiceMetadata');
-const DEFINITION_KEY = Symbol('__alphaDic-ServiceDefinition');
 
 export interface ClassServiceMetadata {
     name?: string;
@@ -30,16 +29,6 @@ export function ensureMetadata(target: any): ClassServiceMetadata {
 
 export function getMetadata(target: any) {
     return Reflect.getMetadata(KEY, target);
-}
-
-export function getDefinitionForClass(clazz: Function) {
-    let definition = Reflect.getMetadata(DEFINITION_KEY, clazz);
-    if (!definition) {
-        const metadata = getMetadata(clazz);
-        definition = createDefinitionFromMetadata(metadata, clazz);
-        Reflect.defineMetadata(DEFINITION_KEY, definition, clazz);
-    }
-    return definition;
 }
 
 export function createDefinitionFromMetadata(metadata: ClassServiceMetadata, constructor: Function) {

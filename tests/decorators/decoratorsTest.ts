@@ -1,9 +1,9 @@
-import {Service} from "../../src/decorators/Service";
-import {getDefinitionForClass} from "../../src/decorators/serviceMetadata";
+import {getDefinitionForClass, Service} from "../../src/decorators/Service";
 import {assert} from 'chai';
 import {Inject} from "../../src/decorators/Inject";
 import {Reference} from "../../src/Reference";
 import {Container} from "../../src/Container";
+import {Annotation} from "../../src/decorators/Annotation";
 
 describe('decorators', () => {
     it('simple service', () => {
@@ -145,5 +145,35 @@ describe('decorators', () => {
 
             assert.strictEqual(container.findByName('Test'), getDefinitionForClass(Test));
         });
+    });
+
+    it('Defining annotation', () => {
+        const annotation1 = {name: 'test'}
+        const annotation2 = {name: 'test2'};
+
+        @Annotation(annotation1)
+        @Annotation(annotation2)
+        @Service()
+        class Test {
+
+        }
+
+        const definition = getDefinitionForClass(Test);
+        assert.sameMembers(definition.annotations, [annotation1, annotation2]);
+    });
+
+    it('defining annotation when @Service decorator is used first', () => {
+        const annotation1 = {name: 'test'}
+        const annotation2 = {name: 'test2'};
+
+        @Service()
+        @Annotation(annotation1)
+        @Annotation(annotation2)
+        class Test {
+
+        }
+
+        const definition = getDefinitionForClass(Test);
+        assert.sameMembers(definition.annotations, [annotation1, annotation2]);
     })
 });

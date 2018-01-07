@@ -12,6 +12,7 @@ export * from './Reference';
 export * from './types';
 export * from './ContainerArg';
 export * from './referenceFunc';
+export * from './Lookup';
 
 export {errors};
 
@@ -21,3 +22,6 @@ export function create() {
 
 export const activationMiddleware = _activationMiddleware;
 export const onActivation = onActivationAnnotation;
+export {Service} from './decorators/Service';
+export {Annotation} from './decorators/Annotation';
+export {Inject} from './decorators/Inject';
