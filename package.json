@@ -8,8 +8,7 @@
     "test": "./node_modules/.bin/jest",
     "prepublish": "npm run compile",
     "compile": "rm -rf compiled && ./node_modules/.bin/tsc",
-    "lint": "./node_modules/.bin/tslint --config ./tslint.json src/*.ts",
-    "test:ci": "npm test -- --coverage --testResultsProcessor ./node_modules/jest-junit && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+    "lint": "./node_modules/.bin/tslint --config ./tslint.json src/*.ts"
   },
   "engines": {
     "node": ">=6.0.0"
