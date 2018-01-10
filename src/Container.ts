@@ -40,7 +40,7 @@ export class Container {
     /**
      * Creates and registers service definition with given name, function as constructor
      */
-    definitionAsConstructor(name: ServiceName, clazz: Function) {
+    definitionWithConstructor(name: ServiceName, clazz: Function) {
         return this.definition(name)
             .useConstructor(clazz);
     }
@@ -48,28 +48,37 @@ export class Container {
     /**
      * Creates and registers service definition with given name, function as factory
      */
-    definitionAsFactory(name: ServiceName, factory: ServiceFactory) {
+    definitionWithFactory(name: ServiceName, factory: ServiceFactory) {
         return this.definition(name)
             .useFactory(factory);
     }
 
     /**
-     * Creates and registers service definition with given name and service value
+     * Creates and registers service definition with given name and value as a service
      */
-    definitionAsValue(name: ServiceName, value: any) {
+    definitionWithValue(name: ServiceName, value: any) {
         return this.definition(name)
             .useValue(value);
     }
 
+    /**
+     * Returns definition by given name
+     */
+    findByName(name: ServiceName) {
+        return this.definitions.get(name);
+    }
+
+    /**
+     * Returns definitions that satisfy given predicate
+     */
     findByPredicate(predicate: DefinitionPredicate) {
         return Array.from(this.definitions.values())
             .filter(predicate);
     }
 
-    findByName(name: ServiceName) {
-        return this.definitions.get(name);
-    }
-
+    /**
+     * Returns all definitions that contain annotation that satisfied given predicate
+     */
     findByAnnotation(predicate: AnnotationPredicate) {
         return this.findByPredicate(d => d.annotations.filter(predicate).length > 0);
     }
@@ -82,6 +91,9 @@ export class Container {
         return this;
     }
 
+    /**
+     * Returns service for given name or definition
+     */
     get <T = any>(nameOrDefinition: ServiceName | Definition): Promise<T> {
         let definition: Definition;
 
@@ -138,7 +150,7 @@ export class Container {
     }
 
     /**
-     * Returns all services that definitions matches predicate
+     * Returns all services that definition satisfies predicate
      */
     getByPredicate(predicate: DefinitionPredicate): Promise<any[]> {
         return Promise.all(
@@ -148,7 +160,7 @@ export class Container {
     }
 
     /**
-     * Returns all services that definition contains annotation with given name
+     * Returns all services that definition contains annotation that satisfies given predicate
      */
     getByAnnotation(predicate: AnnotationPredicate) {
         return Promise.all(

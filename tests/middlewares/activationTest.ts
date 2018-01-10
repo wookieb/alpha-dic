@@ -15,7 +15,7 @@ describe('activation', () => {
         factory = sinon.stub();
         factory.returns(factoryResult);
 
-        container.definitionAsFactory('A', factory);
+        container.definitionWithFactory('A', factory);
     });
 
     it('call on activation hook after service gets created', async () => {

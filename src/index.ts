@@ -22,6 +22,6 @@ export function create() {
 
 export const activationMiddleware = _activationMiddleware;
 export const onActivation = onActivationAnnotation;
-export {Service} from './decorators/Service';
+export {Service, getDefinitionForClass} from './decorators/Service';
 export {Annotation} from './decorators/Annotation';
 export {Inject} from './decorators/Inject';

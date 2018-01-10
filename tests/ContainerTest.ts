@@ -53,7 +53,7 @@ describe('Container', () => {
                 }
             }
 
-            const definition = container.definitionAsConstructor(NAME, Test);
+            const definition = container.definitionWithConstructor(NAME, Test);
             assert.strictEqual(container.findByName(NAME), definition);
 
             assert.deepEqual(definition.factory(1, 2), new Test(1, 2));
@@ -64,7 +64,7 @@ describe('Container', () => {
             const factory = sinon.stub()
                 .returns(factoryResult);
 
-            const definition = container.definitionAsFactory(NAME, factory);
+            const definition = container.definitionWithFactory(NAME, factory);
             assert.strictEqual(container.findByName(NAME), definition);
             assert.deepEqual(definition.factory(1, 2, 3), factoryResult);
             sinon.assert.calledWithExactly(factory, 1, 2, 3);
@@ -72,7 +72,7 @@ describe('Container', () => {
 
         it('creating (as value) with registration', () => {
             const val = {foo: 'bar'};
-            const definition = container.definitionAsValue(NAME, val);
+            const definition = container.definitionWithValue(NAME, val);
             assert.strictEqual(container.findByName(NAME), definition);
             assert.strictEqual(definition.factory(), val);
         });

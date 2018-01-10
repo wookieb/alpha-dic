@@ -4,6 +4,8 @@ import {Inject} from "../../src/decorators/Inject";
 import {Reference} from "../../src/Reference";
 import {Container} from "../../src/Container";
 import {Annotation} from "../../src/decorators/Annotation";
+import {SinonStub} from "sinon";
+import * as sinon from 'sinon';
 
 describe('decorators', () => {
     it('simple service', () => {
@@ -175,5 +177,27 @@ describe('decorators', () => {
 
         const definition = getDefinitionForClass(Test);
         assert.sameMembers(definition.annotations, [annotation1, annotation2]);
+    });
+
+    describe('Service warning is no container registered', () => {
+        let consoleWarnStub: SinonStub;
+        beforeEach(() => {
+            delete process.env.ALPHA_DIC_NO_SERVICE_CONTAINER;
+            consoleWarnStub = sinon.stub(console, 'warn');
+        });
+
+        afterEach(() => {
+            process.env.ALPHA_DIC_NO_SERVICE_CONTAINER = '1';
+            consoleWarnStub.restore();
+        });
+
+        it('test', () => {
+            @Service()
+            class Foo {
+
+            }
+
+            sinon.assert.calledWithMatch(consoleWarnStub, sinon.match(/There is no container registered in @Service decorator/));
+        });
     })
 });

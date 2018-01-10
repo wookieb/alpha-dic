@@ -47,7 +47,9 @@ export class Definition {
     }
 
     /**
-     * Sets the array of arguments provided to service factory
+     * Sets the array of arguments provided to service factory.
+     * All arguments are provided directly to service constructor or
+     * factory unless they are an instance of ContainerArg which has to be resolved first
      */
     withArgs(...args: any[]): this {
         this.args = args;
