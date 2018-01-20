@@ -325,8 +325,8 @@ import {Service, Config} from 'alpha-dic'
 @Service()
 class RedisCache {
     constructor(
-        @Config('redis.host') host: string,
-        @Config('redis.port') port: number,
+        @Config('redis.host') host: string, // throws an error if config at given path does not exist
+        @Config('redis.port', 27017) port: number, // uses 27017 as default value if config at given path does not exist
         @Config('redis.user') user: string,
         @Config('redis.password') password: string
     ) {
