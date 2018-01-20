@@ -1,6 +1,6 @@
 import * as objectPath from 'object-path';
 import * as errors from './errors';
-import {ConfigRequest} from "./ConfigRequest";
+import {ConfigRequest} from './ConfigRequest';
 
 export function configProviderForObject(config: object): ConfigProvider {
     return (request: ConfigRequest) => {
