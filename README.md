@@ -339,7 +339,7 @@ class RedisCache {
 @Service()
 class MongoConnection {
     
-    @Config('mongo')
+    @Config('database')
     connectionString: string;
 }
 
