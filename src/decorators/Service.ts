@@ -1,5 +1,5 @@
 import {Container} from "../Container";
-import {ensureMetadata, createDefinitionFromMetadata} from "./serviceMetadata";
+import {ensureMetadata, createDefinitionFromMetadata} from "../serviceMetadata";
 import * as errors from '../errors';
 
 import 'reflect-metadata';

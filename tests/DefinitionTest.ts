@@ -90,4 +90,69 @@ describe('Annotation', () => {
         assert.strictEqual(definition.annotate(annotation1, annotation2), definition);
         assert.sameMembers(definition.annotations, [annotation1, annotation2]);
     });
+
+    it('locking makes object immutable', () => {
+        const definition = Definition.create('name')
+            .annotate('someAnnotation')
+            .withArgs('some', 'args');
+
+        definition.lock();
+
+
+        assert.isTrue(Object.isFrozen(definition));
+        assert.isTrue(Object.isFrozen(definition.args));
+        assert.isTrue(Object.isFrozen(definition.annotations));
+    });
+
+    describe('Modify', () => {
+        const definition = Definition.create('someName')
+            .annotate('annotation1', 'annotation2')
+            .withArgs('arg1', 'arg2')
+            .lock();
+
+        it('modfying name', () => {
+            const name = 'newName';
+            const newDefinition = definition.modify({name});
+
+            assert.deepEqual(newDefinition, Definition.create(name)
+                .annotate(...definition.annotations)
+                .withArgs(...definition.args));
+
+            assert.isTrue(Object.isFrozen(newDefinition));
+        });
+
+        it('modifying annotations', () => {
+            const annotations = ['new', 'annotations'];
+            const newDefinition = definition.modify({annotations});
+
+            assert.deepEqual(newDefinition, Definition.create(definition.name)
+                .annotate(...annotations)
+                .withArgs(...definition.args));
+
+            assert.isTrue(Object.isFrozen(newDefinition));
+        });
+
+        it('modifying args', () => {
+            const args = ['new', 'args'];
+            const newDefinition = definition.modify({args});
+
+            assert.deepEqual(newDefinition, Definition.create(definition.name)
+                .annotate(...definition.annotations)
+                .withArgs(...args));
+
+            assert.isTrue(Object.isFrozen(newDefinition));
+        });
+
+        it('modifying multiple things at a time', () => {
+            const args = ['new', 'args'];
+            const annotations = ['new', 'annotations'];
+            const newDefinition = definition.modify({args, annotations});
+
+            assert.deepEqual(newDefinition, Definition.create(definition.name)
+                .annotate(...annotations)
+                .withArgs(...args));
+
+            assert.isTrue(Object.isFrozen(newDefinition));
+        });
+    });
 });

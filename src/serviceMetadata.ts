@@ -1,7 +1,7 @@
-import {ContainerArg} from "../ContainerArg";
-import {Definition} from "../Definition";
-import * as errors from '../errors';
-import {fromConstructor} from '../serviceFactories';
+import {ContainerArg} from './ContainerArg';
+import {Definition} from './Definition';
+import * as errors from './errors';
+import {fromConstructor} from './serviceFactories';
 
 require('reflect-metadata');
 
@@ -9,7 +9,7 @@ const KEY = Symbol('__alphaDic-ServiceMetadata');
 
 export interface ClassServiceMetadata {
     name?: string;
-    constructorArguments: ContainerArg[]
+    constructorArguments: (ContainerArg | any)[]
     propertiesInjectors: Map<string | symbol, ContainerArg>;
     annotations: any[];
 }
@@ -65,7 +65,7 @@ function assertValidServiceDefinition(constructor: Function, metadata: ClassServ
         if (!arg) {
             throw errors.MISSING_INJECT_DECORATOR(
                 `Missing @Inject decorator for argument at position "${i}". Every constructor argument needs to have @Inject decorator`
-            )
+            );
         }
     }
 }

@@ -248,10 +248,9 @@ dic.getByPredicate(annotation => annotation === validation)
 ```
 
 ## Middlewares
-Middleware is a function registered to the container that gets called upon service creation. B
+Middleware is a function registered to the container that gets called upon service creation.
 
 ```javascript
-
 dic.addMiddleware(function (definition, next) {
     // called in context of container
     assert.ok(this instanceof Container);
@@ -260,18 +259,17 @@ dic.addMiddleware(function (definition, next) {
     const result = next(definition); // calls next middleware or creates a service if there are no middlewares left
     console.timeEnd(`creating-service: ${definition.name}`);
     return result;
-})
+});
 ```
 
-Middleware is responsible for calling `next` function that calls another middleware or create a service. 
-That gives a great opportunity to modify the whole flow according to your needs.
-In other words it's possible to change or replace whole definition, prevent calling next function and return your own service value, modifying returned service.
+Middleware is responsible for calling `next` function that calls another middleware or create a service (if no middlewares left in queue). 
+That gives a great opportunity to modify the whole flow according to your needs. For example it's possible to change or replace whole definition, prevent calling next function and return your own service value, modifying returned service.
 
 Few use cases for middlewares:
 * profiler for debugging service creation time
 * listeners called for certain services (based on annotations or something else)
 * injecting extra services to prevent circular dependencies
-* injecting extra arguments to definition (config variables)
+* injecting extra arguments to definition ([injecting configuration](#injecting-configuration-values))
 
 ### Activation middleware
 Activation middleware calls all hooks (one by one) registered via `onActivation()` annotation.
@@ -294,3 +292,63 @@ dic.definitionWithConstructor('service', SomeServiceClass)
 
 Hook MUST return service value.
 Hook MIGHT return a promise, in that case the middleware will wait for its resolution before calling other hook.
+
+### Injecting configuration values
+
+Injecting services is the most common use case for the container. However injecting configuration values, like database credentials, passwords, secrets, is also possible.  
+
+Setup:
+```typescript
+
+import {configMiddleware, configProviderForObject} from 'alpha-dic'
+dic.addMiddleware(
+    // add middleware
+    configMiddleware(
+        configProviderForObject({
+            database: 'mongo://localhost/test',
+            redis: {
+                user: 'username',
+                password: '$secretPa##W0rd',
+                host: 'my.redis.example.com',
+                port: '8017'     
+            },
+            env: process.env
+        })
+    )
+)
+```
+
+Usage
+```typescript
+import {Service, Config} from 'alpha-dic'
+// as decorator, injected via constructor
+@Service()
+class RedisCache {
+    constructor(
+        @Config('redis.host') host: string,
+        @Config('redis.port') port: number,
+        @Config('redis.user') user: string,
+        @Config('redis.password') password: string
+    ) {
+        
+    }
+}
+
+
+// as decorator, injected via property
+@Service()
+class MongoConnection {
+    
+    @Config('mongo')
+    connectionString: string;
+}
+
+```
+
+```typescript
+import {config} from 'alpha-dic';
+
+// injected in manually created definition
+dic.definitionWithFactory('foo', (secret: string) => { /* */ })
+    .withArgs(config('env.JWT_SECRET'));
+```

@@ -1,6 +1,6 @@
 {
   "name": "alpha-dic",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Asynchronous dependency injection container",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
@@ -40,6 +40,7 @@
     "@types/chai": "^4.0.10",
     "@types/chai-as-promised": "^7.1.0",
     "@types/jest": "^22.0.0",
+    "@types/object-path": "^0.9.29",
     "@types/sinon": "^4.1.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
@@ -53,6 +54,7 @@
   },
   "dependencies": {
     "alpha-errors": "^0.2.0",
+    "object-path": "^0.11.4",
     "predicates": "^2.0.1",
     "reflect-metadata": "^0.1.10"
   },

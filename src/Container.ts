@@ -116,7 +116,6 @@ export class Container {
     }
 
     private create(definition: Definition) {
-
         if (!definition.factory) {
             return Promise.reject(
                 errors.INCOMPLETE_DEFINITION(
@@ -131,6 +130,9 @@ export class Container {
             return Promise.reject(e);
         }
 
+
+        // valid definition, time to lock it
+        definition.lock();
 
         let currentMiddleware = 0;
         const next = (definition: Definition) => {

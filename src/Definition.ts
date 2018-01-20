@@ -1,15 +1,20 @@
 import {ServiceFactory, ServiceName} from './types';
 import * as factories from './serviceFactories';
 
-export class Definition {
-    public readonly annotations: any[] = [];
-    public factory: ServiceFactory;
-    public args: any[] = [];
+export interface DefinitionData {
+    name: ServiceName;
+    annotations: any[];
+    factory: ServiceFactory;
+    args: any[]
+}
 
-    constructor(public readonly name: ServiceName) {
-        Object.defineProperty(this, 'annotations', {
-            writable: false
-        });
+export class Definition implements DefinitionData {
+    public args: any[] = [];
+    public annotations: any[] = [];
+    public factory: ServiceFactory;
+
+    constructor(public name: ServiceName) {
+
     }
 
     /**
@@ -67,5 +72,24 @@ export class Definition {
 
     static create(name: ServiceName) {
         return new Definition(name);
+    }
+
+    /**
+     * Locks definitions by making it immutable
+     */
+    lock(): Readonly<this> {
+        Object.freeze(this);
+        Object.freeze(this.args);
+        Object.freeze(this.annotations);
+        return this;
+    }
+
+    /**
+     * Returns new, locked one, object of Definition with new data
+     */
+    modify(data: Partial<DefinitionData>): Readonly<Definition> {
+        const def = new Definition(this.name);
+        Object.assign(def, this, data);
+        return def.lock();
     }
 }

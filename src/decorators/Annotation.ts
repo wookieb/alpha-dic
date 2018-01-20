@@ -1,4 +1,4 @@
-import {ensureMetadata} from "./serviceMetadata";
+import {ensureMetadata} from "../serviceMetadata";
 import {getDefinitionForClass} from "./Service";
 
 export function Annotation(annotation: any): ClassDecorator {
