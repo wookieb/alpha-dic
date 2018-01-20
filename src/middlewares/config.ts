@@ -15,7 +15,7 @@ export function configMiddleware(configProvider: ConfigProvider) {
         if (hasAnyConfigRequest) {
             return next(definition.modify({
                 args: definition.args.map(arg => {
-                    return isConfigRequest(arg) ? configProvider(arg) : arg;
+                    return isConfigRequest(arg) ? configProvider(<ConfigRequest>arg) : arg;
                 })
             }));
         }
