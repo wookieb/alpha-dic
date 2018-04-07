@@ -54,9 +54,11 @@
   },
   "dependencies": {
     "alpha-errors": "^0.2.0",
+    "glob": "^7.1.2",
     "object-path": "^0.11.4",
     "predicates": "^2.0.1",
-    "reflect-metadata": "^0.1.10"
+    "reflect-metadata": "^0.1.10",
+    "@types/glob": "^5.0.35"
   },
   "jest": {
     "transform": {
@@ -67,7 +69,6 @@
         "skipBabel": true
       }
     },
-    "mapCoverage": true,
     "testEnvironment": "node",
     "testRegex": "/tests/.*Test.ts$",
     "setupTestFrameworkScriptFile": "./tests/bootstrap.ts",
