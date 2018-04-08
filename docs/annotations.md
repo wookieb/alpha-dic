@@ -1,7 +1,7 @@
 # Annotations
 Annotation is a value added to service definition. There is no limit or any restriction for registered annotations.
 You can use them for metadata, aggregation, extra configuration for middlewares and more.
-Also _alpha-dic_ allows you to retrieve definitions or services based on the annotations (see (defining services)[./defining-services.md] for more info).
+Also _alpha-dic_ allows you to retrieve definitions or services based on the annotations (see [defining services](./defining-services.md)] for more info).
 
 Few usage examples below.
 ```javascript

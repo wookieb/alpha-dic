@@ -77,13 +77,13 @@ container.get('NotificationCenter')
     })
 ```
 
-* (Simple usage rules)[./docs/rules.md]
-* (Defining services)[./docs/defining-services.md]
-* (Decorators)[./docs/decorators.md]
-* (Annotations)[./docs/annotations.md]
-* (Middlewares)[./docs/middlewares.md]
-* (Injecting configuration values)[./docs/configuration.md]
-* (Hooks - @OnActivation, onActivation)[./docs/on-activation.md]
-* (Deprecating services)[./docs/deprecating.md]
-* (Big projects tips)[./docs/big-project-tips.md]
-* (Example)[./example]
+* [Simple usage rules](./docs/rules.md)
+* [Defining services](./docs/defining-services.md)
+* [Decorators](./docs/decorators.md)
+* [Annotations](./docs/annotations.md)
+* [Middlewares](./docs/middlewares.md)
+* [Injecting configuration values](./docs/configuration.md)
+* [Hooks - @OnActivation, onActivation](./docs/on-activation.md)
+* [Deprecating services](./docs/deprecating.md)
+* [Big projects tips](./docs/big-project-tips.md)
+* [Example](./example)

@@ -21,7 +21,7 @@ Few use cases for middlewares:
 * profiler for debugging service creation time
 * listeners called for certain services (based on annotations or something else)
 * injecting extra services to prevent circular dependencies
-* injecting extra arguments to definition ([injecting configuration](#injecting-configuration-values))
+* injecting extra arguments to definition ([injecting configuration](./configuration.md)) 
 
 ## Activation middleware
 
