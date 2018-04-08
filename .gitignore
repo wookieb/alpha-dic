@@ -1,6 +1,6 @@
 node_modules
 **/.DS_Store
 .idea
-/compiled/
+compiled
 /coverage/
 /src/test.ts

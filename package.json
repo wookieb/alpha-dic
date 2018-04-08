@@ -1,6 +1,6 @@
 {
   "name": "alpha-dic",
-  "version": "0.4.2",
+  "version": "1.0.0",
   "description": "Asynchronous dependency injection container",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
@@ -69,6 +69,9 @@
         "skipBabel": true
       }
     },
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
     "testEnvironment": "node",
     "testRegex": "/tests/.*Test.ts$",
     "setupTestFrameworkScriptFile": "./tests/bootstrap.ts",

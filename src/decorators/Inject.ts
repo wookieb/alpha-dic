@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import {Reference} from "../Reference";
 import * as is from 'predicates';
 import {ensureMetadata} from "../serviceMetadata";
+import {ServiceName} from "../types";
 
 
 const assertServiceNameOrContainerArg = is.assert(
@@ -10,10 +11,10 @@ const assertServiceNameOrContainerArg = is.assert(
     '@Inject argument must be a string that represents service name or an object of ContainerArg instance'
 );
 
-export function Inject(serviceName: string | ContainerArg) {
+export function Inject(serviceName: ServiceName | ContainerArg) {
     assertServiceNameOrContainerArg(serviceName);
 
-    const arg = is.string(serviceName) ? Reference.one.name(serviceName) : serviceName;
+    const arg = is.any(is.string, is.symbol)(serviceName) ? Reference.one.name(<string | symbol>serviceName) : <ContainerArg>serviceName;
     return function (target: any, property: string | symbol, indexOrDescriptor?: number | TypedPropertyDescriptor<any>) {
         const isParameterDecorator = typeof indexOrDescriptor === 'number';
         if (isParameterDecorator) {

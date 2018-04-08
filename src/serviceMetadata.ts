@@ -2,18 +2,22 @@ import {ContainerArg} from './ContainerArg';
 import {Definition} from './Definition';
 import * as errors from './errors';
 import {fromConstructor} from './serviceFactories';
+import {ServiceName} from "./types";
 
 require('reflect-metadata');
 
 const KEY = Symbol('__alphaDic-ServiceMetadata');
 
 export interface ClassServiceMetadata {
-    name?: string;
+    name?: ServiceName;
     constructorArguments: (ContainerArg | any)[]
     propertiesInjectors: Map<string | symbol, ContainerArg>;
     annotations: any[];
 }
 
+/**
+ * Creates service metadata data for given class if it doesn't exist. Otherwise returns current service metadata.
+ */
 export function ensureMetadata(target: any): ClassServiceMetadata {
     let data: ClassServiceMetadata = getMetadata(target);
     if (!data) {
