@@ -85,4 +85,5 @@ container.get('NotificationCenter')
 * (Injecting configuration values)[./docs/configuration.md]
 * (Hooks - @OnActivation, onActivation)[./docs/on-activation.md]
 * (Deprecating services)[./docs/deprecating.md]
+* (Big projects tips)[./docs/big-project-tips.md]
 * (Example)[./example]

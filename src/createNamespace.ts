@@ -1,6 +1,6 @@
 import * as is from 'predicates';
 
-export type NamespaceObject = { [key: string]: NamespaceObject | string | Symbol }
+export type NamespaceObject = { [key: string]: NamespaceObject | string | Symbol };
 
 export function createNamespace<T extends NamespaceObject>(object: T): T {
     return createProxyForPrefix([], object);
@@ -25,7 +25,7 @@ function createProxyForPrefix<T extends NamespaceObject>(prefixParts: string[], 
             }
             return value;
         }
-    })
+    });
 }
 
 function getKey(prefixParts: string[], lastPart: string) {

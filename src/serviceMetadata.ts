@@ -2,7 +2,7 @@ import {ContainerArg} from './ContainerArg';
 import {Definition} from './Definition';
 import * as errors from './errors';
 import {fromConstructor} from './serviceFactories';
-import {ServiceName} from "./types";
+import {ServiceName} from './types';
 
 require('reflect-metadata');
 

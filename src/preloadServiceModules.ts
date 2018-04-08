@@ -1,6 +1,6 @@
-import {IOptions, sync} from "glob";
-import {Service} from "./decorators/Service";
-import {Container} from "./Container";
+import {IOptions, sync} from 'glob';
+import {Service} from './decorators/Service';
+import {Container} from './Container';
 
 export function preloadServiceModules(container: Container, globPattern: string | string[], globOptions: IOptions = {}) {
     Service.useContainer(container);

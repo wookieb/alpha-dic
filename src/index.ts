@@ -1,10 +1,10 @@
 import * as errors from './errors';
 import {Container} from './Container';
-import {activationMiddleware} from "./middlewares/activation";
-import {configMiddleware} from "./middlewares/config";
-import {configProviderForObject} from "./ConfigProvider";
-import {Service} from "./decorators/Service";
-import {deprecatedMiddleware, DeprecationMessageFunc} from "./middlewares/deprecated";
+import {activationMiddleware} from './middlewares/activation';
+import {configMiddleware} from './middlewares/config';
+import {configProviderForObject} from './ConfigProvider';
+import {Service} from './decorators/Service';
+import {deprecatedMiddleware, DeprecationMessageFunc} from './middlewares/deprecated';
 
 export * from './Definition';
 export * from './Container';
@@ -64,4 +64,6 @@ export {Annotation} from './decorators/Annotation';
 export {Inject} from './decorators/Inject';
 export {Config} from './decorators/Config';
 export {Deprecated} from './decorators/Deprecated';
+export {OnActivation} from './decorators/OnActivation';
 export {preloadServiceModules} from './preloadServiceModules';
+export {createNamespace, namespaceEntry} from './createNamespace';
