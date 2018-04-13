@@ -50,7 +50,7 @@
     "sinon": "^4.1.3",
     "ts-jest": "^22.0.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.2"
+    "typescript": "^2.7.0"
   },
   "dependencies": {
     "alpha-errors": "^0.2.0",
