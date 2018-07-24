@@ -1,9 +1,10 @@
 import {AnnotationPredicate, ServiceName, DefinitionPredicate} from './types';
 import {Container} from './Container';
 import {Definition} from './Definition';
+import * as is from 'predicates';
 
 export class Lookup {
-    constructor(private readonly type: 'name' | 'predicate' | 'annotationName' | 'annotationPredicate',
+    constructor(private readonly type: 'name' | 'predicate' | 'annotationPredicate',
                 private readonly value: ServiceName | DefinitionPredicate | AnnotationPredicate) {
         Object.freeze(this);
     }
@@ -36,7 +37,7 @@ export class Lookup {
     toString() {
         switch (this.type) {
             case 'name':
-                return 'by service name: ' + Object.prototype.toString.call(this.value);
+                return 'by service name: ' + is.string(this.value) ? this.value : this.value.toString();
 
             case 'predicate':
                 return 'by service predicate';
