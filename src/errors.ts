@@ -13,3 +13,4 @@ export const NO_SERVICE_NAME = domain.create('Missing service name');
 export const INVALID_SERVICE_ARGUMENTS_LENGTH = domain.create('Invalid service arguments length');
 export const MISSING_INJECT_DECORATOR = domain.create('Missing @Inject decorator');
 export const MISSING_CONFIG_VALUE = domain.create('Missing config value');
+export const ALREADY_DEFINED = domain.create('Service with given name already defined');

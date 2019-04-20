@@ -5,6 +5,8 @@ import * as sinon from 'sinon';
 import {ContainerArg} from "../src/ContainerArg";
 import {SinonStub} from "sinon";
 import {Reference} from "../src/Reference";
+import * as errors from "../src/errors";
+import {assertThrowsErrorWithCode} from "./common";
 
 describe('Container', () => {
     let container: Container;
@@ -37,6 +39,15 @@ describe('Container', () => {
             const def = new Definition(NAME);
             container.registerDefinition(def);
             assert.strictEqual(container.findByName(NAME), def);
+        });
+
+        it('register definition with the same name', () => {
+            const def = new Definition(NAME);
+            container.registerDefinition(def);
+
+            assertThrowsErrorWithCode(() => {
+                container.registerDefinition(def);
+            }, errors.ALREADY_DEFINED);
         });
 
         it('creating with registration', () => {

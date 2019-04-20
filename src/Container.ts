@@ -22,6 +22,9 @@ export class Container {
      * Registers given service definition
      */
     registerDefinition(definition: Definition): this {
+        if (this.definitions.has(definition.name)) {
+            throw errors.ALREADY_DEFINED(`Service "${definition.name}" already defined`);
+        }
         this.definitions.set(definition.name, definition);
         return this;
     }
@@ -94,7 +97,7 @@ export class Container {
     /**
      * Returns service for given name or definition
      */
-    get <T = any>(nameOrDefinition: ServiceName | Definition): Promise<T> {
+    get<T = any>(nameOrDefinition: ServiceName | Definition): Promise<T> {
         let definition: Definition;
 
         if (isStringOrSymbol(nameOrDefinition)) {
