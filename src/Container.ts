@@ -129,7 +129,7 @@ export class Container {
         return this;
     }
 
-    getMiddlewares() {
+    getMiddlewares(): Middleware[] {
         if (this.parent) {
             return this.parent.getMiddlewares().concat(this.middlewares);
         }
