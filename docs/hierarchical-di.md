@@ -27,3 +27,31 @@ container.findByPredicate(() => true); // [Definition for ('A'), Definition for 
 parentContainer.findByPredicate(() => true); // [Definition for ('A')]
 
 ```
+
+## Middlewares
+
+Middlewares from parent container are inherited so there is no need to define them once again for every child container.
+
+```typescript
+
+const parentContainer = new Container();
+const middleware = () => {
+   console.log('middleware');
+   return null;
+};
+parentContainer.addMiddleware(middleware);
+
+const container = new Container(parentContainer);
+container.getMiddlewares(); // [middleware]
+
+```
+However middlewares registered for a child have no effect on parent
+
+```typescript
+
+const middleware2 = () => console.log('second middleware');
+container.addMiddleware(middleware2);
+
+container.getMiddlewares(); // [middleware, middleware2]
+parentContainer.getMiddlewares(); // [middleware]
+```

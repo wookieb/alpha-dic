@@ -7,6 +7,7 @@ import {SinonStub} from "sinon";
 import {Reference} from "../src/Reference";
 import * as errors from "../src/errors";
 import {assertThrowsErrorWithCode} from "./common";
+import {Middleware} from "../src";
 
 describe('Container', () => {
     let container: Container;
@@ -327,6 +328,34 @@ describe('Container', () => {
             definitionB = container.definition('B')
                 .useValue(serviceB)
                 .annotate(ANNOTATION2);
+        });
+
+        describe('middlewares', () => {
+            let middleware;
+            beforeEach(() => {
+                middleware = sinon.stub();
+            });
+
+            it('inherited from parent', () => {
+                parentContainer.addMiddleware(middleware);
+                assert.sameMembers(container.getMiddlewares(), parentContainer.getMiddlewares());
+            });
+
+            it('registering child middleware does not affect parent', () => {
+                container.addMiddleware(middleware);
+
+                assert.sameMembers(container.getMiddlewares(), [middleware]);
+                assert.sameMembers(parentContainer.getMiddlewares(), []);
+            });
+
+            it('middleware in parent and child', () => {
+                const middleware2 = sinon.stub();
+                parentContainer.addMiddleware(middleware);
+                container.addMiddleware(middleware2);
+
+                assert.sameOrderedMembers(container.getMiddlewares(), [middleware, middleware2]);
+                assert.sameOrderedMembers(parentContainer.getMiddlewares(), [middleware]);
+            });
         });
 
         describe('finding by name', () => {

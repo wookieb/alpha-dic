@@ -129,6 +129,13 @@ export class Container {
         return this;
     }
 
+    getMiddlewares() {
+        if (this.parent) {
+            return this.parent.getMiddlewares().concat(this.middlewares);
+        }
+        return this.middlewares;
+    }
+
     /**
      * Returns service for given name or definition
      */
@@ -176,8 +183,9 @@ export class Container {
         definition.lock();
 
         let currentMiddleware = 0;
+        const middlewares = this.getMiddlewares();
         const next = (definition: Definition) => {
-            const middleware = this.middlewares[currentMiddleware];
+            const middleware = middlewares[currentMiddleware];
             currentMiddleware++;
             if (middleware) {
                 return middleware.call(this, definition, next);
