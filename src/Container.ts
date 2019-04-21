@@ -15,8 +15,16 @@ function isThenable(result: any): result is Promise<any> {
 export class Container {
     private definitions: Map<string | Symbol, Definition> = new Map();
     private services: Map<Definition, Promise<any>> = new Map();
-
     private middlewares: Middleware[] = [];
+
+    public readonly parent: Container;
+
+    constructor(parent?: Container) {
+        Object.defineProperty(this, 'parent', {
+            value: parent,
+            writable: false
+        });
+    }
 
     /**
      * Registers given service definition
@@ -67,23 +75,50 @@ export class Container {
     /**
      * Returns definition by given name
      */
-    findByName(name: ServiceName) {
-        return this.definitions.get(name);
+    findByName(name: ServiceName): Definition | undefined {
+        if (this.definitions.has(name)) {
+            return this.definitions.get(name);
+        }
+
+        if (this.parent) {
+            return this.parent.findByName(name);
+        }
     }
 
     /**
      * Returns definitions that satisfy given predicate
      */
-    findByPredicate(predicate: DefinitionPredicate) {
+    findByPredicate(predicate: DefinitionPredicate): Definition[] {
         return Array.from(this.definitions.values())
-            .filter(predicate);
+            .filter(predicate)
+            .concat(this.parent ? this.parent.findByPredicate(predicate) : [])
     }
+
 
     /**
      * Returns all definitions that contain annotation that satisfied given predicate
      */
-    findByAnnotation(predicate: AnnotationPredicate) {
-        return this.findByPredicate(d => d.annotations.filter(predicate).length > 0);
+    findByAnnotation(predicate: AnnotationPredicate): Definition[];
+    findByAnnotation(predicate: AnnotationPredicate, withAnnotation: false): Definition[];
+    findByAnnotation(predicate: AnnotationPredicate, withAnnotation: true): [Definition, any][];
+    findByAnnotation(predicate: AnnotationPredicate, withAnnotation: boolean = false): Definition[] | [Definition, any][] {
+        let annotations: any[] = [];
+        const definitions = this.findByPredicate(s => {
+            const annotation = s.annotations.find(predicate);
+
+            if (annotation) {
+                withAnnotation && annotations.push(annotation);
+                return true;
+            }
+            return false;
+        });
+
+        if (withAnnotation) {
+            return definitions.map((d): [Definition, any] => {
+                return [d, annotations.shift()]
+            });
+        }
+        return definitions;
     }
 
     /**
@@ -113,6 +148,10 @@ export class Container {
             return this.services.get(definition);
         }
 
+        if (!this.definitions.has(definition.name) && this.parent) {
+            return this.parent.get(definition);
+        }
+
         const promise = this.create(definition);
         this.services.set(definition, promise);
         return promise;
@@ -132,7 +171,6 @@ export class Container {
         } catch (e) {
             return Promise.reject(e);
         }
-
 
         // valid definition, time to lock it
         definition.lock();
@@ -167,10 +205,18 @@ export class Container {
     /**
      * Returns all services that definition contains annotation that satisfies given predicate
      */
-    getByAnnotation(predicate: AnnotationPredicate) {
+    getByAnnotation<T = any>(predicate: AnnotationPredicate): Promise<T[]>;
+    getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: false): Promise<T[]>;
+    getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: true): Promise<[T, any][]>;
+    getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: boolean = false): Promise<T[] | [T, any][]> {
         return Promise.all(
-            this.findByAnnotation(predicate)
-                .map(d => this.get(d))
+            this.findByAnnotation(predicate, true)
+                .map(async ([definition, annotation]) => {
+                    if (withAnnotation) {
+                        return [await this.get(definition), annotation];
+                    }
+                    return this.get(definition);
+                })
         );
     }
 }

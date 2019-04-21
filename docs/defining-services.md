@@ -65,7 +65,7 @@ class Bar2 {
 
 ## Referencing services
 
-The most common way to get other service is referencing it by name. However _alpha-dic_ allows to use predicates to obtain reference to services you're looking for.
+The most common way to get other service is referencing by name. However _alpha-dic_ allows to use predicates to obtain references to services you're looking for.
 ```javascript
 // simple reference by name
 reference('service.name') // resolves to a service for given name

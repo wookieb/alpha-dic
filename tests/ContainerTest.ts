@@ -34,7 +34,6 @@ describe('Container', () => {
     describe('defining services', () => {
         const NAME = 'someServiceName';
 
-
         it('registering definition', () => {
             const def = new Definition(NAME);
             container.registerDefinition(def);
@@ -98,11 +97,27 @@ describe('Container', () => {
             assert.sameMembers(container.findByPredicate((d) => d.name === 'B'), [definitionB]);
         });
 
-        it('by annotation name', () => {
-            assert.sameMembers(container.findByAnnotation(a => a.name === ANNOTATION.name), [
-                definitionA
-            ]);
-        });
+        describe('by annotation', () => {
+            it('by some predicate', () => {
+                assert.sameMembers(container.findByAnnotation(a => a.name === ANNOTATION.name), [
+                    definitionA
+                ]);
+            });
+
+            it('with annotation', () => {
+                assert.sameDeepMembers(container.findByAnnotation(() => true, true), [
+                    [definitionA, ANNOTATION],
+                    [definitionB, ANNOTATION2]
+                ]);
+            });
+
+            it('without annotation', () => {
+                assert.sameMembers(container.findByAnnotation(() => true, false), [
+                    definitionA,
+                    definitionB
+                ]);
+            });
+        })
     });
 
     describe('getting instances', () => {
@@ -116,6 +131,26 @@ describe('Container', () => {
 
         it('by annotation', async () => {
             assert.sameMembers(await container.getByAnnotation(a => a.name === ANNOTATION.name), [serviceA]);
+        });
+
+        it('by annotation with annotation', async () => {
+            assert.sameDeepMembers(
+                await container.getByAnnotation(() => true, true),
+                [
+                    [serviceA, ANNOTATION],
+                    [serviceB, ANNOTATION2]
+                ]
+            );
+        });
+
+        it('by annotation without annotation', async () => {
+            assert.sameMembers(
+                await container.getByAnnotation(() => true, false),
+                [
+                    serviceA,
+                    serviceB
+                ]
+            );
         });
     });
 
@@ -274,5 +309,116 @@ describe('Container', () => {
 
             sinon.assert.callOrder(middleware1, middleware2);
         })
-    })
+    });
+
+    describe('Hierarchical', () => {
+        let parentContainer: Container;
+        let definitionA: Definition;
+        let definitionB: Definition;
+        beforeEach(() => {
+
+            parentContainer = new Container();
+            container = new Container(parentContainer);
+
+            definitionA = parentContainer.definition('A')
+                .useValue(serviceA)
+                .annotate(ANNOTATION);
+
+            definitionB = container.definition('B')
+                .useValue(serviceB)
+                .annotate(ANNOTATION2);
+        });
+
+        describe('finding by name', () => {
+            it('from parent container', () => {
+                assert.strictEqual(
+                    container.findByName('A'),
+                    definitionA
+                );
+            });
+
+            it('from current container', () => {
+                assert.strictEqual(
+                    container.findByName('B'),
+                    definitionB
+                )
+            });
+
+            it('definition from child container does not exist in parent container', () => {
+                assert.isUndefined(
+                    parentContainer.findByName('B')
+                );
+            });
+        });
+
+        describe('finding by predicate', () => {
+            it('returns all services for true predicate', () => {
+                assert.sameMembers(
+                    container.findByPredicate(x => true), [
+                        definitionA,
+                        definitionB
+                    ]
+                );
+            });
+
+            it('returns services that satisfies predicate', () => {
+                assert.sameMembers(
+                    container.findByPredicate(s => s.name === 'A'),
+                    [
+                        definitionA
+                    ]
+                );
+            })
+        });
+
+        describe('finding by annotation predicate', () => {
+            it('returns all services for true predicate', () => {
+                assert.sameMembers(
+                    container.findByAnnotation(() => true),
+                    [
+                        definitionA,
+                        definitionB
+                    ]
+                );
+            });
+
+            it('returns services that match predicate', () => {
+                assert.sameMembers(
+                    container.findByAnnotation(a => a === ANNOTATION),
+                    [definitionA]
+                );
+
+                assert.sameMembers(
+                    container.findByAnnotation(a => a === ANNOTATION2),
+                    [definitionB]
+                );
+            });
+
+            it('child containers are ignored when looking in parent container', () => {
+                assert.sameMembers(
+                    parentContainer.findByAnnotation(() => true),
+                    [definitionA]
+                )
+            });
+        });
+
+        describe('getting instance from parent', () => {
+            it('does not cache result in current container', async () => {
+                const serviceX = {};
+                const factory = sinon.stub()
+                    .returns(serviceX);
+
+                parentContainer.definition('X')
+                    .useFactory(factory);
+
+                const containerA = new Container(parentContainer);
+                const containerB = new Container(parentContainer);
+
+                assert.strictEqual(await containerA.get('X'), serviceX);
+                assert.strictEqual(await containerB.get('X'), serviceX);
+
+                sinon.assert.calledOnce(factory);
+            });
+        });
+    });
 });
