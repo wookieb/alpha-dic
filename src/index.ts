@@ -28,8 +28,8 @@ export {createNamespace, namespaceEntry} from './createNamespace';
 
 export {errors};
 
-export function create() {
-    return new Container();
+export function create(parent?: Container) {
+    return new Container(parent);
 }
 
 
@@ -42,7 +42,17 @@ export interface StandardContainerOptions {
     /**
      * A function that is responsible for displaying deprecation note. By default console.warn used
      */
-    deprecationMessageFunc?: DeprecationMessageFunc
+    deprecationMessageFunc?: DeprecationMessageFunc,
+
+    /**
+     * Parent container
+     */
+    parent?: Container;
+
+    /**
+     * Whether to inform @Service decorator to use newly created container
+     */
+    configureServiceDecorator?: boolean
 }
 
 /**
@@ -52,16 +62,16 @@ export interface StandardContainerOptions {
  * * configMiddleware that uses given config object
  */
 export function createStandard(options: StandardContainerOptions = {}) {
-    const container = new Container();
-
+    const container = new Container(options.parent);
     const opts = options || {};
-
-    Service.useContainer(container);
+    const configureServiceDecorator = options.configureServiceDecorator === undefined ? true : options.configureServiceDecorator;
+    if (configureServiceDecorator) {
+        Service.useContainer(container);
+    }
     container
         .addMiddleware(activationMiddleware)
         .addMiddleware(configMiddleware(configProviderForObject(opts.config || {})))
         .addMiddleware(deprecatedMiddleware(opts.deprecationMessageFunc));
-
     return container;
 }
 

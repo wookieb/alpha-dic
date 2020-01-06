@@ -91,7 +91,7 @@ export class Container {
     findByPredicate(predicate: DefinitionPredicate): Definition[] {
         return Array.from(this.definitions.values())
             .filter(predicate)
-            .concat(this.parent ? this.parent.findByPredicate(predicate) : [])
+            .concat(this.parent ? this.parent.findByPredicate(predicate) : []);
     }
 
 
@@ -115,7 +115,7 @@ export class Container {
 
         if (withAnnotation) {
             return definitions.map((d): [Definition, any] => {
-                return [d, annotations.shift()]
+                return [d, annotations.shift()];
             });
         }
         return definitions;
