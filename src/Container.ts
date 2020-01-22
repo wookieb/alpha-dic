@@ -130,9 +130,6 @@ export class Container {
     }
 
     getMiddlewares(): Middleware[] {
-        if (this.parent) {
-            return this.parent.getMiddlewares().concat(this.middlewares);
-        }
         return this.middlewares;
     }
 

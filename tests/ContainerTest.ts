@@ -336,11 +336,6 @@ describe('Container', () => {
                 middleware = sinon.stub();
             });
 
-            it('inherited from parent', () => {
-                parentContainer.addMiddleware(middleware);
-                assert.sameMembers(container.getMiddlewares(), parentContainer.getMiddlewares());
-            });
-
             it('registering child middleware does not affect parent', () => {
                 container.addMiddleware(middleware);
 
@@ -353,7 +348,7 @@ describe('Container', () => {
                 parentContainer.addMiddleware(middleware);
                 container.addMiddleware(middleware2);
 
-                assert.sameOrderedMembers(container.getMiddlewares(), [middleware, middleware2]);
+                assert.sameOrderedMembers(container.getMiddlewares(), [middleware2]);
                 assert.sameOrderedMembers(parentContainer.getMiddlewares(), [middleware]);
             });
         });
