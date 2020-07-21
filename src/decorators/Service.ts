@@ -1,10 +1,10 @@
 import {Container} from "../Container";
 import {ensureMetadata, createDefinitionFromMetadata} from "../serviceMetadata";
-import * as errors from '../errors';
 
 import 'reflect-metadata';
 import {Definition} from "../Definition";
 import {ServiceName} from "../types";
+import {randomName} from "../randomName";
 
 export interface ServiceType {
     (name?: ServiceName): ClassDecorator;
@@ -14,16 +14,10 @@ export interface ServiceType {
     _container?: Container
 }
 
-
 const DEFINITION_KEY = Symbol('__alphaDic-ServiceDefinition');
-
 export const Service = <ServiceType>function (name?: ServiceName) {
     return function (constructor: Function) {
-        const finalName = name || constructor.name;
-
-        if (!finalName) {
-            throw errors.NO_SERVICE_NAME();
-        }
+        const finalName = name || randomName(constructor.name);
 
         const metadata = ensureMetadata(constructor);
         metadata.name = finalName;

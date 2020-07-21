@@ -18,7 +18,7 @@ export function deprecatedMiddleware(messageFunc: DeprecationMessageFunc = conso
 
         if (deprecatedAnnotations.length) {
             const deprecationNote = deprecatedAnnotations.map(d => d.note).join(', ');
-            messageFunc(`Service ${definition.name} is deprecated: ` + deprecationNote)
+            messageFunc(`Service ${definition.name.toString()} is deprecated: ` + deprecationNote)
         }
 
         return next(definition);

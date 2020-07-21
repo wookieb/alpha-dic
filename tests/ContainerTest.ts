@@ -331,7 +331,7 @@ describe('Container', () => {
         });
 
         describe('middlewares', () => {
-            let middleware;
+            let middleware: sinon.SinonStub;
             beforeEach(() => {
                 middleware = sinon.stub();
             });

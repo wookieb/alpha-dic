@@ -1,5 +1,6 @@
 import {ServiceFactory, ServiceName} from './types';
 import * as factories from './serviceFactories';
+import {randomName} from "./randomName";
 
 export interface DefinitionData {
     name: ServiceName;
@@ -12,9 +13,14 @@ export class Definition implements DefinitionData {
     public args: any[] = [];
     public annotations: any[] = [];
     public factory: ServiceFactory;
+    public name: ServiceName;
 
-    constructor(public name: ServiceName) {
-
+    constructor(name: ServiceName | undefined) {
+        if (name) {
+            this.name = name;
+        } else {
+            this.name = randomName();
+        }
     }
 
     /**

@@ -1,6 +1,6 @@
 import {Service} from "../../../src";
 
-@Service()
+@Service('Test2_Service2')
 export class Test2_Service2 {
 
 }

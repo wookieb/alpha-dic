@@ -2,7 +2,8 @@ import {createNamespace, namespaceEntry as r} from "../src/createNamespace";
 import {assert} from 'chai';
 
 describe('createNamespace', () => {
-    const func = function() {};
+    const func = function () {
+    };
     const set = new Set([1, 2]);
     const namespace = createNamespace({
         workers: {

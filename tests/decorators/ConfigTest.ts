@@ -8,7 +8,7 @@ describe('Config', () => {
     it('injects parameter to constructor', () => {
         @Service()
         class Foo {
-            constructor(@Config('path') parameter, @Config('path2', 'default') parameter2) {
+            constructor(@Config('path') parameter: any, @Config('path2', 'default') parameter2: any) {
 
             }
         }

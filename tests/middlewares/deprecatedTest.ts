@@ -32,7 +32,7 @@ describe('deprecated', () => {
             const messageFunc = sinon.spy();
             deprecatedMiddleware(messageFunc)(definition, next);
 
-            sinon.assert.calledWith(messageFunc, `Service ${definition.name} is deprecated: ${NOTE}`);
+            sinon.assert.calledWith(messageFunc, `Service ${definition.name.toString()} is deprecated: ${NOTE}`);
         });
 
         it('multiple deprecation notes', () => {
@@ -42,7 +42,7 @@ describe('deprecated', () => {
             const messageFunc = sinon.spy();
             deprecatedMiddleware(messageFunc)(definition, next);
 
-            sinon.assert.calledWith(messageFunc, `Service ${definition.name} is deprecated: ${NOTE}, ${NOTE2}`);
+            sinon.assert.calledWith(messageFunc, `Service ${definition.name.toString()} is deprecated: ${NOTE}, ${NOTE2}`);
         });
 
         it('no deprecation annotations', () => {

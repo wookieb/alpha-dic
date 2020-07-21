@@ -11,7 +11,7 @@ const KEY = Symbol('__alphaDic-ServiceMetadata');
 export interface ClassServiceMetadata {
     name?: ServiceName;
     constructorArguments: (ContainerArg | any)[]
-    propertiesInjectors: Map<string | symbol, ContainerArg>;
+    propertiesInjectors: Map<string | symbol, any>;
     annotations: any[];
 }
 
@@ -60,7 +60,7 @@ export function createDefinitionFromMetadata(metadata: ClassServiceMetadata, con
 function assertValidServiceDefinition(constructor: Function, metadata: ClassServiceMetadata) {
     if (constructor.length > metadata.constructorArguments.length) {
         throw errors.INVALID_SERVICE_ARGUMENTS_LENGTH(
-            `Invalid service "${metadata.name}" definition. Required constructor arguments: ${constructor.length}, provided: ${metadata.constructorArguments.length}`
+            `Invalid service "${metadata.name.toString()}" definition. Required constructor arguments: ${constructor.length}, provided: ${metadata.constructorArguments.length}`
         );
     }
 

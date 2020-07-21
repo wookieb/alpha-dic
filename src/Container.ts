@@ -31,7 +31,7 @@ export class Container {
      */
     registerDefinition(definition: Definition): this {
         if (this.definitions.has(definition.name)) {
-            throw errors.ALREADY_DEFINED(`Service "${definition.name}" already defined`);
+            throw errors.ALREADY_DEFINED(`Service "${definition.name.toString()}" already defined`);
         }
         this.definitions.set(definition.name, definition);
         return this;
@@ -142,7 +142,7 @@ export class Container {
         if (isStringOrSymbol(nameOrDefinition)) {
             definition = this.findByName(nameOrDefinition);
             if (!definition) {
-                return Promise.reject(errors.SERVICE_NOT_FOUND(`Service "${nameOrDefinition}" does not exist`));
+                return Promise.reject(errors.SERVICE_NOT_FOUND(`Service "${nameOrDefinition.toString()}" does not exist`));
             }
         } else {
             definition = nameOrDefinition;
@@ -165,7 +165,7 @@ export class Container {
         if (!definition.factory) {
             return Promise.reject(
                 errors.INCOMPLETE_DEFINITION(
-                    `Missing factory for service definition "${definition.name}". Define it as constructor, factory or value`
+                    `Missing factory for service definition "${definition.name.toString()}". Define it as constructor, factory or value`
                 )
             );
         }

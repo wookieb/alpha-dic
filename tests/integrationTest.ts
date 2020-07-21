@@ -49,7 +49,7 @@ describe('integration', () => {
         }
 
         container.registerDefinition(getDefinitionForClass(Foo));
-        const service = await container.get('Foo');
+        const service = await container.get(getDefinitionForClass(Foo).name);
 
         assert.propertyVal(service, 'mongo', CONFIG.database);
         assert.propertyVal(service, 'redis', CONFIG.redis);

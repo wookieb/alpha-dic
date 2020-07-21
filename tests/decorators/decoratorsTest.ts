@@ -28,7 +28,8 @@ describe('decorators', () => {
         }
 
         const definition = getDefinitionForClass(TestFoo);
-        assert.propertyVal(definition, 'name', 'TestFoo');
+        expect(definition.name)
+            .toMatch(/^TestFoo.*/);
     });
 
     it('service with injected args', () => {
@@ -40,7 +41,9 @@ describe('decorators', () => {
         }
 
         const definition = getDefinitionForClass(Foo);
-        assert.propertyVal(definition, 'name', 'Foo');
+        expect(definition.name)
+            .toMatch(/^Foo.*/);
+
         assert.sameDeepMembers(definition.args, [
             Reference.one.name('a')
         ]);
@@ -51,7 +54,7 @@ describe('decorators', () => {
 
         @Service()
         class Foo {
-            constructor(@Inject(ref) arg1) {
+            constructor(@Inject(ref) arg1: any) {
 
             }
         }
@@ -64,7 +67,7 @@ describe('decorators', () => {
         assert.throws(() => {
             @Service()
             class Foo {
-                constructor(@Inject([]) arg1) {
+                constructor(@Inject([] as any) arg1: any) {
 
                 }
             }
@@ -77,13 +80,15 @@ describe('decorators', () => {
             @Inject('bar')
             bar: any;
 
-            constructor(@Inject('a') private arg1, @Inject('b') private arg2) {
+            constructor(@Inject('a') private arg1: any, @Inject('b') private arg2: any) {
 
             }
         }
 
         const definition = getDefinitionForClass(Foo);
-        assert.propertyVal(definition, 'name', 'Foo');
+        expect(definition.name)
+            .toMatch(/^Foo.*/);
+
         assert.sameDeepMembers(definition.args, [
             Reference.one.name('a'),
             Reference.one.name('b'),
@@ -98,18 +103,11 @@ describe('decorators', () => {
         assert.propertyVal(result, 'arg2', 'b');
     });
 
-    it('service name cannot be empty', () => {
-        assert.throws(() => {
-            Service()(function () {
-            });
-        }, /Missing service name/);
-    });
-
     it('fails if not all constructor arguments have @Inject decorators', () => {
         assert.throws(() => {
             @Service()
             class Foo {
-                constructor(@Inject('a') arg1, arg2) {
+                constructor(@Inject('a') arg1: any, arg2: any) {
 
                 }
             }
@@ -120,7 +118,7 @@ describe('decorators', () => {
         assert.throws(() => {
             @Service()
             class Foo {
-                constructor(@Inject('a') arg1, arg2, @Inject('c') arg3) {
+                constructor(@Inject('a') arg1: any, arg2: any, @Inject('c') arg3: any) {
 
                 }
             }
@@ -140,7 +138,7 @@ describe('decorators', () => {
 
         it('set container via Service.useContainer()', () => {
 
-            @Service()
+            @Service('Test')
             class Test {
 
             }

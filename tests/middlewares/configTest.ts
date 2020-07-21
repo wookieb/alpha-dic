@@ -12,7 +12,7 @@ describe('configMiddleware', () => {
 
     let middleware: Middleware;
     let configProvider: ConfigProvider;
-    let next: Function;
+    let next: sinon.SinonStub;
 
     const service = {foo: 'bar'};
 

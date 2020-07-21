@@ -6,7 +6,7 @@ import {assert} from 'chai';
 describe('activation', () => {
     const factoryResult = {foo: 'bar'};
     let container: Container;
-    let factory;
+    let factory: sinon.SinonStub;
 
     beforeEach(() => {
         container = new Container();
