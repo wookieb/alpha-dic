@@ -1,6 +1,7 @@
 import {Definition} from "../src/Definition";
 import {assert} from 'chai';
 import * as sinon from 'sinon';
+import {TypeRef} from "../src/TypeRef";
 
 describe('Annotation', () => {
     const ARGS = [1, 2, 3];
@@ -29,6 +30,9 @@ describe('Annotation', () => {
 
         assert.strictEqual(definition.useConstructor(Test), definition);
 
+        expect(definition.type)
+            .toEqual(TypeRef.createFromType(Test));
+
         const result = definition.factory.apply(CONTEXT, ARGS);
         assert.instanceOf(result, Test);
         sinon.assert.calledWithExactly(spy, ...ARGS);
@@ -44,6 +48,8 @@ describe('Annotation', () => {
         }
 
         assert.strictEqual(definition.useClass(Test), definition);
+        expect(definition.type)
+            .toEqual(TypeRef.createFromType(Test));
 
         const result = definition.factory.apply(CONTEXT, ARGS);
         assert.instanceOf(result, Test);
@@ -57,6 +63,27 @@ describe('Annotation', () => {
         assert.strictEqual(definition.useFactory(stub), definition);
 
         const result = definition.factory.apply(CONTEXT, ARGS);
+        expect(definition.type)
+            .toBeUndefined();
+
+        assert.strictEqual(result, expectedResult);
+        sinon.assert.calledOn(stub, CONTEXT);
+        sinon.assert.calledWithExactly(stub, ...ARGS);
+    });
+
+    it('using factory with type', () => {
+        class Foo {
+
+        }
+
+        const expectedResult = new Foo();
+        const stub = sinon.stub().returns(expectedResult);
+
+        assert.strictEqual(definition.useFactory(stub, Foo), definition);
+
+        const result = definition.factory.apply(CONTEXT, ARGS);
+        expect(definition.type)
+            .toEqual(TypeRef.createFromType(Foo));
 
         assert.strictEqual(result, expectedResult);
         sinon.assert.calledOn(stub, CONTEXT);
@@ -154,5 +181,9 @@ describe('Annotation', () => {
 
             assert.isTrue(Object.isFrozen(newDefinition));
         });
+    });
+
+    describe('marking type', () => {
+
     });
 });

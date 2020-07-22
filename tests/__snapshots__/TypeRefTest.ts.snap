@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TypeRef creating fails when attempt to create for reserved type: function Function() { [native code] } 1`] = `"Target function Function() { [native code] } is not allowed"`;
+
+exports[`TypeRef creating fails when attempt to create for reserved type: function Object() { [native code] } 1`] = `"Target function Object() { [native code] } is not allowed"`;
+
+exports[`TypeRef creating fails when attempt to create for reserved type: function Promise() { [native code] } 1`] = `"Target function Promise() { [native code] } is not allowed"`;

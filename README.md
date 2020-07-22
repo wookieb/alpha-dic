@@ -6,11 +6,12 @@
 Flexible Dependency Injection Container with support for asynchronous service creation, annotations and middlewares.
 
 Features:
+* Autowiring
 * Supports middlewares
 * Allows to define service as constructor, (async) factory or a value
 * Detects cycle dependencies
 * Prevents race condition for concurrent service requests
-* Supports annotations
+* Supports annotations (and ability to search services by annotations)
 * Simple service definition via container methods or decorators
 
 # Installation
@@ -40,16 +41,17 @@ container.get('my-service').then((connection) => {
 
 Example with dependencies and decorators
 ```typescript
-import {createStandard, reference, Service, OnActivation} from 'alpha-dic';
+import {createStandard, reference, AutowiredService, Service, OnActivation} from 'alpha-dic';
+import * as assert from 'assert';
 
 const container = createStandard();
 
-@Service()
+@AutowiredService('NotificationCenter')
 class NotificationCenter {
-    constructor(@Inject('EmailRenderer') renderer, @Inject('EmailSender') sender) {
+    constructor(renderer: EmailRenderer, sender: EmailSender) {
         assert.ok(renderer instanceof EmailRenderer);
         // connection to SMTP was established in factory
-        assert.ok(sender instanceof Nodemailer);
+        assert.ok(sender instanceof EmailSender);
     }
     async sendEmail(to, type, vars) {
         // render email
@@ -86,5 +88,6 @@ container.get('NotificationCenter')
 * [Injecting configuration values](./docs/configuration.md)
 * [Hooks - @OnActivation, onActivation](./docs/on-activation.md)
 * [Deprecating services](./docs/deprecating.md)
+* [Autowiring](./docs/autowiring.md)
 * [Big projects tips](./docs/big-project-tips.md)
 * [Example](./example)

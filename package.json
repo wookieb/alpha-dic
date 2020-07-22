@@ -64,22 +64,5 @@
     "predicates": "^2.0.1",
     "random-string": "^0.2.0",
     "reflect-metadata": "^0.1.13"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.ts$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "src/**/*.ts"
-    ],
-    "testEnvironment": "node",
-    "testRegex": "/tests/.*Test.ts$",
-    "setupFilesAfterEnv": [
-      "./tests/bootstrap.ts"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ]
   }
 }

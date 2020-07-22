@@ -15,4 +15,8 @@ export class ContainerArg {
     getDependentServices(container: Container): Definition | Definition[] {
         throw new Error('Not implemented');
     }
+
+    static is(value: any): value is ContainerArg {
+        return value instanceof ContainerArg;
+    }
 }

@@ -1,49 +1,74 @@
-import {AnnotationPredicate, ServiceName, DefinitionPredicate} from './types';
+import {AnnotationPredicate, DefinitionPredicate} from './types';
 import {Container} from './Container';
 import {Definition} from './Definition';
-import * as is from 'predicates';
+import {TypeRef} from "./TypeRef";
+import {ServiceName as _ServiceName} from './types';
 
-export class Lookup {
-    constructor(private readonly type: 'name' | 'predicate' | 'annotationPredicate',
-                private readonly value: ServiceName | DefinitionPredicate | AnnotationPredicate) {
-        Object.freeze(this);
-    }
+export abstract class Lookup {
+    abstract find(container: Container): Definition | Definition[];
 
-    static byServiceName(name: ServiceName) {
-        return new Lookup('name', name);
-    }
+    abstract toString(): string;
+}
 
-    static byServicePredicate(predicate: DefinitionPredicate) {
-        return new Lookup('predicate', predicate);
-    }
+export namespace Lookup {
+    export class ByServiceName extends Lookup {
+        constructor(readonly name: _ServiceName) {
+            super();
+            Object.freeze(this);
+        }
 
-    static byAnnotation(predicate: AnnotationPredicate) {
-        return new Lookup('annotationPredicate', predicate);
-    }
+        find(container: Container): Definition | Definition[] {
+            const result = container.findByName(this.name);
+            return result ? result : [];
+        }
 
-    find(container: Container): Definition | Definition[] {
-        switch (this.type) {
-            case 'name':
-                return container.findByName(<ServiceName>this.value);
-
-            case 'predicate':
-                return container.findByPredicate(<DefinitionPredicate>this.value);
-
-            case 'annotationPredicate':
-                return container.findByAnnotation(<AnnotationPredicate>this.value);
+        toString() {
+            return 'by service name: ' + this.name.toString();
         }
     }
 
-    toString() {
-        switch (this.type) {
-            case 'name':
-                return 'by service name: ' + is.string(this.value) ? this.value : this.value.toString();
+    export class ByAnnotation extends Lookup {
+        constructor(readonly predicate: AnnotationPredicate) {
+            super();
+            Object.freeze(this);
+        }
 
-            case 'predicate':
-                return 'by service predicate';
+        find(container: Container) {
+            return container.findByAnnotation(this.predicate);
+        }
 
-            case 'annotationPredicate':
-                return 'by annotation predicate';
+        toString() {
+            return 'by annotation predicate';
+        }
+    }
+
+    export class ByPredicate extends Lookup {
+        constructor(readonly predicate: DefinitionPredicate) {
+            super();
+            Object.freeze(this);
+        }
+
+        find(container: Container) {
+            return container.findByPredicate(this.predicate);
+        }
+
+        toString() {
+            return 'by service predicate';
+        }
+    }
+
+    export class ByType extends Lookup {
+        constructor(readonly type: TypeRef) {
+            super();
+            Object.freeze(this);
+        }
+
+        find(container: Container) {
+            return container.findByPredicate(this.type.predicate);
+        }
+
+        toString() {
+            return 'by type: ' + this.type.toString();
         }
     }
 }

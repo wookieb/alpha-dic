@@ -6,6 +6,7 @@
     "outDir": "compiled",
     "noImplicitAny": true,
     "moduleResolution": "node",
+    "strictNullChecks": true,
     "rootDir": "src",
     "experimentalDecorators": true
   },

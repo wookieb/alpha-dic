@@ -3,10 +3,11 @@ import {
     ServiceFactory
 } from './types';
 import {Definition} from './Definition';
-import {isStringOrSymbol} from './helpers';
 import * as errors from './errors';
 import {assertNoCircularDependencies} from './assertNoCircularDependencies';
 import {ContainerArg} from './ContainerArg';
+import * as is from 'predicates';
+import {randomName} from "./randomName";
 
 function isThenable(result: any): result is Promise<any> {
     return result && 'then' in result;
@@ -42,7 +43,7 @@ export class Container {
      *
      * Returns created definition for further configuration
      */
-    definition(name: ServiceName) {
+    definition(name?: ServiceName) {
         const definition = new Definition(name);
         this.registerDefinition(definition);
         return definition;
@@ -51,25 +52,43 @@ export class Container {
     /**
      * Creates and registers service definition with given name, function as constructor
      */
-    definitionWithConstructor(name: ServiceName, clazz: Function) {
-        return this.definition(name)
-            .useConstructor(clazz);
+    definitionWithConstructor(name: ServiceName, clazz: Function): Definition;
+    definitionWithConstructor(clazz: Function): Definition;
+    definitionWithConstructor(nameOrClazz: ServiceName | Function, clazz?: Function) {
+        const finalClazz: Function = is.func(nameOrClazz) ? nameOrClazz : clazz!;
+        return this.definition(ServiceName.is(nameOrClazz) ? nameOrClazz : randomName(finalClazz.name))
+            .useConstructor(finalClazz);
     }
 
     /**
      * Creates and registers service definition with given name, function as factory
      */
-    definitionWithFactory(name: ServiceName, factory: ServiceFactory) {
-        return this.definition(name)
+    definitionWithFactory(name: ServiceName, factory: ServiceFactory, type?: Function): Definition;
+    definitionWithFactory(factory: ServiceFactory, type?: Function): Definition;
+    definitionWithFactory(nameOrFactory: ServiceName | ServiceFactory, factoryOrType: ServiceFactory | Function, type?: Function): Definition {
+        const name = ServiceName.is(nameOrFactory) ? nameOrFactory : undefined;
+        const factory = is.func(nameOrFactory) ? nameOrFactory as ServiceFactory : factoryOrType as ServiceFactory;
+        const finalType = is.func(nameOrFactory) ? factoryOrType : type;
+
+        const def = this.definition(name)
             .useFactory(factory);
+        if (finalType) {
+            def.markType(finalType);
+        }
+        return def;
     }
 
     /**
      * Creates and registers service definition with given name and value as a service
      */
-    definitionWithValue(name: ServiceName, value: any) {
+    definitionWithValue(name: ServiceName, value: any): Definition;
+    definitionWithValue(value: any): Definition;
+    definitionWithValue(nameOrValue: ServiceName | any, value?: any): Definition {
+        const isNameProvided = value !== undefined && ServiceName.is(nameOrValue);
+        const finalValue = isNameProvided ? value : nameOrValue;
+        const name = isNameProvided ? nameOrValue : randomName(Object.getPrototypeOf(finalValue).constructor.name);
         return this.definition(name)
-            .useValue(value);
+            .useValue(finalValue);
     }
 
     /**
@@ -137,11 +156,11 @@ export class Container {
      * Returns service for given name or definition
      */
     get<T = any>(nameOrDefinition: ServiceName | Definition): Promise<T> {
-        let definition: Definition;
+        let definition: Definition | undefined;
 
-        if (isStringOrSymbol(nameOrDefinition)) {
+        if (ServiceName.is(nameOrDefinition)) {
             definition = this.findByName(nameOrDefinition);
-            if (!definition) {
+            if (definition === undefined) {
                 return Promise.reject(errors.SERVICE_NOT_FOUND(`Service "${nameOrDefinition.toString()}" does not exist`));
             }
         } else {
@@ -149,7 +168,7 @@ export class Container {
         }
 
         if (this.services.has(definition)) {
-            return this.services.get(definition);
+            return this.services.get(definition)!;
         }
 
         if (!this.definitions.has(definition.name) && this.parent) {
@@ -200,7 +219,7 @@ export class Container {
     /**
      * Returns all services that definition satisfies predicate
      */
-    getByPredicate(predicate: DefinitionPredicate): Promise<any[]> {
+    getByPredicate<T = any>(predicate: DefinitionPredicate): Promise<T[]> {
         return Promise.all(
             this.findByPredicate(predicate)
                 .map(d => this.get(d))

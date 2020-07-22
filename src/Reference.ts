@@ -4,26 +4,33 @@ import {Definition} from './Definition';
 import * as errors from './errors';
 import {Lookup} from './Lookup';
 import {ContainerArg} from './ContainerArg';
+import {TypeRef} from "./TypeRef";
 
 export class Reference extends ContainerArg {
     static one = {
         name(name: ServiceName) {
-            return new Reference('one', Lookup.byServiceName(name));
+            return new Reference('one', new Lookup.ByServiceName(name));
         },
         predicate(predicate: DefinitionPredicate) {
-            return new Reference('one', Lookup.byServicePredicate(predicate));
+            return new Reference('one', new Lookup.ByPredicate(predicate));
         },
         annotation(predicate: AnnotationPredicate) {
-            return new Reference('one', Lookup.byAnnotation(predicate));
+            return new Reference('one', new Lookup.ByAnnotation(predicate));
+        },
+        type(type: TypeRef) {
+            return new Reference('one', new Lookup.ByType(type));
         }
     };
 
     static multi = {
         predicate(predicate: DefinitionPredicate) {
-            return new Reference('multi', Lookup.byServicePredicate(predicate));
+            return new Reference('multi', new Lookup.ByPredicate(predicate));
         },
         annotation(predicate: AnnotationPredicate) {
-            return new Reference('multi', Lookup.byAnnotation(predicate));
+            return new Reference('multi', new Lookup.ByAnnotation(predicate));
+        },
+        type(type: TypeRef) {
+            return new Reference('multi', new Lookup.ByType(type));
         }
     };
 
@@ -57,7 +64,6 @@ export class Reference extends ContainerArg {
 
     private findOne(container: Container): Definition {
         const definitions = this.lookup.find(container);
-
         if (Array.isArray(definitions)) {
             if (definitions.length === 0) {
                 throw errors.NO_MATCHING_SERVICE('No matching service for following lookup: ' + this.lookup);
@@ -69,9 +75,6 @@ export class Reference extends ContainerArg {
             }
             return definitions[0];
         } else {
-            if (definitions === undefined) {
-                throw errors.NO_MATCHING_SERVICE('No matching service for following lookup: ' + this.lookup);
-            }
             return definitions;
         }
     }

@@ -8,6 +8,7 @@ import {Reference} from "../src/Reference";
 import * as errors from "../src/errors";
 import {assertThrowsErrorWithCode} from "./common";
 import {Middleware} from "../src";
+import {TypeRef} from "../src/TypeRef";
 
 describe('Container', () => {
     let container: Container;
@@ -70,6 +71,24 @@ describe('Container', () => {
             assert.deepEqual(definition.factory(1, 2), new Test(1, 2));
         });
 
+        it('(as constructor) with registration without name', () => {
+            class Test {
+                public readonly args: any[];
+
+                constructor(...args: any[]) {
+                    this.args = args;
+                }
+            }
+
+            const definition = container.definitionWithConstructor(Test);
+            expect(definition.name)
+                .toMatch(/^Test.*/);
+
+
+            expect(definition.factory(1, 2))
+                .toEqual(new Test(1, 2));
+        });
+
         it('creating (as factory) with registration', () => {
             const factoryResult = {foo: 'bar'};
             const factory = sinon.stub()
@@ -81,11 +100,68 @@ describe('Container', () => {
             sinon.assert.calledWithExactly(factory, 1, 2, 3);
         });
 
-        it('creating (as value) with registration', () => {
+        it('creating (as factory) with registration without name', () => {
+            class Foo {}
+
+            const factoryResult = new Foo;
+            const factory = sinon.stub()
+                .returns(factoryResult);
+
+            const definition = container.definitionWithFactory(factory, Foo);
+            assert.strictEqual(container.findByName(definition.name), definition);
+
+            expect(definition.type)
+                .toEqual(TypeRef.createFromType(Foo));
+
+            assert.deepEqual(definition.factory(1, 2, 3), factoryResult);
+            sinon.assert.calledWithExactly(factory, 1, 2, 3);
+        });
+
+        it('creating (as value) with registration with global type', () => {
             const val = {foo: 'bar'};
             const definition = container.definitionWithValue(NAME, val);
-            assert.strictEqual(container.findByName(NAME), definition);
-            assert.strictEqual(definition.factory(), val);
+            expect(container.findByName(NAME))
+                .toStrictEqual(definition);
+
+            expect(definition.factory())
+                .toStrictEqual(val);
+
+            expect(definition.type)
+                .toBeUndefined();
+        });
+
+        it('creating (as value) with registration with class type', () => {
+            class Foo {}
+
+            const val = new Foo;
+
+            const definition = container.definitionWithValue(NAME, val);
+            expect(container.findByName(NAME))
+                .toStrictEqual(definition);
+
+            expect(definition.factory())
+                .toStrictEqual(val);
+
+            expect(definition.type)
+                .toEqual(TypeRef.createFromType(Foo));
+        });
+
+        it('creating (as value) without name', () => {
+            class Foo {}
+
+            const val = new Foo;
+            const definition = container.definitionWithValue(val);
+            expect(container.findByName(definition.name))
+                .toStrictEqual(definition);
+
+            expect(definition.name)
+                .toMatch(/^Foo.*/);
+
+            expect(definition.factory())
+                .toStrictEqual(val);
+
+            expect(definition.type)
+                .toEqual(TypeRef.createFromType(Foo));
         });
     });
 

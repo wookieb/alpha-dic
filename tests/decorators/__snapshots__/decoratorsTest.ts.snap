@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`decorators Inject accepts only string or object of ContainerArg class 1`] = `"@Inject argument must be a string that represents service name, symbol, function or instance of ContainerArg or TypeRef"`;

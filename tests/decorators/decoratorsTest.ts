@@ -64,14 +64,15 @@ describe('decorators', () => {
     });
 
     it('Inject accepts only string or object of ContainerArg class', () => {
-        assert.throws(() => {
+        expect(() => {
             @Service()
             class Foo {
                 constructor(@Inject([] as any) arg1: any) {
 
                 }
             }
-        }, /@Inject argument must be a string that represents service name or an object of ContainerArg instance/);
+        })
+            .toThrowErrorMatchingSnapshot();
     });
 
     it('service with injected args and properties', () => {

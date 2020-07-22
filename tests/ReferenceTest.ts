@@ -2,29 +2,43 @@ import {assert} from 'chai';
 import {Container} from "../src/Container";
 import {Reference} from "../src/Reference";
 import {Definition} from "../src/Definition";
+import {TypeRef} from "../src/TypeRef";
 
 describe('Reference', () => {
     let container: Container;
 
     const serviceA = {service: 'A'};
     const serviceB = {service: 'B'};
+    const serviceD = {service: 'D'};
 
     const ANNOTATION_NAME = 'annotationName';
     const ANNOTATION = {name: 'ExtraAnnotation'};
     const AMBIGUOUS_ANNOTATION = {name: 'ambiguous'};
+
+    class A {}
+
+    class B {}
+
+    class D extends B {}
 
     beforeEach(() => {
         container = new Container();
 
         container.definition('A')
             .useValue(serviceA)
+            .markType(A)
             .annotate({name: ANNOTATION_NAME})
             .annotate(AMBIGUOUS_ANNOTATION);
 
         container.definition('B')
             .useValue(serviceB)
+            .markType(B)
             .annotate(ANNOTATION)
             .annotate(AMBIGUOUS_ANNOTATION);
+
+        container.definition('D')
+            .useValue(serviceD)
+            .markType(D);
     });
 
     describe('one', () => {
@@ -59,7 +73,7 @@ describe('Reference', () => {
             const ref = Reference.one.predicate(() => true);
             assert.throws(() => {
                 ref.getDependentServices(container);
-            }, /Multiple services found \(A, B\)/)
+            }, /Multiple services found \(A, B, D\)/)
         });
 
         it('by annotation', async () => {
@@ -81,6 +95,21 @@ describe('Reference', () => {
                 ref.getDependentServices(container);
             }, /Multiple services found \(A, B\)/)
         });
+
+        it('by type', () => {
+            const ref = Reference.one.type(TypeRef.createFromType(A))
+
+            expect(ref.getDependentServices(container))
+                .toEqual(container.findByName('A'));
+        });
+
+        it('by type - ambiguous error', () => {
+            const ref = Reference.one.type(TypeRef.createFromType(B))
+            expect(() => {
+                ref.getDependentServices(container)
+            })
+                .toThrowErrorMatchingSnapshot();
+        })
     });
 
     describe('multi', () => {
@@ -123,6 +152,16 @@ describe('Reference', () => {
 
             assert.sameMembers(<Definition[]>ref.getDependentServices(container), []);
             assert.sameMembers(await ref.getArgument(container), []);
+        });
+
+        it('by type', () => {
+            const ref = Reference.multi.type(TypeRef.createFromType(B))
+
+            expect(ref.getDependentServices(container))
+                .toEqual([
+                    container.findByName('B'),
+                    container.findByName('D')
+                ]);
         });
     });
 });

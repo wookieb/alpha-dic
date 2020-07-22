@@ -16,6 +16,7 @@ export * from './configFunc';
 export * from './Lookup';
 export * from './middlewares/activation';
 export * from './middlewares/config';
+export * from './createAnnotationFactory';
 export * from './middlewares/deprecated';
 export {Service, getDefinitionForClass} from './decorators/Service';
 export {Annotation} from './decorators/Annotation';
@@ -23,6 +24,7 @@ export {Inject} from './decorators/Inject';
 export {Config} from './decorators/Config';
 export {Deprecated} from './decorators/Deprecated';
 export {OnActivation} from './decorators/OnActivation';
+export {AutowiredService} from './decorators/AutowiredService';
 export {preloadServiceModules} from './preloadServiceModules';
 export {createNamespace, namespaceEntry} from './createNamespace';
 
@@ -31,7 +33,6 @@ export {errors};
 export function create(parent?: Container) {
     return new Container(parent);
 }
-
 
 export interface StandardContainerOptions {
     /**

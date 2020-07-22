@@ -10,7 +10,6 @@ import {config} from "../src/configFunc";
 import {reference} from "../src/referenceFunc";
 
 describe('integration', () => {
-
     const CONFIG = {
         database: 'mongo://localhost/test',
         redis: {

@@ -1,12 +1,14 @@
 import {ServiceFactory, ServiceName} from './types';
 import * as factories from './serviceFactories';
 import {randomName} from "./randomName";
+import {TypeRef} from "./TypeRef";
 
 export interface DefinitionData {
     name: ServiceName;
     annotations: any[];
     factory: ServiceFactory;
     args: any[]
+    type?: TypeRef;
 }
 
 export class Definition implements DefinitionData {
@@ -14,8 +16,9 @@ export class Definition implements DefinitionData {
     public annotations: any[] = [];
     public factory: ServiceFactory;
     public name: ServiceName;
+    public type?: TypeRef;
 
-    constructor(name: ServiceName | undefined) {
+    constructor(name?: ServiceName) {
         if (name) {
             this.name = name;
         } else {
@@ -28,6 +31,7 @@ export class Definition implements DefinitionData {
      */
     useConstructor(constructor: Function): this {
         this.factory = factories.fromConstructor(constructor);
+        this.type = TypeRef.createFromType(constructor);
         return this;
     }
 
@@ -44,8 +48,17 @@ export class Definition implements DefinitionData {
      *
      * The factory value is called in context of AlphaDIC.
      */
-    useFactory(factory: (...args: any[]) => any | Promise<any>) {
+    useFactory(factory: (...args: any[]) => any | Promise<any>, type?: Function) {
         this.factory = factories.fromFactory(factory);
+        this.type = type && TypeRef.createFromType(type);
+        return this;
+    }
+
+    /**
+     * Sets information about type of final service
+     */
+    markType(type: TypeRef | Function): this {
+        this.type = TypeRef.is(type) ? type : TypeRef.createFromType(type);
         return this;
     }
 
@@ -54,6 +67,7 @@ export class Definition implements DefinitionData {
      */
     useValue(value: any) {
         this.factory = factories.fromValue(value);
+        this.type = TypeRef.createFromValue(value);
         return this;
     }
 
@@ -76,7 +90,7 @@ export class Definition implements DefinitionData {
         return this;
     }
 
-    static create(name: ServiceName) {
+    static create(name?: ServiceName) {
         return new Definition(name);
     }
 
