@@ -8,10 +8,14 @@ import {assertNoCircularDependencies} from './assertNoCircularDependencies';
 import {ContainerArg} from './ContainerArg';
 import * as is from 'predicates';
 import {randomName} from "./randomName";
+import {debug} from './debug';
 
 function isThenable(result: any): result is Promise<any> {
     return result && 'then' in result;
 }
+
+const debugCreation = debug('creation');
+const debugDefinition = debug('definition');
 
 export class Container {
     private definitions: Map<string | Symbol, Definition> = new Map();
@@ -34,6 +38,7 @@ export class Container {
         if (this.definitions.has(definition.name)) {
             throw errors.ALREADY_DEFINED(`Service "${definition.name.toString()}" already defined`);
         }
+        debugDefinition(`Service ${definition.name.toString()} defined`);
         this.definitions.set(definition.name, definition);
         return this;
     }
@@ -198,6 +203,8 @@ export class Container {
         // valid definition, time to lock it
         definition.lock();
 
+        const debugMsg = `Creating service ${definition.name.toString()}`;
+        debugCreation(`${debugMsg} - started`);
         let currentMiddleware = 0;
         const middlewares = this.getMiddlewares();
         const next = (definition: Definition) => {
@@ -213,7 +220,15 @@ export class Container {
             }
         };
         const result = next.call(this, definition);
-        return isThenable(result) ? result : Promise.resolve(result);
+        if (isThenable(result)) {
+            return result.then(x => {
+                debugCreation(`${debugMsg} - finished`);
+                return x;
+            })
+        } else {
+            debugCreation(`${debugMsg} - finished`);
+            return Promise.resolve(result);
+        }
     }
 
     /**

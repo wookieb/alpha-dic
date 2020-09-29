@@ -1,3 +1,6 @@
+# 2.0.2
+* Added debug messages via `debug` package
+
 # 2.0.1
 * Added missing implementation of `reference.type`
 
