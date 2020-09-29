@@ -1,7 +1,7 @@
 import {ServiceFactory, ServiceName} from './types';
 import * as factories from './serviceFactories';
-import {randomName} from "./randomName";
-import {TypeRef} from "./TypeRef";
+import {randomName} from './randomName';
+import {TypeRef} from './TypeRef';
 
 export interface DefinitionData {
     name: ServiceName;

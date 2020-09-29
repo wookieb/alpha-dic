@@ -1,7 +1,7 @@
 import {AnnotationPredicate, DefinitionPredicate} from './types';
 import {Container} from './Container';
 import {Definition} from './Definition';
-import {TypeRef} from "./TypeRef";
+import {TypeRef} from './TypeRef';
 import {ServiceName as _ServiceName} from './types';
 
 export abstract class Lookup {

@@ -4,7 +4,7 @@ import {Definition} from './Definition';
 import * as errors from './errors';
 import {Lookup} from './Lookup';
 import {ContainerArg} from './ContainerArg';
-import {TypeRef} from "./TypeRef";
+import {TypeRef} from './TypeRef';
 
 export class Reference extends ContainerArg {
     static one = {

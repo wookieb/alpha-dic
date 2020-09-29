@@ -1,5 +1,5 @@
 import * as isPred from 'predicates';
-import {DefinitionPredicate} from "./types";
+import {DefinitionPredicate} from './types';
 
 
 const reservedConstructors = new Set<Function>(
@@ -28,7 +28,7 @@ export class TypeRef {
     }
 
     get predicate(): DefinitionPredicate {
-        return x => x.type !== undefined && this.matches(x.type)
+        return x => x.type !== undefined && this.matches(x.type);
     }
 
     static isAllowedTarget(target: Function) {

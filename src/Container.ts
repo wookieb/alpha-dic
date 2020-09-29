@@ -7,7 +7,7 @@ import * as errors from './errors';
 import {assertNoCircularDependencies} from './assertNoCircularDependencies';
 import {ContainerArg} from './ContainerArg';
 import * as is from 'predicates';
-import {randomName} from "./randomName";
+import {randomName} from './randomName';
 import {debug} from './debug';
 
 function isThenable(result: any): result is Promise<any> {
@@ -16,6 +16,7 @@ function isThenable(result: any): result is Promise<any> {
 
 const debugCreation = debug('creation');
 const debugDefinition = debug('definition');
+const debugSlowCreation = debug('slow-creation');
 
 export class Container {
     private definitions: Map<string | Symbol, Definition> = new Map();
@@ -23,6 +24,11 @@ export class Container {
     private middlewares: Middleware[] = [];
 
     public readonly parent: Container;
+
+    /**
+     * Time needed to trigger debug slow creation log
+     */
+    public slowLogThreshold: number = 10000;
 
     constructor(parent?: Container) {
         Object.defineProperty(this, 'parent', {
@@ -203,6 +209,13 @@ export class Container {
         // valid definition, time to lock it
         definition.lock();
 
+        let timeout: any;
+        if (this.slowLogThreshold > 0) {
+            timeout = setTimeout(() => {
+                debugSlowCreation(`Service ${definition.name.toString()} takes a long time to create. Over ${this.slowLogThreshold} ms`);
+            }, this.slowLogThreshold);
+        }
+
         const debugMsg = `Creating service ${definition.name.toString()}`;
         debugCreation(`${debugMsg} - started`);
         let currentMiddleware = 0;
@@ -222,10 +235,16 @@ export class Container {
         const result = next.call(this, definition);
         if (isThenable(result)) {
             return result.then(x => {
+                if (timeout) {
+                    clearTimeout(timeout);
+                }
                 debugCreation(`${debugMsg} - finished`);
                 return x;
-            })
+            });
         } else {
+            if (timeout) {
+                clearTimeout(timeout);
+            }
             debugCreation(`${debugMsg} - finished`);
             return Promise.resolve(result);
         }

@@ -1,5 +1,5 @@
 import * as is from 'predicates';
-import {Annotation} from "./decorators/Annotation";
+import {Annotation} from './decorators/Annotation';
 
 export function createAnnotationFactory<T extends (...args: any[]) => any>(
     annotationName: string,
@@ -20,8 +20,8 @@ export function createAnnotationFactory<T extends (...args: any[]) => any>(
     factory.decorator = (...args: any[]) => {
         return (clazz: Function) => {
             Annotation(factory(...args))(clazz);
-        }
-    }
+        };
+    };
     return factory;
 }
 

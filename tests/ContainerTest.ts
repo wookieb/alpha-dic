@@ -9,6 +9,7 @@ import * as errors from "../src/errors";
 import {assertThrowsErrorWithCode} from "./common";
 import {Middleware} from "../src";
 import {TypeRef} from "../src/TypeRef";
+import {debug} from 'debug';
 
 describe('Container', () => {
     let container: Container;
@@ -519,6 +520,72 @@ describe('Container', () => {
 
                 sinon.assert.calledOnce(factory);
             });
+        });
+    });
+
+    describe('slow log', () => {
+        let logs: string[] = [];
+        let container: Container;
+
+        beforeEach(() => {
+            logs = [];
+            container = new Container();
+            debug.enable('alpha-dic:slow-creation');
+            sinon.stub(debug, 'log')
+                .callsFake(message => logs.push(message));
+        })
+
+        afterEach(() => {
+            logs = [];
+            debug.disable();
+            (debug.log as sinon.SinonStub).restore();
+        });
+
+        it('success', async () => {
+            container.slowLogThreshold = 100;
+            const d = container.definitionWithFactory(() => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(undefined)
+                    }, 150);
+                })
+            });
+
+            await container.get(d);
+            expect(logs[0])
+                .toEqual(expect.stringMatching(/long time to create/));
+        });
+
+        it('disabling', async () => {
+            container.slowLogThreshold = 0;
+
+            const d = container.definitionWithFactory(() => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(undefined)
+                    }, 150);
+                })
+            });
+
+            await container.get(d);
+            expect(logs)
+                .toHaveLength(0);
+        });
+
+        it('custom threshold', async () => {
+            container.slowLogThreshold = 500;
+
+            const d = container.definitionWithFactory(() => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(undefined)
+                    }, 550);
+                })
+            });
+
+            await container.get(d);
+            expect(logs[0])
+                .toEqual(expect.stringMatching(/long time to create/));
         });
     });
 });
