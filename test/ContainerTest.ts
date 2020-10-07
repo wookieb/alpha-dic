@@ -716,6 +716,7 @@ describe('Container', () => {
             });
 
             it('passes annotation that satisfies predicate', () => {
+                //tslint:disable-next-line: strict-comparisons
                 const predicate = (x: any) => x === annotation;
 
                 const def = container.alias(definition, {

@@ -58,6 +58,7 @@ export class Definition implements DefinitionData {
     }
 
     setOwner(container: Container): this {
+        //tslint:disable-next-line: strict-comparisons
         if (this.owner && this.owner !== container) {
             throw errors.OWNER_CANNOT_BE_CHANGED();
         }
