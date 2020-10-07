@@ -6,6 +6,8 @@
 * Upgrade to typescript 3.9
 * Package is now exported as es2018
 * Added `andPredicate` for annotation factory
+* Added `owner` property to all definitions once they get registered in container #11
+* Added ability to alias definitions between and within the same container #15
 
 # 2.0.3
 * Added "slow log" debug message for services that takes longer than 10s to create.
