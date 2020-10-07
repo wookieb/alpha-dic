@@ -9,6 +9,7 @@ import {assertThrowsErrorWithCode} from "./common";
 import {Middleware, onMiddlewareAttach} from "@src/types";
 import {TypeRef} from "@src/TypeRef";
 import debug = require('debug');
+import {create} from "@src/index";
 
 describe('Container', () => {
     let container: Container;
@@ -651,6 +652,107 @@ describe('Container', () => {
             await container.get(d);
             expect(logs[0])
                 .toEqual(expect.stringMatching(/long time to create/));
+        });
+    });
+
+    describe('aliasing', () => {
+        let container: Container;
+        let container2: Container;
+        let definition: Definition;
+
+        const annotation = {ann: 1};
+        const annotation2 = {ann: 2};
+        beforeEach(() => {
+            container = create();
+            container2 = create();
+
+            definition = container2.definitionWithValue({service: 1})
+                .annotate(annotation, annotation2);
+        });
+
+        describe('treating name', () => {
+            it('uses the same', () => {
+                const def = container.alias(definition);
+                expect(def.name)
+                    .toEqual(definition.name);
+            });
+
+            it('allows to change', () => {
+                const name = 'newName';
+                const def = container.alias(definition, {name});
+
+                expect(def.name)
+                    .toEqual(name);
+
+                expect(container.findByName(name))
+                    .toStrictEqual(def);
+            })
+        })
+
+        describe('annotations', () => {
+            it('passes no annotations by default', () => {
+                const def = container.alias(definition);
+
+                expect(def.annotations)
+                    .toHaveLength(0);
+            });
+
+            it('passes all annotations if flag set to true', () => {
+                const def = container.alias(definition, {
+                    withAnnotations: true
+                });
+
+                expect(def.annotations)
+                    .toEqual(definition.annotations);
+            });
+
+            it('passes no annotations if flag set to false', () => {
+                const def = container.alias(definition, {
+                    withAnnotations: false
+                });
+
+                expect(def.annotations)
+                    .toHaveLength(0);
+            });
+
+            it('passes annotation that satisfies predicate', () => {
+                const predicate = (x: any) => x === annotation;
+
+                const def = container.alias(definition, {
+                    withAnnotations: predicate
+                });
+
+                expect(def.annotations)
+                    .toEqual([annotation]);
+            });
+        });
+
+        describe('creating', () => {
+            it('success', async () => {
+                const def = container.alias(definition);
+
+                const service = {service: 'test'};
+                const stub = sinon.stub()
+                    .returns(service);
+                definition.useFactory(stub);
+
+                await expect(container.get(def))
+                    .resolves
+                    .toStrictEqual(service);
+
+                sinon.assert.calledOnce(stub);
+            });
+
+            it('fails if aliased definition has no container', () => {
+                definition = Definition.create()
+                    .useValue('test');
+
+                const def = container.alias(definition)
+
+                return expect(container.get(def))
+                    .rejects
+                    .toThrowError('lack of assigned container');
+            });
         });
     });
 });

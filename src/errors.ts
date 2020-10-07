@@ -18,3 +18,4 @@ export const AUTOWIRING_FAILED = domain.create('Inferred type for %s is an inter
 export const AUTOWIRING_NO_METADATA = domain.create('Metadata are missing. Make sure you have compiled typescript project with "emitDecoratorMetadata" option enabled', '12');
 export const CONFIG_PROVIDER_NOT_ATTACHED = domain.create('Config provider not attached to container. You need to use config middleware first.');
 export const OWNER_CANNOT_BE_CHANGED = domain.create('Owner of definition cannot be changed. Make sure you are not using same definition in multiple containers');
+export const DEFINITION_WITHOUT_CONTAINER = domain.create('Cannot create service due to lack of assigned container');
