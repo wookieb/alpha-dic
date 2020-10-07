@@ -3,7 +3,7 @@ import {ServiceName} from "../types";
 import {ensureMetadata} from "../serviceMetadata";
 import * as is from "predicates";
 import {TypeRef} from "../TypeRef";
-import {errors, Reference} from "../index";
+import {errors, ReferenceArg} from "../index";
 import {format} from "util";
 
 export function AutowiredService(name?: ServiceName): ClassDecorator {
@@ -22,7 +22,7 @@ export function AutowiredService(name?: ServiceName): ClassDecorator {
                         format(errors.AUTOWIRING_FAILED.defaultMessage, `constructor (of ${clazz.name}) argument nr: ${index}`)
                     );
                 }
-                metadata.constructorArguments[index] = Reference.one.type(ref);
+                metadata.constructorArguments[index] = ReferenceArg.one.type(ref);
             }
         } else if (clazz.length > 0) {
             throw errors.AUTOWIRING_NO_METADATA();

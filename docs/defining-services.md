@@ -71,7 +71,7 @@ The most common way to get other service is referencing by name. However _alpha-
 reference('service.name') // resolves to a service for given name
 // same as
 @Inject('service.name')
-@Inject(Reference.one.name('service.name'));
+@Inject(ReferenceArg.one.name('service.name'));
 
 
 // resolves to a service that definition satisfies given predicate
@@ -79,7 +79,7 @@ reference('service.name') // resolves to a service for given name
 // find a service with more than 10 annotations
 reference.predicate(definition => definition.annotations.length > 10); 
 // same as
-@Inject(Reference.one.predicate(definition => definition.annotations.length > 10));
+@Inject(ReferenceArg.one.predicate(definition => definition.annotations.length > 10));
 
 
 // resolves to a service that definition contains an annotation that satisfies given predicate
@@ -87,14 +87,14 @@ reference.predicate(definition => definition.annotations.length > 10);
 // find a service with annotation that contains name "repository"
 reference.annotation(annotation => annotation && annotation.name === 'repository');
 // same as
-@Inject(Reference.one.predicate(annotation => annotation && annotation.name === 'repository'));
+@Inject(ReferenceArg.one.predicate(annotation => annotation && annotation.name === 'repository'));
 
 
 // resolves to a collection of services that definition satisfies given predicate
 // find all services with "repository." prefix
 reference.multi.predicate(definition => definition.name.startsWith('repository.'));
 // same as
-@Inject(Reference.multi.predicate(definition => definition.name.startsWith('repository.')));
+@Inject(ReferenceArg.multi.predicate(definition => definition.name.startsWith('repository.')));
 
 // resolves to a collection of services that definition contains an annotation that satisfies given predicate
 reference.multi.annotation(annotation => annotation && annotation.name === 'repository')

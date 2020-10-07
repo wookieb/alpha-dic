@@ -1,0 +1,19 @@
+{
+  "extends": "@pallad/scripts/tsconfig-node.dist.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": "../src",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@src/*": [
+        "*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "@src"
+    }
+  ]
+}

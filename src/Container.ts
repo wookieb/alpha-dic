@@ -1,29 +1,25 @@
 import {
     AnnotationPredicate, ServiceName, DefinitionPredicate, Middleware,
-    ServiceFactory
+    ServiceFactory, onMiddlewareAttach
 } from './types';
 import {Definition} from './Definition';
 import * as errors from './errors';
 import {assertNoCircularDependencies} from './assertNoCircularDependencies';
-import {ContainerArg} from './ContainerArg';
+import {ContainerArg} from './args/ContainerArg';
 import * as is from 'predicates';
 import {randomName} from './randomName';
-import {debug} from './debug';
+import {debugFn} from './debugFn';
 
-function isThenable(result: any): result is Promise<any> {
-    return result && 'then' in result;
-}
-
-const debugCreation = debug('creation');
-const debugDefinition = debug('definition');
-const debugSlowCreation = debug('slow-creation');
+const debugCreation = debugFn('creation');
+const debugDefinition = debugFn('definition');
+const debugSlowCreation = debugFn('slow-creation');
 
 export class Container {
     private definitions: Map<string | Symbol, Definition> = new Map();
     private services: Map<Definition, Promise<any>> = new Map();
     private middlewares: Middleware[] = [];
 
-    public readonly parent: Container;
+    public readonly parent?: Container;
 
     /**
      * Time needed to trigger debug slow creation log
@@ -63,10 +59,10 @@ export class Container {
     /**
      * Creates and registers service definition with given name, function as constructor
      */
-    definitionWithConstructor(name: ServiceName, clazz: Function): Definition;
-    definitionWithConstructor(clazz: Function): Definition;
-    definitionWithConstructor(nameOrClazz: ServiceName | Function, clazz?: Function) {
-        const finalClazz: Function = is.func(nameOrClazz) ? nameOrClazz : clazz!;
+    definitionWithConstructor(name: ServiceName, clazz: { new(...args: any[]): any }): Definition;
+    definitionWithConstructor(clazz: { new(...args: any[]): any }): Definition;
+    definitionWithConstructor(nameOrClazz: ServiceName | { new(...args: any[]): any }, clazz?: { new(...args: any[]): any }) {
+        const finalClazz = is.func(nameOrClazz) ? nameOrClazz : clazz!;
         return this.definition(ServiceName.is(nameOrClazz) ? nameOrClazz : randomName(finalClazz.name))
             .useConstructor(finalClazz);
     }
@@ -130,8 +126,8 @@ export class Container {
      */
     findByAnnotation(predicate: AnnotationPredicate): Definition[];
     findByAnnotation(predicate: AnnotationPredicate, withAnnotation: false): Definition[];
-    findByAnnotation(predicate: AnnotationPredicate, withAnnotation: true): [Definition, any][];
-    findByAnnotation(predicate: AnnotationPredicate, withAnnotation: boolean = false): Definition[] | [Definition, any][] {
+    findByAnnotation(predicate: AnnotationPredicate, withAnnotation: true): Array<[Definition, any]>;
+    findByAnnotation(predicate: AnnotationPredicate, withAnnotation: boolean = false): Definition[] | Array<[Definition, any]> {
         let annotations: any[] = [];
         const definitions = this.findByPredicate(s => {
             const annotation = s.annotations.find(predicate);
@@ -155,6 +151,11 @@ export class Container {
      * Registers given middleware
      */
     addMiddleware(...middlewares: Middleware[]): Container {
+        for (const middleware of middlewares) {
+            if (middleware[onMiddlewareAttach]) {
+                middleware[onMiddlewareAttach]!(this);
+            }
+        }
         this.middlewares.push(...middlewares);
         return this;
     }
@@ -191,7 +192,7 @@ export class Container {
         return promise;
     }
 
-    private create(definition: Definition) {
+    private async create(definition: Definition) {
         if (!definition.factory) {
             return Promise.reject(
                 errors.INCOMPLETE_DEFINITION(
@@ -200,11 +201,7 @@ export class Container {
             );
         }
 
-        try {
-            assertNoCircularDependencies(this, definition);
-        } catch (e) {
-            return Promise.reject(e);
-        }
+        assertNoCircularDependencies(this, definition);
 
         // valid definition, time to lock it
         definition.lock();
@@ -227,26 +224,20 @@ export class Container {
                 return middleware.call(this, definition, next);
             } else {
                 return Promise.all(
-                    definition.args.map(a => a instanceof ContainerArg ? a.getArgument(this) : a)
+                    definition.args.map(a => ContainerArg.is(a) ? a.getArgument(this) : a)
                 )
                     .then((args: any[]) => definition.factory.apply(this, args));
             }
         };
-        const result = next.call(this, definition);
-        if (isThenable(result)) {
-            return result.then(x => {
-                if (timeout) {
-                    clearTimeout(timeout);
-                }
-                debugCreation(`${debugMsg} - finished`);
-                return x;
-            });
-        } else {
-            if (timeout) {
-                clearTimeout(timeout);
-            }
+
+        try {
+            const result = await next.call(this, definition);
+            timeout && clearTimeout(timeout);
             debugCreation(`${debugMsg} - finished`);
-            return Promise.resolve(result);
+            return result;
+        } catch (e) {
+            timeout && clearTimeout(timeout);
+            throw e;
         }
     }
 
@@ -265,8 +256,8 @@ export class Container {
      */
     getByAnnotation<T = any>(predicate: AnnotationPredicate): Promise<T[]>;
     getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: false): Promise<T[]>;
-    getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: true): Promise<[T, any][]>;
-    getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: boolean = false): Promise<T[] | [T, any][]> {
+    getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: true): Promise<Array<[T, any]>>;
+    getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: boolean = false): Promise<T[] | Array<[T, any]>> {
         return Promise.all(
             this.findByAnnotation(predicate, true)
                 .map(async ([definition, annotation]) => {

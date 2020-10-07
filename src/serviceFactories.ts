@@ -1,8 +1,8 @@
 import {ServiceFactory} from './types';
 
-export function fromConstructor(constructor: Function): ServiceFactory {
+export function fromConstructor(constructor: { new(...args: any[]): any }): ServiceFactory {
     return function createFromConstructor(...args: any[]) {
-        return new (Function.prototype.bind.apply(constructor, [null].concat(args)));
+        return new constructor(...args);
     };
 }
 

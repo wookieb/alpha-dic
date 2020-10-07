@@ -1,4 +1,4 @@
-import {ContainerArg} from './ContainerArg';
+import {ContainerArg} from './args/ContainerArg';
 import {Definition} from './Definition';
 import * as errors from './errors';
 import {fromConstructor} from './serviceFactories';
@@ -11,7 +11,7 @@ const KEY = Symbol('__alphaDic-ServiceMetadata');
 export interface ClassServiceMetadata {
     name?: ServiceName;
     clazz: Function,
-    constructorArguments: (ContainerArg | any)[]
+    constructorArguments: Array<ContainerArg | any>
     propertiesInjectors: Map<string | symbol, any>;
     annotations: any[];
 }
@@ -37,7 +37,7 @@ export function getMetadata(target: any) {
     return Reflect.getMetadata(KEY, target);
 }
 
-export function createDefinitionFromMetadata(metadata: ClassServiceMetadata, constructor: Function) {
+export function createDefinitionFromMetadata(metadata: ClassServiceMetadata, constructor: { new(...args: any[]): any }) {
     assertValidServiceDefinition(constructor, metadata);
     const definition = new Definition(metadata.name);
     const args = metadata.constructorArguments.concat(Array.from(metadata.propertiesInjectors.values()));

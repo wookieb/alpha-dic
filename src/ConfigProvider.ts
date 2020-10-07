@@ -1,9 +1,9 @@
 import * as objectPath from 'object-path';
 import * as errors from './errors';
-import {ConfigRequest} from './ConfigRequest';
+import {ConfigRequestArg} from './args/ConfigRequestArg';
 
 export function configProviderForObject(config: object): ConfigProvider {
-    return (request: ConfigRequest) => {
+    return (request: ConfigRequestArg<any>) => {
         const result = objectPath.get(config, request.path);
 
         if (result === undefined) {
@@ -24,4 +24,6 @@ export function configProviderForObject(config: object): ConfigProvider {
  *
  * If value is not defined returns default value from request
  */
-export type ConfigProvider = (request: ConfigRequest) => any;
+export interface ConfigProvider<T = any> {
+    (request: ConfigRequestArg<T>): T;
+}

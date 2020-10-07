@@ -1,3 +1,12 @@
+# 3.0.0
+* "slow log" does not report on failed service creation
+* Added `TransformArg`
+* Added `ResolveArg`
+* `ConfigRequest` now becomes `ConfigRequestArg`
+* Upgrade to typescript 3.9
+* Package is now exported as es2018
+* Added `andPredicate` for annotation factory
+
 # 2.0.3
 * Added "slow log" debug message for services that takes longer than 10s to create.
 

@@ -14,7 +14,7 @@ export interface DefinitionData {
 export class Definition implements DefinitionData {
     public args: any[] = [];
     public annotations: any[] = [];
-    public factory: ServiceFactory;
+    public factory!: ServiceFactory;
     public name: ServiceName;
     public type?: TypeRef;
 
@@ -29,7 +29,7 @@ export class Definition implements DefinitionData {
     /**
      * Sets service constructor
      */
-    useConstructor(constructor: Function): this {
+    useConstructor(constructor: { new(...args: any[]): any }): this {
         this.factory = factories.fromConstructor(constructor);
         this.type = TypeRef.createFromType(constructor);
         return this;
@@ -38,7 +38,7 @@ export class Definition implements DefinitionData {
     /**
      * Alias for {@see useConstructor}
      */
-    useClass(clazz: Function) {
+    useClass(clazz: { new(...args: any[]): any }) {
         return this.useConstructor(clazz);
     }
 

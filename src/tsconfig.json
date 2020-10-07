@@ -1,0 +1,14 @@
+{
+  "extends": "@pallad/scripts/tsconfig-node.dist.json",
+  "compilerOptions": {
+    "target": "ES2018",
+    "rootDir": ".",
+    "outDir": "../compiled",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "composite": true
+  },
+  "include": [
+    "**/*"
+  ]
+}

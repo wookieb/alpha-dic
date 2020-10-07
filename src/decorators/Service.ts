@@ -9,14 +9,14 @@ import {randomName} from "../randomName";
 export interface ServiceType {
     (name?: ServiceName): ClassDecorator;
 
-    useContainer(container: Container): void;
+    useContainer(container?: Container): void;
 
     _container?: Container
 }
 
 const DEFINITION_KEY = Symbol('__alphaDic-ServiceDefinition');
-export const Service = <ServiceType>function (name?: ServiceName) {
-    return function (constructor: Function) {
+export const Service = function (name?: ServiceName) {
+    return function (constructor: {new(...args: any[]): any}) {
         const finalName = name || randomName(constructor.name);
 
         const metadata = ensureMetadata(constructor);
@@ -34,7 +34,7 @@ export const Service = <ServiceType>function (name?: ServiceName) {
                 'If you wish to register service definitions manually via getDefinitionForClass set ALPHA_DIC_NO_SERVICE_CONTAINER environment variable to disable this warning.')
         }
     }
-};
+} as ServiceType;
 
 Service.useContainer = function (container: Container) {
     Service._container = container;

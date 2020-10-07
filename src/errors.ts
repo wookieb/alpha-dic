@@ -16,3 +16,4 @@ export const MISSING_CONFIG_VALUE = domain.create('Missing config value', '9');
 export const ALREADY_DEFINED = domain.create('Service with given name already defined', '10');
 export const AUTOWIRING_FAILED = domain.create('Inferred type for %s is an interface, union type or built-in object that is not supported', '11');
 export const AUTOWIRING_NO_METADATA = domain.create('Metadata are missing. Make sure you have compiled typescript project with "emitDecoratorMetadata" option enabled', '12');
+export const CONFIG_PROVIDER_NOT_ATTACHED = domain.create('Config provider not attached to container. You need to use config middleware first.');

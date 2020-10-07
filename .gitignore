@@ -3,4 +3,3 @@ node_modules
 .idea
 compiled
 /coverage/
-/src/test.ts

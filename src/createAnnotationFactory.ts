@@ -1,5 +1,6 @@
 import * as is from 'predicates';
 import {Annotation} from './decorators/Annotation';
+import {Predicate} from "predicates/types";
 
 export function createAnnotationFactory<T extends (...args: any[]) => any>(
     annotationName: string,
@@ -17,6 +18,9 @@ export function createAnnotationFactory<T extends (...args: any[]) => any>(
         return annotation;
     }) as any;
     factory.predicate = is.prop('name', is.equal(annotationName));
+    factory.andPredicate = (extraPredicate: Predicate) => {
+        return is.all(factory.predicate, extraPredicate);
+    };
     factory.decorator = (...args: any[]) => {
         return (clazz: Function) => {
             Annotation(factory(...args))(clazz);
@@ -29,5 +33,6 @@ export interface AnnotationFactory<TParams extends any[], TAnnotation> {
     (...params: TParams): TAnnotation;
 
     predicate: (value: any) => boolean;
+    andPredicate: (extraPredicate: Predicate) => Predicate
     decorator: (...params: TParams) => ClassDecorator;
 }

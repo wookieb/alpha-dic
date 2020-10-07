@@ -1,6 +1,6 @@
-import {ContainerArg} from "../ContainerArg";
+import {ContainerArg} from "../args/ContainerArg";
 import 'reflect-metadata';
-import {Reference} from "../Reference";
+import {ReferenceArg} from "../args/ReferenceArg";
 import * as is from 'predicates';
 import {ensureMetadata} from "../serviceMetadata";
 import {ServiceName} from "../types";
@@ -13,15 +13,15 @@ const assertServiceNameOrContainerArg = is.assert(
     '@Inject argument must be a string that represents service name, symbol, function or instance of ContainerArg or TypeRef'
 );
 
-export function Inject(ref: ServiceName | ContainerArg | Function): ParameterDecorator & PropertyDecorator;
+export function Inject(ref: ServiceName | ContainerArg | Function | TypeRef): ParameterDecorator & PropertyDecorator;
 export function Inject(): PropertyDecorator;
-export function Inject(ref?: ServiceName | ContainerArg | Function): PropertyDecorator | ParameterDecorator {
+export function Inject(ref?: ServiceName | ContainerArg | Function | TypeRef): PropertyDecorator | ParameterDecorator {
     assertServiceNameOrContainerArg(ref);
 
     return function (target: any, property: string | symbol, indexOrDescriptor?: number | TypedPropertyDescriptor<any>) {
         const isParameterDecorator = typeof indexOrDescriptor === 'number';
 
-        let arg: Reference | ContainerArg;
+        let arg: ReferenceArg | ContainerArg;
 
         if (ref === undefined) {
             if (isParameterDecorator) {
@@ -31,9 +31,9 @@ export function Inject(ref?: ServiceName | ContainerArg | Function): PropertyDec
                 arg = createReferenceForType(designType, `property ${property.toString()}`);
             }
         } else if (TypeRef.is(ref)) {
-            arg = Reference.one.type(ref);
+            arg = ReferenceArg.one.type(ref);
         } else if (ServiceName.is(ref)) {
-            arg = Reference.one.name(ref);
+            arg = ReferenceArg.one.name(ref);
         } else if (ContainerArg.is(ref)) {
             arg = ref;
         } else {
@@ -44,7 +44,7 @@ export function Inject(ref?: ServiceName | ContainerArg | Function): PropertyDec
         }
 
         if (isParameterDecorator) {
-            ensureMetadata(target).constructorArguments[<number>indexOrDescriptor] = arg!;
+            ensureMetadata(target).constructorArguments[indexOrDescriptor as number] = arg!;
         } else {
             ensureMetadata(target.constructor).propertiesInjectors.set(property, arg!);
         }
@@ -58,5 +58,5 @@ function createReferenceForType(func: Function, ...args: string[]) {
             format(errors.AUTOWIRING_FAILED.defaultMessage, ...args)
         );
     }
-    return Reference.one.type(type);
+    return ReferenceArg.one.type(type);
 }
