@@ -9,7 +9,7 @@ describe('TypeRef', () => {
 
     class Gamma {}
 
-    const RESERVED_TYPES: [Function][] = [
+    const RESERVED_TYPES: Function[] = [
         [Object],
         [Promise],
         [Function]
@@ -75,6 +75,7 @@ describe('TypeRef', () => {
 
         it.each(RESERVED_TYPES)('fails when attempt to create for reserved type: %s', constructor => {
             expect(() => {
+                // tslint:disable-next-line:no-unused-expression
                 new TypeRef(constructor);
             })
                 .toThrowErrorMatchingSnapshot();
@@ -92,6 +93,7 @@ describe('TypeRef', () => {
             });
 
             it('ignores null', () => {
+                // tslint:disable-next-line:no-null-keyword
                 expect(TypeRef.createFromValue(null))
                     .toBeUndefined();
             });
@@ -114,7 +116,7 @@ describe('TypeRef', () => {
                 expect(ref)
                     .toEqual(new TypeRef(type));
 
-                expect(ref + '')
+                expect(String(ref))
                     .toEqual(`instance of class "${type.name}"`)
             });
         });

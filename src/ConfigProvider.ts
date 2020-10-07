@@ -9,9 +9,8 @@ export function configProviderForObject(config: object): ConfigProvider {
         if (result === undefined) {
             if (request.hasDefaultValue) {
                 return request.defaultValue;
-            } else {
-                throw new errors.MISSING_CONFIG_VALUE(`Config at path "${request.path}" is not defined and default value is not provided`);
             }
+            throw new errors.MISSING_CONFIG_VALUE(`Config at path "${request.path}" is not defined and default value is not provided`);
         }
         return result;
     };

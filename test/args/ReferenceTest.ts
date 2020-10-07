@@ -86,7 +86,7 @@ describe('Reference', () => {
         });
 
         it('by annotation', async () => {
-            const ref = ReferenceArg.one.annotation((a) => a.name === ANNOTATION_NAME);
+            const ref = ReferenceArg.one.annotation(a => a.name === ANNOTATION_NAME);
 
             expect(ref.getDependentServices(container))
                 .toEqual(container.findByName('A'));
@@ -95,7 +95,7 @@ describe('Reference', () => {
                 .toEqual(serviceA);
         });
 
-        it('by annotation - not found', async () => {
+        it('by annotation - not found', () => {
             const ref = ReferenceArg.one.annotation(() => false);
 
             expect(() => {

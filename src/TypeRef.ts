@@ -20,6 +20,7 @@ export class TypeRef {
     }
 
     matches(type: TypeRef): boolean {
+        //tslint:disable-next-line: strict-comparisons
         return type.target === this.target || type.target.prototype instanceof this.target;
     }
 

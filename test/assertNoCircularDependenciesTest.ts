@@ -12,7 +12,8 @@ function assertCircularDependencyFound(serviceName: string, dependenciesPath: st
     } catch (e) {
         expect(e)
             .toHaveProperty('code', errors.CIRCULAR_DEPENDENCY_DETECTED.code)
-        const foundDependenciesPath = e.message.substr(e.message.indexOf('found: ') + 6)
+
+        const foundDependenciesPath = e.message.substr(e.message.indexOf('found: ') as number + 6)
             .split(' -> ')
             .map((s: string) => s.trim());
 

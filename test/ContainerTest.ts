@@ -182,7 +182,7 @@ describe('Container', () => {
         });
 
         it('by predicate', () => {
-            expect(container.findByPredicate((d) => d.name === 'B'))
+            expect(container.findByPredicate(d => d.name === 'B'))
                 .toEqual([definitionB]);
         });
 
@@ -228,7 +228,7 @@ describe('Container', () => {
         });
 
         it('by annotation', () => {
-            expect(container.getByAnnotation(a => a.name === ANNOTATION.name))
+            return expect(container.getByAnnotation(a => a.name === ANNOTATION.name))
                 .resolves
                 .toEqual([serviceA]);
         });
@@ -541,9 +541,11 @@ describe('Container', () => {
             });
 
             it('returns services that match predicate', () => {
+                //tslint:disable-next-line: strict-comparisons
                 expect(container.findByAnnotation(a => a === ANNOTATION))
                     .toEqual([definitionA]);
 
+                //tslint:disable-next-line: strict-comparisons
                 expect(container.findByAnnotation(a => a === ANNOTATION2))
                     .toEqual([definitionB]);
             });

@@ -36,7 +36,7 @@ describe('decorators', () => {
     it('service with injected args', () => {
         @Service()
         class Foo {
-            constructor(@Inject('a') arg1: any) {
+            constructor(@Inject('a') readonly arg1: any) {
 
             }
         }
@@ -56,7 +56,7 @@ describe('decorators', () => {
 
         @Service()
         class Foo {
-            constructor(@Inject(ref) arg1: any) {
+            constructor(@Inject(ref) readonly arg1: any) {
 
             }
         }
@@ -92,7 +92,7 @@ describe('decorators', () => {
         expect(() => {
             @Service()
             class Foo {
-                constructor(@Inject([] as any) arg1: any) {
+                constructor(@Inject([] as any) readonly arg1: any) {
 
                 }
             }
@@ -141,7 +141,7 @@ describe('decorators', () => {
         expect(() => {
             @Service()
             class Foo {
-                constructor(@Inject('a') arg1: any, arg2: any) {
+                constructor(@Inject('a') readonly arg1: any, readonly arg2: any) {
 
                 }
             }
@@ -153,7 +153,9 @@ describe('decorators', () => {
         expect(() => {
             @Service()
             class Foo {
-                constructor(@Inject('a') arg1: any, arg2: any, @Inject('c') arg3: any) {
+                constructor(@Inject('a') readonly arg1: any,
+                            readonly arg2: any,
+                            @Inject('c') readonly arg3: any) {
 
                 }
             }

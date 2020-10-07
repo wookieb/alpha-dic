@@ -8,6 +8,7 @@ describe('autowiring', () => {
     const NAME = 'example';
 
     class Foo implements FooInterface {
+        // tslint:disable-next-line:no-empty
         bonk() {
 
         }
@@ -133,7 +134,7 @@ describe('autowiring', () => {
 
                 @AutowiredService(NAME)
                 class Example {
-                    constructor(@Inj() arg: any) {
+                    constructor(@Inj() readonly arg: any) {
                     }
                 }
             })
@@ -144,8 +145,6 @@ describe('autowiring', () => {
             expect(() => {
                 @AutowiredService()
                 class Example {
-                    constructor(arg: Foo | Bar) {
-                    }
                 }
             })
                 .toThrowErrorMatchingSnapshot();
@@ -160,7 +159,7 @@ describe('autowiring', () => {
                 }
             }
 
-            expect(container.get(NAME))
+            return expect(container.get(NAME))
                 .rejects
                 .toThrowErrorMatchingSnapshot();
         });

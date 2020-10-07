@@ -4,7 +4,8 @@ import {OnActivation} from "@src/decorators/OnActivation";
 
 describe('OnActivation', () => {
     it('defines annotation', () => {
-        const func = function() {};
+        // tslint:disable-next-line:no-empty
+        const func = function () {};
         @Service()
         @OnActivation(func)
         class Foo {

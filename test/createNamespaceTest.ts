@@ -1,6 +1,7 @@
 import {createNamespace, namespaceEntry as r} from "@src/createNamespace";
 
 describe('createNamespace', () => {
+    // tslint:disable-next-line:no-empty
     const func = function () {
     };
     const set = new Set([1, 2]);
@@ -39,6 +40,7 @@ describe('createNamespace', () => {
 
     it('throws na error if key does not exist', () => {
         expect(() => {
+            // tslint:disable-next-line:no-unused-expression
             (namespace.workers as any).someKey;
         })
             .toThrow('There is no name for path: workers.someKey');

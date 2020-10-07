@@ -92,7 +92,7 @@ export class ResolveArg<T extends object> extends ContainerArg<ResolveArg.Resolv
 export namespace ResolveArg {
     export type Resolved<T> = T extends ContainerArg<infer U> ? U :
         (
-            T extends (infer B)[] ? Array<Resolved<B>> : (
+            T extends Array<infer B> ? Array<Resolved<B>> : (
                 T extends object ? {
                     [P in keyof T]: Resolved<T[P]>
                 } : T

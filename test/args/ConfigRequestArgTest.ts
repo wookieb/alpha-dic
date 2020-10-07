@@ -44,6 +44,7 @@ describe('ConfigRequestArg', () => {
 
     it('path cannot be empty', () => {
         expect(() => {
+            // tslint:disable-next-line:no-unused-expression
             new ConfigRequestArg('  ');
         })
             .toThrowError(/Config "path" cannot be blank/);

@@ -1,6 +1,6 @@
 import * as is from 'predicates';
 
-export interface NamespaceObject { [key: string]: NamespaceObject | string | Symbol }
+export interface NamespaceObject {[key: string]: NamespaceObject | string | Symbol}
 
 export function createNamespace<T extends NamespaceObject>(object: T): T {
     return createProxyForPrefix([], object);
@@ -18,9 +18,14 @@ function createProxyForPrefix<T extends NamespaceObject>(prefixParts: string[], 
             const value = target[key];
             if (is.plainObject(value)) {
                 return createProxyForPrefix(prefixParts.concat([key]), value as NamespaceObject);
-            } else if (is.string(value)) {
+            }
+
+            if (is.string(value)) {
                 return getKey(prefixParts, value);
-            } else if (value === namespaceEntry) {
+            }
+
+            //tslint:disable-next-line: strict-comparisons
+            if (value === namespaceEntry) {
                 return getKey(prefixParts, key);
             }
             return value;

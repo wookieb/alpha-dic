@@ -45,9 +45,8 @@ export class ReferenceArg extends ContainerArg {
             return Promise.all(this.findMulti(container).map(
                 d => container.get(d)
             ));
-        } else {
-            return container.get(definitions);
         }
+        return container.get(definitions);
     }
 
     getDependentServices(container: Container) {
@@ -66,7 +65,7 @@ export class ReferenceArg extends ContainerArg {
         const definitions = this.lookup.find(container);
         if (Array.isArray(definitions)) {
             if (definitions.length === 0) {
-                throw errors.NO_MATCHING_SERVICE('No matching service for following lookup: ' + this.lookup);
+                throw errors.NO_MATCHING_SERVICE(`No matching service for following lookup: ${this.lookup}`);
             }
 
             if (definitions.length > 1) {
@@ -74,9 +73,8 @@ export class ReferenceArg extends ContainerArg {
                 throw errors.AMBIGUOUS_SERVICE(`Multiple services found (${servicesNames}) with following lookup: ${this.lookup}`);
             }
             return definitions[0];
-        } else {
-            return definitions;
         }
+        return definitions;
     }
 
     private findMulti(container: Container): Definition[] {

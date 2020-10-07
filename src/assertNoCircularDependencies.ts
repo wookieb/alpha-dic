@@ -23,9 +23,8 @@ function detectCircularDependencies(container: Container, definition: Definition
                     throw errors.CIRCULAR_DEPENDENCY_DETECTED(
                         `Circular dependency found: ${names}`
                     );
-                } else {
-                    detectCircularDependencies(container, dependency, previousDefinitions.concat([dependency]));
                 }
+                detectCircularDependencies(container, dependency, previousDefinitions.concat([dependency]));
             }
         }
     }

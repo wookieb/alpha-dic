@@ -26,10 +26,9 @@ export function Inject(ref?: ServiceName | ContainerArg | Function | TypeRef): P
         if (ref === undefined) {
             if (isParameterDecorator) {
                 throw new Error('Using @Inject decorator without ref for function arguments is prohibited');
-            } else {
-                const designType = Reflect.getMetadata("design:type", target, property);
-                arg = createReferenceForType(designType, `property ${property.toString()}`);
             }
+            const designType = Reflect.getMetadata("design:type", target, property);
+            arg = createReferenceForType(designType, `property ${property.toString()}`);
         } else if (TypeRef.is(ref)) {
             arg = ReferenceArg.one.type(ref);
         } else if (ServiceName.is(ref)) {

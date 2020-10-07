@@ -129,7 +129,9 @@ describe('ResolveArg', () => {
             ],
             [
                 'ignores primitive: null',
+                // tslint:disable-next-line:no-null-keyword
                 null,
+                // tslint:disable-next-line:no-null-keyword
                 null,
                 []
             ],

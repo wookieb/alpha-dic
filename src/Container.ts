@@ -222,12 +222,12 @@ export class Container {
             currentMiddleware++;
             if (middleware) {
                 return middleware.call(this, definition, next);
-            } else {
-                return Promise.all(
-                    definition.args.map(a => ContainerArg.is(a) ? a.getArgument(this) : a)
-                )
-                    .then((args: any[]) => definition.factory.apply(this, args));
             }
+
+            return Promise.all(
+                definition.args.map(a => ContainerArg.is(a) ? a.getArgument(this) : a)
+            )
+                .then((args: any[]) => definition.factory.apply(this, args));
         };
 
         try {

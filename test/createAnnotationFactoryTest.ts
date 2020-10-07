@@ -14,9 +14,10 @@ describe('createAnnotationFactory', () => {
 
         it.each([
             [undefined],
+            // tslint:disable-next-line:no-null-keyword
             [null],
             [{name: 'bar'}]
-        ])('ignores other: %s', (value) => {
+        ])('ignores other: %s',value => {
             expect(annotation.predicate(value))
                 .toBe(false);
         })
