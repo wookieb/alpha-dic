@@ -41,6 +41,7 @@ export class Container {
             throw errors.ALREADY_DEFINED(`Service "${definition.name.toString()}" already defined`);
         }
         debugDefinition(`Service ${definition.name.toString()} defined`);
+        definition.setOwner(this);
         this.definitions.set(definition.name, definition);
         return this;
     }

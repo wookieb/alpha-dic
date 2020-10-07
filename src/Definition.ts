@@ -2,6 +2,8 @@ import {ServiceFactory, ServiceName} from './types';
 import * as factories from './serviceFactories';
 import {randomName} from './randomName';
 import {TypeRef} from './TypeRef';
+import {Container} from "./Container";
+import * as errors from './errors';
 
 export interface DefinitionData {
     name: ServiceName;
@@ -17,6 +19,7 @@ export class Definition implements DefinitionData {
     public factory!: ServiceFactory;
     public name: ServiceName;
     public type?: TypeRef;
+    public owner?: Container;
 
     constructor(name?: ServiceName) {
         if (name) {
@@ -51,6 +54,15 @@ export class Definition implements DefinitionData {
     useFactory(factory: (...args: any[]) => any | Promise<any>, type?: Function) {
         this.factory = factories.fromFactory(factory);
         this.type = type && TypeRef.createFromType(type);
+        return this;
+    }
+
+    setOwner(container: Container): this {
+        if (this.owner && this.owner !== container) {
+            throw errors.OWNER_CANNOT_BE_CHANGED();
+        }
+
+        this.owner = container;
         return this;
     }
 

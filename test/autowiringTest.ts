@@ -145,6 +145,8 @@ describe('autowiring', () => {
             expect(() => {
                 @AutowiredService()
                 class Example {
+                    constructor(readonly arg: Foo | Bar) {
+                    }
                 }
             })
                 .toThrowErrorMatchingSnapshot();

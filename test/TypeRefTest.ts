@@ -9,7 +9,7 @@ describe('TypeRef', () => {
 
     class Gamma {}
 
-    const RESERVED_TYPES: Function[] = [
+    const RESERVED_TYPES: any[] = [
         [Object],
         [Promise],
         [Function]

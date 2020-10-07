@@ -36,6 +36,15 @@ describe('Container', () => {
     describe('defining services', () => {
         const NAME = 'someServiceName';
 
+        it('registering definition sets its owner', () => {
+            const def = new Definition(NAME);
+            expect(def.owner)
+                .toBeUndefined();
+            container.registerDefinition(def);
+            expect(def.owner)
+                .toStrictEqual(container);
+        });
+
         it('registering definition', () => {
             const def = new Definition(NAME);
             container.registerDefinition(def);

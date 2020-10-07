@@ -1,6 +1,10 @@
 import {Definition} from "@src/Definition";
 import * as sinon from 'sinon';
 import {TypeRef} from "@src/TypeRef";
+import {Container} from "@src/Container";
+import {create} from "@src/index";
+import {assertThrowsErrorWithCode} from "./common";
+import * as errors from '@src/errors';
 
 describe('Annotation', () => {
     const ARGS = [1, 2, 3];
@@ -203,6 +207,34 @@ describe('Annotation', () => {
                 );
             expect(Object.isFrozen(newDefinition))
                 .toBe(true);
+        });
+    });
+
+    describe('setting owner', () => {
+        let container: Container;
+        beforeEach(() => {
+            container = create();
+        });
+
+        it('success', () => {
+            const def = Definition.create()
+                .useValue('foo');
+
+            def.setOwner(container);
+            expect(def.owner)
+                .toStrictEqual(container);
+        });
+
+        it('owner cannot be set twice', () => {
+            const def = Definition.create()
+                .useValue('foo');
+
+            def.setOwner(container);
+
+            assertThrowsErrorWithCode(() => {
+                const newContainer = create();
+                def.setOwner(newContainer);
+            }, errors.OWNER_CANNOT_BE_CHANGED);
         });
     });
 });
