@@ -4,6 +4,7 @@ import {randomName} from './randomName';
 import {TypeRef} from './TypeRef';
 import {Container} from "./Container";
 import * as errors from './errors';
+import * as is from "predicates";
 
 export interface DefinitionData {
     name: ServiceName;
@@ -124,5 +125,50 @@ export class Definition implements DefinitionData {
         const def = new Definition(this.name);
         Object.assign(def, this, data);
         return def.lock();
+    }
+
+    /**
+     * Creates new definition that is an alias for current one
+     */
+    createAlias(options?: Definition.AliasOptions) {
+        const def = Definition.create(options?.name ? options.name : this.name)
+            .useFactory(() => {
+                if (!this.owner) {
+                    throw errors.DEFINITION_WITHOUT_CONTAINER(
+                        `Cannot create service "${def.name.toString()}" due to lack of assigned container`
+                    );
+                }
+                return this.owner.get(this);
+            });
+
+        const annotations = (() => {
+            const withAnnotations = options?.withAnnotations ?? false;
+            if (is.func(withAnnotations)) {
+                return this.annotations.filter(withAnnotations);
+            }
+            return withAnnotations ? this.annotations : [];
+        })();
+
+        if (annotations.length > 0) {
+            def.annotate(...annotations);
+        }
+        if (this.type) {
+            def.markType(this.type);
+        }
+        return def;
+    }
+}
+
+export namespace Definition {
+    export interface AliasOptions {
+        /**
+         * New definition ane
+         */
+        name?: string;
+
+        /**
+         * Forwards all annotations if true, none if false or the ones that satisfy given predicate
+         */
+        withAnnotations?: boolean | ((ann: any) => boolean);
     }
 }

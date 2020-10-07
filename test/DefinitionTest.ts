@@ -237,4 +237,108 @@ describe('Annotation', () => {
             }, errors.OWNER_CANNOT_BE_CHANGED);
         });
     });
+
+    describe('aliasing', () => {
+        let definition: Definition;
+
+        const annotation = {ann: 1};
+        const annotation2 = {ann: 2};
+        beforeEach(() => {
+            definition = Definition.create()
+                .useValue({service: 1})
+                .annotate(annotation, annotation2);
+        });
+
+        describe('treating name', () => {
+            it('uses the same', () => {
+                const def = definition.createAlias();
+                expect(def.name)
+                    .toEqual(definition.name);
+            });
+
+            it('allows to change', () => {
+                const name = 'newName';
+                const def = definition.createAlias({name});
+
+                expect(def.name)
+                    .toEqual(name);
+            });
+        })
+
+        describe('annotations', () => {
+            it('passes no annotations by default', () => {
+                const def = definition.createAlias();
+
+                expect(def.annotations)
+                    .toHaveLength(0);
+            });
+
+            it('passes all annotations if flag set to true', () => {
+                const def = definition.createAlias({
+                    withAnnotations: true
+                });
+
+                expect(def.annotations)
+                    .toEqual(definition.annotations);
+            });
+
+            it('passes no annotations if flag set to false', () => {
+                const def = definition.createAlias({
+                    withAnnotations: false
+                });
+
+                expect(def.annotations)
+                    .toHaveLength(0);
+            });
+
+            it('passes annotation that satisfies predicate', () => {
+                //tslint:disable-next-line: strict-comparisons
+                const predicate = (x: any) => x === annotation;
+
+                const def = definition.createAlias({
+                    withAnnotations: predicate
+                });
+
+                expect(def.annotations)
+                    .toEqual([annotation]);
+            });
+        });
+
+        describe('creating', () => {
+            it('success', async () => {
+                const container = create();
+                const container2 = create();
+
+                const def = definition.createAlias();
+
+                container.registerDefinition(definition);
+                container2.registerDefinition(def);
+
+                const service = {service: 'test'};
+                const stub = sinon.stub()
+                    .returns(service);
+                definition.useFactory(stub);
+
+                await expect(container2.get(def))
+                    .resolves
+                    .toStrictEqual(service);
+
+                sinon.assert.calledOnce(stub);
+            });
+
+            it('fails if aliased definition has no container', () => {
+                const container2 = create();
+
+                definition = Definition.create()
+                    .useValue('test');
+
+                const def = definition.createAlias();
+                container2.registerDefinition(def);
+
+                return expect(container2.get(def))
+                    .rejects
+                    .toThrowError('lack of assigned container');
+            });
+        });
+    });
 });

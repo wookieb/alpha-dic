@@ -270,33 +270,9 @@ export class Container {
         );
     }
 
-    alias(definition: Definition, options?: {
-        name?: string,
-        withAnnotations?: boolean | ((ann: any) => boolean)
-    }) {
-        const def = this.definitionWithFactory(options?.name ? options.name : definition.name, () => {
-            if (!definition.owner) {
-                throw errors.DEFINITION_WITHOUT_CONTAINER(
-                    `Cannot create service "${def.name.toString()}" due to lack of assigned container`
-                );
-            }
-            return definition.owner.get(definition);
-        });
-
-        const annotations = (() => {
-            const withAnnotations = options?.withAnnotations ?? false;
-            if (is.func(withAnnotations)) {
-                return definition.annotations.filter(withAnnotations);
-            }
-            return withAnnotations ? definition.annotations : [];
-        })();
-
-        if (annotations.length > 0) {
-            def.annotate(...annotations);
-        }
-        if (definition.type) {
-            def.markType(definition.type);
-        }
-        return def;
+    alias(definition: Definition, options?: Definition.AliasOptions) {
+        const newDefinition = definition.createAlias(options);
+        this.registerDefinition(newDefinition);
+        return newDefinition;
     }
 }

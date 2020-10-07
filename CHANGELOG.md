@@ -1,3 +1,6 @@
+# 3.1.0
+* Aliasing functionality moved to `Definition` but the same remains in `Container`
+
 # 3.0.0
 * "slow log" does not report on failed service creation
 * Added `TransformArg`
