@@ -257,8 +257,8 @@ export class Container {
      */
     getByAnnotation<T = any>(predicate: AnnotationPredicate): Promise<T[]>;
     getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: false): Promise<T[]>;
-    getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: true): Promise<Array<[T, any]>>;
-    getByAnnotation<T = any>(predicate: AnnotationPredicate, withAnnotation: boolean = false): Promise<T[] | Array<[T, any]>> {
+    getByAnnotation<T = any, TAnnotation = any>(predicate: AnnotationPredicate, withAnnotation: true): Promise<Array<[T, TAnnotation]>>;
+    getByAnnotation<T = any, TAnnotation = any>(predicate: AnnotationPredicate, withAnnotation: boolean = false): Promise<T[] | Array<[T, TAnnotation]>> {
         return Promise.all(
             this.findByAnnotation(predicate, true)
                 .map(async ([definition, annotation]) => {

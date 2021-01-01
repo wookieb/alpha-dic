@@ -1,3 +1,7 @@
+# 3.2.0
+* Deprecated "preloadServiceModules"
+* Added "loadServices" that is easier to use and allows to easier extensions handling
+
 # 3.1.0
 * Aliasing functionality moved to `Definition` but the same remains in `Container`
 

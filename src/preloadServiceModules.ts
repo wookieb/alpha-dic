@@ -3,6 +3,7 @@ import {Service} from './decorators/Service';
 import {Container} from './Container';
 
 export function preloadServiceModules(container: Container, globPattern: string | string[], globOptions: IOptions = {}) {
+    console.warn('"preloadServiceModules" is deprecated. Use "loadServices" instead.');
     Service.useContainer(container);
     const patterns = Array.isArray(globPattern) ? globPattern : [globPattern];
 

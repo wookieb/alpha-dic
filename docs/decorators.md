@@ -24,15 +24,14 @@ export class NotificationCenter {
 
 ## Setup
 
-Since decorator is just regular function you need to give it an opportunity to get called. To do soo you can use `preloadServiceModules` function that loads all modules matching given patterns.  
+Since decorator is just regular function you need to give it an opportunity to get called. To do soo you can use `loadServices` function that loads all modules matching given patterns.  
 ```typescript
-import {createStandard, preloadServiceModules} from 'alpha-dic';
+import {createStandard, loadServices} from 'alpha-dic';
 
 const container = createStandard();
 
-// loads all files in given directory so all @Service decorator calls got a chance to register service definitions
-preloadServiceModules(container, './services/*'); 
+// loads all files (with extensions .ts, .js, .tsx but ignores .d.ts, .d.tsx) in given directory so all @Service decorator calls got a chance to register service definitions
+loadServices(container, {
+    patterns: './services/*.*' // note ".*" to make sure glob can catch all files
+}); 
 ```
-
-## Limitations
-You can define only one service definition per class defined via decorators. If you need more you have to create them on container via `definitionWithClass`.
