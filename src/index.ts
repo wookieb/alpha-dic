@@ -17,6 +17,7 @@ export * from './Lookup';
 export * from './createAnnotationFactory';
 export * from './preloadServiceModules';
 export * from './loadServices';
+export * from './TypeRef';
 
 export * from './middlewares/activation';
 export * from './middlewares/config';

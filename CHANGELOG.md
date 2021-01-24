@@ -1,3 +1,6 @@
+# 3.2.1
+* `reference.type` now allows to provide Function, not only TypeRef
+
 # 3.2.0
 * Deprecated "preloadServiceModules"
 * Added "loadServices" that is easier to use and allows to easier extensions handling

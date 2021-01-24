@@ -6,6 +6,9 @@ import {Lookup} from '../Lookup';
 import {ContainerArg} from './ContainerArg';
 import {TypeRef} from '../TypeRef';
 
+function toTypeRef(type: TypeRef | Function) {
+    return TypeRef.is(type) ? type : new TypeRef(type);
+}
 export class ReferenceArg extends ContainerArg {
     static one = {
         name(name: ServiceName) {
@@ -17,8 +20,8 @@ export class ReferenceArg extends ContainerArg {
         annotation(predicate: AnnotationPredicate) {
             return new ReferenceArg('one', new Lookup.ByAnnotation(predicate));
         },
-        type(type: TypeRef) {
-            return new ReferenceArg('one', new Lookup.ByType(type));
+        type(type: TypeRef | Function) {
+            return new ReferenceArg('one', new Lookup.ByType(toTypeRef(type)));
         }
     };
 
@@ -29,8 +32,8 @@ export class ReferenceArg extends ContainerArg {
         annotation(predicate: AnnotationPredicate) {
             return new ReferenceArg('multi', new Lookup.ByAnnotation(predicate));
         },
-        type(type: TypeRef) {
-            return new ReferenceArg('multi', new Lookup.ByType(type));
+        type(type: TypeRef | Function) {
+            return new ReferenceArg('multi', new Lookup.ByType(toTypeRef(type)));
         }
     };
 
