@@ -1,11 +1,14 @@
 {
-  "extends": "@pallad/scripts/tsconfig-node.dist.json",
+  "extends": "@pallad/scripts/dist/tsconfig-node.json",
   "compilerOptions": {
     "noEmit": true,
     "baseUrl": "../src",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "typeRoots": ["../src/@types", "../node_modules/@types"],
+    "typeRoots": [
+      "../src/@types",
+      "../node_modules/@types"
+    ],
     "paths": {
       "@src/*": [
         "*"

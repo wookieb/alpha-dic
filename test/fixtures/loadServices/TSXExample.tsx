@@ -1,6 +1,4 @@
-import {Service} from "@src/decorators/Service";
+import { Service } from "@src/decorators/Service";
 
-@Service('TSXExample')
-export class TSXExample {
-
-}
+@Service("TSXExample")
+export class TSXExample {}

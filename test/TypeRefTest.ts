@@ -1,173 +1,130 @@
-import {TypeRef} from "@src/TypeRef";
-import {Definition} from "@src/Definition";
+import { TypeRef } from "@src/TypeRef";
+import { Definition } from "@src/Definition";
 
-describe('TypeRef', () => {
+describe("TypeRef", () => {
+	class Foo {}
 
-    class Foo {}
+	class Bar extends Foo {}
 
-    class Bar extends Foo {}
+	class Gamma {}
 
-    class Gamma {}
+	const RESERVED_TYPES: any[] = [[Object], [Promise], [Function]];
 
-    const RESERVED_TYPES: any[] = [
-        [Object],
-        [Promise],
-        [Function]
-    ];
+	it("is", () => {
+		expect(TypeRef.is(new TypeRef(Foo))).toEqual(true);
 
-    it('is', () => {
-        expect(TypeRef.is(new TypeRef(Foo)))
-            .toEqual(true);
+		expect(TypeRef.is("typeref")).toEqual(false);
+	});
 
-        expect(TypeRef.is('typeref'))
-            .toEqual(false);
-    });
+	describe("matches", () => {
+		it("satisfied if type is the same", () => {
+			expect(TypeRef.createFromType(Foo)!.matches(new TypeRef(Foo))).toEqual(true);
+		});
 
+		it("satisfied if target is instance of root type", () => {
+			expect(TypeRef.createFromType(Foo)!.matches(new TypeRef(Bar))).toEqual(true);
+		});
 
-    describe('matches', () => {
-        it('satisfied if type is the same', () => {
-            expect(TypeRef.createFromType(Foo)!.matches(new TypeRef(Foo)))
-                .toEqual(true);
-        });
+		it("not satisfied if type is not related", () => {
+			expect(TypeRef.createFromType(Foo)!.matches(new TypeRef(Gamma))).toEqual(false);
+		});
+	});
 
-        it('satisfied if target is instance of root type', () => {
-            expect(TypeRef.createFromType(Foo)!.matches(new TypeRef(Bar)))
-                .toEqual(true);
-        });
+	describe("predicate", () => {
+		it("returns false for definitions without type", () => {
+			const definition = Definition.create();
+			expect(TypeRef.createFromType(Foo)!.predicate(definition)).toEqual(false);
+		});
 
-        it('not satisfied if type is not related', () => {
-            expect(TypeRef.createFromType(Foo)!.matches(new TypeRef(Gamma)))
-                .toEqual(false);
-        });
-    });
+		it("returns true for definition with matching type", () => {
+			const definition = Definition.create().markType(Foo);
 
-    describe('predicate', () => {
-        it('returns false for definitions without type', () => {
-            const definition = Definition.create();
-            expect(TypeRef.createFromType(Foo)!.predicate(definition))
-                .toEqual(false);
-        });
+			expect(TypeRef.createFromType(Foo)!.predicate(definition)).toEqual(true);
+		});
 
-        it('returns true for definition with matching type', () => {
-            const definition = Definition.create()
-                .markType(Foo);
+		it("return false for definition without matching type", () => {
+			const definition = Definition.create().markType(Gamma);
 
-            expect(TypeRef.createFromType(Foo)!.predicate(definition))
-                .toEqual(true);
-        });
+			expect(TypeRef.createFromType(Foo)!.predicate(definition)).toEqual(false);
+		});
+	});
 
-        it('return false for definition without matching type', () => {
-            const definition = Definition.create()
-                .markType(Gamma);
+	describe("creating", () => {
+		it("constructor", () => {
+			const ref = new TypeRef(Foo);
 
-            expect(TypeRef.createFromType(Foo)!.predicate(definition))
-                .toEqual(false);
-        });
-    });
+			expect(ref.toString()).toEqual('instance of class "Foo"');
+		});
 
-    describe('creating', () => {
-        it('constructor', () => {
-            const ref = new TypeRef(Foo);
+		it.each(RESERVED_TYPES)(
+			"fails when attempt to create for reserved type: %s",
+			constructor => {
+				expect(() => {
+					// tslint:disable-next-line:no-unused-expression
+					new TypeRef(constructor);
+				}).toThrowErrorMatchingSnapshot();
+			}
+		);
 
-            expect(ref.toString())
-                .toEqual('instance of class "Foo"');
-        });
+		describe("from value", () => {
+			it.each([[false], [true], ["str"], [undefined]])("ignores non objects: %s", value => {
+				expect(TypeRef.createFromValue(value)).toBeUndefined();
+			});
 
-        it.each(RESERVED_TYPES)('fails when attempt to create for reserved type: %s', constructor => {
-            expect(() => {
-                // tslint:disable-next-line:no-unused-expression
-                new TypeRef(constructor);
-            })
-                .toThrowErrorMatchingSnapshot();
-        });
+			it("ignores null", () => {
+				// tslint:disable-next-line:no-null-keyword
+				expect(TypeRef.createFromValue(null)).toBeUndefined();
+			});
 
-        describe('from value', () => {
-            it.each([
-                [false],
-                [true],
-                ['str'],
-                [undefined]
-            ])('ignores non objects: %s', value => {
-                expect(TypeRef.createFromValue(value))
-                    .toBeUndefined()
-            });
+			it.each([[{}], [Math.min], [Promise.resolve("test")]])(
+				"ignores value that is an instance of reserved type: %s",
+				value => {
+					expect(TypeRef.createFromValue(value)).toBeUndefined();
+				}
+			);
 
-            it('ignores null', () => {
-                // tslint:disable-next-line:no-null-keyword
-                expect(TypeRef.createFromValue(null))
-                    .toBeUndefined();
-            });
+			it.each([
+				[new Foo(), Foo],
+				[new Bar(), Bar],
+				[[], Array],
+			])("success: %s", (value, type) => {
+				const ref = TypeRef.createFromValue(value);
+				expect(ref).toEqual(new TypeRef(type));
 
-            it.each([
-                [{}],
-                [Math.min],
-                [Promise.resolve('test')]
-            ])('ignores value that is an instance of reserved type: %s', value => {
-                expect(TypeRef.createFromValue(value))
-                    .toBeUndefined();
-            });
+				expect(String(ref)).toEqual(`instance of class "${type.name}"`);
+			});
+		});
 
-            it.each([
-                [new Foo, Foo],
-                [new Bar, Bar],
-                [[], Array]
-            ])('success: %s', (value, type) => {
-                const ref = TypeRef.createFromValue(value);
-                expect(ref)
-                    .toEqual(new TypeRef(type));
+		describe("from type", () => {
+			it.each(RESERVED_TYPES)("returns undefined for reserved types: %s", constructor => {
+				expect(TypeRef.createFromType(constructor)).toBeUndefined();
+			});
 
-                expect(String(ref))
-                    .toEqual(`instance of class "${type.name}"`)
-            });
-        });
+			it.each([[Foo], [Bar], [Array]])("success: %s", constructor => {
+				expect(TypeRef.createFromType(constructor)).toEqual(new TypeRef(constructor));
+			});
+		});
 
-        describe('from type', () => {
-            it.each(RESERVED_TYPES)('returns undefined for reserved types: %s', constructor => {
-                expect(TypeRef.createFromType(constructor))
-                    .toBeUndefined();
-            });
+		describe("predicate for type", () => {
+			it.each(RESERVED_TYPES)("returns undefined for reserved types: %s", constructor => {
+				expect(TypeRef.predicateForType(constructor)).toBeUndefined();
+			});
 
-            it.each([
-                [Foo],
-                [Bar],
-                [Array]
-            ])('success: %s', constructor => {
-                expect(TypeRef.createFromType(constructor))
-                    .toEqual(new TypeRef(constructor));
-            });
-        });
+			it("success", () => {
+				const definition = Definition.create().markType(Foo);
 
-        describe('predicate for type', () => {
-            it.each(RESERVED_TYPES)('returns undefined for reserved types: %s', constructor => {
-                expect(TypeRef.predicateForType(constructor))
-                    .toBeUndefined();
-            });
+				expect(TypeRef.predicateForType(Foo)!(definition)).toEqual(true);
+			});
+		});
+	});
 
+	describe("checking if type is reserved", () => {
+		it.each([[Foo], [Bar], [RegExp]])("success: %s", constructor => {
+			expect(TypeRef.isAllowedTarget(constructor)).toEqual(true);
+		});
 
-            it('success', () => {
-                const definition = Definition.create()
-                    .markType(Foo);
-
-                expect(TypeRef.predicateForType(Foo)!(definition))
-                    .toEqual(true);
-            })
-
-        })
-    });
-
-    describe('checking if type is reserved', () => {
-        it.each([
-            [Foo],
-            [Bar],
-            [RegExp]
-        ])('success: %s', constructor => {
-            expect(TypeRef.isAllowedTarget(constructor))
-                .toEqual(true);
-        });
-
-        it.each(RESERVED_TYPES)('failed: %s', constructor => {
-            expect(TypeRef.isAllowedTarget(constructor))
-                .toEqual(false);
-        });
-    });
+		it.each(RESERVED_TYPES)("failed: %s", constructor => {
+			expect(TypeRef.isAllowedTarget(constructor)).toEqual(false);
+		});
+	});
 });

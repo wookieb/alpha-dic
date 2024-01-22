@@ -1,6 +1,4 @@
-import {Service} from "@src/.";
+import { Service } from "@src/.";
 
 @Service()
-export class ExcludedService {
-
-}
+export class ExcludedService {}

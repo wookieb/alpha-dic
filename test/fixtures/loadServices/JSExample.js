@@ -1,8 +1,7 @@
-const {Service} = require("../../../src");
-const {__decorate} = require('tslib');
+const { Service } = require("../../../src");
+const { __decorate } = require("tslib");
 
-class JSExample {
+class JSExample {}
 
-}
-JSExample = __decorate([Service('JSExample')], JSExample);
+JSExample = __decorate([Service("JSExample")], JSExample);
 exports.JSExample = JSExample;

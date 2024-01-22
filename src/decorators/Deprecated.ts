@@ -1,8 +1,8 @@
-import {deprecated} from "../middlewares/deprecated";
-import {Annotation} from "./Annotation";
+import { deprecated } from "../middlewares/deprecated";
+import { Annotation } from "./Annotation";
 
 export function Deprecated(deprecationNote: string): any {
-    return function (target: any) {
-        Annotation(deprecated(deprecationNote))(target);
-    }
+	return function (target: any) {
+		Annotation(deprecated(deprecationNote))(target);
+	};
 }

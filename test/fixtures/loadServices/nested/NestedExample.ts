@@ -1,6 +1,4 @@
-import {Service} from "@src/decorators/Service";
+import { Service } from "@src/decorators/Service";
 
-@Service('NestedExample')
-export class NestedExample {
-
-}
+@Service("NestedExample")
+export class NestedExample {}

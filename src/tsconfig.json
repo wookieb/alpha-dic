@@ -1,5 +1,5 @@
 {
-  "extends": "@pallad/scripts/tsconfig-node.dist.json",
+  "extends": "@pallad/scripts/dist/tsconfig-node.json",
   "compilerOptions": {
     "target": "ES2018",
     "rootDir": ".",

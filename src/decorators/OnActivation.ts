@@ -1,8 +1,8 @@
-import {Hook, onActivation} from "../";
-import {Annotation} from "./Annotation";
+import { Hook, onActivation } from "../";
+import { Annotation } from "./Annotation";
 
 export function OnActivation(hook: Hook) {
-    return (target: any) => {
-        Annotation(onActivation(hook))(target);
-    }
+	return (target: any) => {
+		Annotation(onActivation(hook))(target);
+	};
 }

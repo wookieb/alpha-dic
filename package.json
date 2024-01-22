@@ -41,21 +41,24 @@
   ],
   "homepage": "https://github.com/wookieb/alpha-dic#readme",
   "devDependencies": {
-    "@pallad/scripts": "^1.1.4",
+    "@pallad/errors-dev": "^1.1.0",
+    "@pallad/scripts": "^3",
     "@types/debug": "^4.1.5",
-    "@types/jest": "^24.9.1",
     "@types/object-path": "^0.11.0",
-    "@types/sinon": "^7.5.2",
-    "sinon": "^7.5.0"
+    "@types/sinon": "^17",
+    "prettier": "^3.2.4",
+    "sinon": "^17"
   },
   "dependencies": {
+    "@pallad/errors": "^1.0.1",
     "@types/glob": "^5.0.36",
+    "@types/jest": "^29.5.11",
     "alpha-errors": "^0.2.0",
     "debug": "^4.2.0",
     "glob": "^7.1.6",
     "object-path": "^0.11.4",
     "predicates": "^2.0.1",
     "random-string": "^0.2.0",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.2"
   }
 }

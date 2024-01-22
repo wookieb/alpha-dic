@@ -1,7 +1,5 @@
-import {Service} from "@src/.";
+import { Service } from "@src/.";
 
-@Service('Test2_Service2')
+@Service("Test2_Service2")
 //tslint:disable-next-line: class-name
-export class Test2_Service2 {
-
-}
+export class Test2_Service2 {}

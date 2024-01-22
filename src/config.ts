@@ -1,3 +1,3 @@
-import {ConfigRequestArg} from './args/ConfigRequestArg';
+import { ConfigRequestArg } from "./args/ConfigRequestArg";
 
 export const config = ConfigRequestArg.create;

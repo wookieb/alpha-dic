@@ -1,19 +1,19 @@
-import * as objectPath from 'object-path';
-import * as errors from './errors';
-import {ConfigRequestArg} from './args/ConfigRequestArg';
+import * as objectPath from "object-path";
+import { ConfigRequestArg } from "./args/ConfigRequestArg";
+import { ERRORS } from "./errors";
 
 export function configProviderForObject(config: object): ConfigProvider {
-    return (request: ConfigRequestArg<any>) => {
-        const result = objectPath.get(config, request.path);
+	return (request: ConfigRequestArg<any>) => {
+		const result = objectPath.get(config, request.path);
 
-        if (result === undefined) {
-            if (request.hasDefaultValue) {
-                return request.defaultValue;
-            }
-            throw new errors.MISSING_CONFIG_VALUE(`Config at path "${request.path}" is not defined and default value is not provided`);
-        }
-        return result;
-    };
+		if (result === undefined) {
+			if (request.hasDefaultValue) {
+				return request.defaultValue;
+			}
+			throw ERRORS.MISSING_CONFIG_VALUE.create(request.path);
+		}
+		return result;
+	};
 }
 
 /**
@@ -24,5 +24,5 @@ export function configProviderForObject(config: object): ConfigProvider {
  * If value is not defined returns default value from request
  */
 export interface ConfigProvider<T = any> {
-    (request: ConfigRequestArg<T>): T;
+	(request: ConfigRequestArg<T>): T;
 }

@@ -1,174 +1,172 @@
-import {ServiceFactory, ServiceName} from './types';
-import * as factories from './serviceFactories';
-import {randomName} from './randomName';
-import {TypeRef} from './TypeRef';
-import {Container} from "./Container";
-import * as errors from './errors';
+import { ServiceFactory, ServiceName } from "./types";
+import * as factories from "./serviceFactories";
+import { randomName } from "./randomName";
+import { TypeRef } from "./TypeRef";
+import { Container } from "./Container";
+import * as errors from "./errors";
 import * as is from "predicates";
+import { ERRORS } from "./errors";
 
 export interface DefinitionData {
-    name: ServiceName;
-    annotations: any[];
-    factory: ServiceFactory;
-    args: any[]
-    type?: TypeRef;
+	name: ServiceName;
+	annotations: any[];
+	factory: ServiceFactory;
+	args: any[];
+	type?: TypeRef;
 }
 
 export class Definition implements DefinitionData {
-    public args: any[] = [];
-    public annotations: any[] = [];
-    public factory!: ServiceFactory;
-    public name: ServiceName;
-    public type?: TypeRef;
-    public owner?: Container;
+	public args: any[] = [];
+	public annotations: any[] = [];
+	public factory!: ServiceFactory;
+	public name: ServiceName;
+	public type?: TypeRef;
+	public owner?: Container;
 
-    constructor(name?: ServiceName) {
-        if (name) {
-            this.name = name;
-        } else {
-            this.name = randomName();
-        }
-    }
+	constructor(name?: ServiceName) {
+		if (name) {
+			this.name = name;
+		} else {
+			this.name = randomName();
+		}
+	}
 
-    /**
-     * Sets service constructor
-     */
-    useConstructor(constructor: { new(...args: any[]): any }): this {
-        this.factory = factories.fromConstructor(constructor);
-        this.type = TypeRef.createFromType(constructor);
-        return this;
-    }
+	/**
+	 * Sets service constructor
+	 */
+	useConstructor(constructor: { new (...args: any[]): any }): this {
+		this.factory = factories.fromConstructor(constructor);
+		this.type = TypeRef.createFromType(constructor);
+		return this;
+	}
 
-    /**
-     * Alias for {@see useConstructor}
-     */
-    useClass(clazz: { new(...args: any[]): any }) {
-        return this.useConstructor(clazz);
-    }
+	/**
+	 * Alias for {@see useConstructor}
+	 */
+	useClass(clazz: { new (...args: any[]): any }) {
+		return this.useConstructor(clazz);
+	}
 
-    /**
-     * Sets factory used to create an instance of service.
-     * In case of asynchronous service creation, factory should return a promise.
-     *
-     * The factory value is called in context of AlphaDIC.
-     */
-    useFactory(factory: (...args: any[]) => any | Promise<any>, type?: Function) {
-        this.factory = factories.fromFactory(factory);
-        this.type = type && TypeRef.createFromType(type);
-        return this;
-    }
+	/**
+	 * Sets factory used to create an instance of service.
+	 * In case of asynchronous service creation, factory should return a promise.
+	 *
+	 * The factory value is called in context of AlphaDIC.
+	 */
+	useFactory(factory: (...args: any[]) => any | Promise<any>, type?: Function) {
+		this.factory = factories.fromFactory(factory);
+		this.type = type && TypeRef.createFromType(type);
+		return this;
+	}
 
-    setOwner(container: Container): this {
-        //tslint:disable-next-line: strict-comparisons
-        if (this.owner && this.owner !== container) {
-            throw errors.OWNER_CANNOT_BE_CHANGED();
-        }
+	setOwner(container: Container): this {
+		//tslint:disable-next-line: strict-comparisons
+		if (this.owner && this.owner !== container) {
+			throw ERRORS.OWNER_CANNOT_BE_CHANGED.create();
+		}
 
-        this.owner = container;
-        return this;
-    }
+		this.owner = container;
+		return this;
+	}
 
-    /**
-     * Sets information about type of final service
-     */
-    markType(type: TypeRef | Function): this {
-        this.type = TypeRef.is(type) ? type : TypeRef.createFromType(type);
-        return this;
-    }
+	/**
+	 * Sets information about type of final service
+	 */
+	markType(type: TypeRef | Function): this {
+		this.type = TypeRef.is(type) ? type : TypeRef.createFromType(type);
+		return this;
+	}
 
-    /**
-     * Defined service as provided value
-     */
-    useValue(value: any) {
-        this.factory = factories.fromValue(value);
-        this.type = TypeRef.createFromValue(value);
-        return this;
-    }
+	/**
+	 * Defined service as provided value
+	 */
+	useValue(value: any) {
+		this.factory = factories.fromValue(value);
+		this.type = TypeRef.createFromValue(value);
+		return this;
+	}
 
-    /**
-     * Sets the array of arguments provided to service factory.
-     * All arguments are provided directly to service constructor or
-     * factory unless they are an instance of ContainerArg which has to be resolved first
-     */
-    withArgs(...args: any[]): this {
-        this.args = args;
-        return this;
-    }
+	/**
+	 * Sets the array of arguments provided to service factory.
+	 * All arguments are provided directly to service constructor or
+	 * factory unless they are an instance of ContainerArg which has to be resolved first
+	 */
+	withArgs(...args: any[]): this {
+		this.args = args;
+		return this;
+	}
 
-    /**
-     * Adds annotation to the service
-     * Annotation is a simple metadata object assigned to service that you might use for different purposes
-     */
-    annotate(...annotations: any[]): this {
-        this.annotations.push(...annotations);
-        return this;
-    }
+	/**
+	 * Adds annotation to the service
+	 * Annotation is a simple metadata object assigned to service that you might use for different purposes
+	 */
+	annotate(...annotations: any[]): this {
+		this.annotations.push(...annotations);
+		return this;
+	}
 
-    static create(name?: ServiceName) {
-        return new Definition(name);
-    }
+	static create(name?: ServiceName) {
+		return new Definition(name);
+	}
 
-    /**
-     * Locks definitions by making it immutable
-     */
-    lock(): Readonly<this> {
-        Object.freeze(this);
-        Object.freeze(this.args);
-        Object.freeze(this.annotations);
-        return this;
-    }
+	/**
+	 * Locks definitions by making it immutable
+	 */
+	lock(): Readonly<this> {
+		Object.freeze(this);
+		Object.freeze(this.args);
+		Object.freeze(this.annotations);
+		return this;
+	}
 
-    /**
-     * Returns new, locked one, object of Definition with new data
-     */
-    modify(data: Partial<DefinitionData>): Readonly<Definition> {
-        const def = new Definition(this.name);
-        Object.assign(def, this, data);
-        return def.lock();
-    }
+	/**
+	 * Returns new, locked one, object of Definition with new data
+	 */
+	modify(data: Partial<DefinitionData>): Readonly<Definition> {
+		const def = new Definition(this.name);
+		Object.assign(def, this, data);
+		return def.lock();
+	}
 
-    /**
-     * Creates new definition that is an alias for current one
-     */
-    createAlias(options?: Definition.AliasOptions) {
-        const def = Definition.create(options?.name ? options.name : this.name)
-            .useFactory(() => {
-                if (!this.owner) {
-                    throw errors.DEFINITION_WITHOUT_CONTAINER(
-                        `Cannot create service "${def.name.toString()}" due to lack of assigned container`
-                    );
-                }
-                return this.owner.get(this);
-            });
+	/**
+	 * Creates new definition that is an alias for current one
+	 */
+	createAlias(options?: Definition.AliasOptions) {
+		const def = Definition.create(options?.name ? options.name : this.name).useFactory(() => {
+			if (!this.owner) {
+				throw ERRORS.DEFINITION_WITHOUT_CONTAINER.create(def.name.toString());
+			}
+			return this.owner.get(this);
+		});
 
-        const annotations = (() => {
-            const withAnnotations = options?.withAnnotations ?? false;
-            if (is.func(withAnnotations)) {
-                return this.annotations.filter(withAnnotations);
-            }
-            return withAnnotations ? this.annotations : [];
-        })();
+		const annotations = (() => {
+			const withAnnotations = options?.withAnnotations ?? false;
+			if (is.func(withAnnotations)) {
+				return this.annotations.filter(withAnnotations);
+			}
+			return withAnnotations ? this.annotations : [];
+		})();
 
-        if (annotations.length > 0) {
-            def.annotate(...annotations);
-        }
-        if (this.type) {
-            def.markType(this.type);
-        }
-        return def;
-    }
+		if (annotations.length > 0) {
+			def.annotate(...annotations);
+		}
+		if (this.type) {
+			def.markType(this.type);
+		}
+		return def;
+	}
 }
 
 export namespace Definition {
-    export interface AliasOptions {
-        /**
-         * New definition ane
-         */
-        name?: string;
+	export interface AliasOptions {
+		/**
+		 * New definition ane
+		 */
+		name?: string;
 
-        /**
-         * Forwards all annotations if true, none if false or the ones that satisfy given predicate
-         */
-        withAnnotations?: boolean | ((ann: any) => boolean);
-    }
+		/**
+		 * Forwards all annotations if true, none if false or the ones that satisfy given predicate
+		 */
+		withAnnotations?: boolean | ((ann: any) => boolean);
+	}
 }

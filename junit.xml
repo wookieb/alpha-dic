@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="220" failures="0" errors="0" time="2.815">
+  <testsuite name="createNamespace" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="1.489" tests="4">
+    <testcase classname="createNamespace value as string" name="createNamespace value as string" time="0.003">
+    </testcase>
+    <testcase classname="createNamespace entry symbol gets resolved to path" name="createNamespace entry symbol gets resolved to path" time="0">
+    </testcase>
+    <testcase classname="createNamespace throws na error if key does not exist" name="createNamespace throws na error if key does not exist" time="0.005">
+    </testcase>
+    <testcase classname="createNamespace return original value if it is not an object, string or symbol" name="createNamespace return original value if it is not an object, string or symbol" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="TransformArg" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="1.533" tests="2">
+    <testcase classname="TransformArg applies transform function on arg result" name="TransformArg applies transform function on arg result" time="0.005">
+    </testcase>
+    <testcase classname="TransformArg returns the same deps as arg" name="TransformArg returns the same deps as arg" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="deprecated" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="1.636" tests="4">
+    <testcase classname="deprecated annotation" name="deprecated annotation" time="0.003">
+    </testcase>
+    <testcase classname="deprecated middleware single deprecation note" name="deprecated middleware single deprecation note" time="0.001">
+    </testcase>
+    <testcase classname="deprecated middleware multiple deprecation notes" name="deprecated middleware multiple deprecation notes" time="0.001">
+    </testcase>
+    <testcase classname="deprecated middleware no deprecation annotations" name="deprecated middleware no deprecation annotations" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="preloadServiceModules" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:53" time="0.144" tests="2">
+    <testcase classname="preloadServiceModules loads services for given files pattern" name="preloadServiceModules loads services for given files pattern" time="0.019">
+    </testcase>
+    <testcase classname="preloadServiceModules multiple patterns" name="preloadServiceModules multiple patterns" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="config" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:53" time="0.083" tests="1">
+    <testcase classname="config sets config provider on attach" name="config sets config provider on attach" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Config" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:54" time="0.097" tests="2">
+    <testcase classname="Config injects parameter to constructor" name="Config injects parameter to constructor" time="0.002">
+    </testcase>
+    <testcase classname="Config injects parameters to property" name="Config injects parameters to property" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="OnActivation" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:54" time="0.106" tests="1">
+    <testcase classname="OnActivation defines annotation" name="OnActivation defines annotation" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Deprecated" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:54" time="0.093" tests="1">
+    <testcase classname="Deprecated adding to a class" name="Deprecated adding to a class" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="reference" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:54" time="0.067" tests="5">
+    <testcase classname="reference main function" name="reference main function" time="0.001">
+    </testcase>
+    <testcase classname="reference one by predicate" name="reference one by predicate" time="0">
+    </testcase>
+    <testcase classname="reference on by annotation" name="reference on by annotation" time="0.001">
+    </testcase>
+    <testcase classname="reference multi by predicate" name="reference multi by predicate" time="0">
+    </testcase>
+    <testcase classname="reference multi by annotation" name="reference multi by annotation" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="configProviderForObject" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.288" tests="4">
+    <testcase classname="configProviderForObject getting by simple path" name="configProviderForObject getting by simple path" time="0.003">
+    </testcase>
+    <testcase classname="configProviderForObject getting at nested path" name="configProviderForObject getting at nested path" time="0">
+    </testcase>
+    <testcase classname="configProviderForObject getting as double nested path" name="configProviderForObject getting as double nested path" time="0.001">
+    </testcase>
+    <testcase classname="configProviderForObject fails if config not defined and no default value set" name="configProviderForObject fails if config not defined and no default value set" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="Reference" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.306" tests="15">
+    <testcase classname="Reference one by name" name="Reference one by name" time="0.004">
+    </testcase>
+    <testcase classname="Reference one by name - not found" name="Reference one by name - not found" time="0.007">
+    </testcase>
+    <testcase classname="Reference one by predicate" name="Reference one by predicate" time="0.002">
+    </testcase>
+    <testcase classname="Reference one by predicate - not found" name="Reference one by predicate - not found" time="0.002">
+    </testcase>
+    <testcase classname="Reference one by predicate - ambiguous error" name="Reference one by predicate - ambiguous error" time="0.001">
+    </testcase>
+    <testcase classname="Reference one by annotation" name="Reference one by annotation" time="0.009">
+    </testcase>
+    <testcase classname="Reference one by annotation - not found" name="Reference one by annotation - not found" time="0.01">
+    </testcase>
+    <testcase classname="Reference one by annotation- ambiguous error" name="Reference one by annotation- ambiguous error" time="0.001">
+    </testcase>
+    <testcase classname="Reference one by type" name="Reference one by type" time="0.001">
+    </testcase>
+    <testcase classname="Reference one by type - ambiguous error" name="Reference one by type - ambiguous error" time="0">
+    </testcase>
+    <testcase classname="Reference multi by annotation" name="Reference multi by annotation" time="0.001">
+    </testcase>
+    <testcase classname="Reference multi by annotation - nothing found" name="Reference multi by annotation - nothing found" time="0">
+    </testcase>
+    <testcase classname="Reference multi by predicate" name="Reference multi by predicate" time="0.001">
+    </testcase>
+    <testcase classname="Reference multi by predicate - nothing found" name="Reference multi by predicate - nothing found" time="0">
+    </testcase>
+    <testcase classname="Reference multi by type" name="Reference multi by type" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="TypeRef" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.329" tests="38">
+    <testcase classname="TypeRef is" name="TypeRef is" time="0.002">
+    </testcase>
+    <testcase classname="TypeRef matches satisfied if type is the same" name="TypeRef matches satisfied if type is the same" time="0">
+    </testcase>
+    <testcase classname="TypeRef matches satisfied if target is instance of root type" name="TypeRef matches satisfied if target is instance of root type" time="0">
+    </testcase>
+    <testcase classname="TypeRef matches not satisfied if type is not related" name="TypeRef matches not satisfied if type is not related" time="0">
+    </testcase>
+    <testcase classname="TypeRef predicate returns false for definitions without type" name="TypeRef predicate returns false for definitions without type" time="0.001">
+    </testcase>
+    <testcase classname="TypeRef predicate returns true for definition with matching type" name="TypeRef predicate returns true for definition with matching type" time="0">
+    </testcase>
+    <testcase classname="TypeRef predicate return false for definition without matching type" name="TypeRef predicate return false for definition without matching type" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating constructor" name="TypeRef creating constructor" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating fails when attempt to create for reserved type: function Object() { [native code] }" name="TypeRef creating fails when attempt to create for reserved type: function Object() { [native code] }" time="0.001">
+    </testcase>
+    <testcase classname="TypeRef creating fails when attempt to create for reserved type: function Promise() { [native code] }" name="TypeRef creating fails when attempt to create for reserved type: function Promise() { [native code] }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating fails when attempt to create for reserved type: function Function() { [native code] }" name="TypeRef creating fails when attempt to create for reserved type: function Function() { [native code] }" time="0.001">
+    </testcase>
+    <testcase classname="TypeRef creating from value ignores non objects: false" name="TypeRef creating from value ignores non objects: false" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value ignores non objects: true" name="TypeRef creating from value ignores non objects: true" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value ignores non objects: str" name="TypeRef creating from value ignores non objects: str" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value ignores non objects: undefined" name="TypeRef creating from value ignores non objects: undefined" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value ignores null" name="TypeRef creating from value ignores null" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value ignores value that is an instance of reserved type: {}" name="TypeRef creating from value ignores value that is an instance of reserved type: {}" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value ignores value that is an instance of reserved type: function min() { [native code] }" name="TypeRef creating from value ignores value that is an instance of reserved type: function min() { [native code] }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value ignores value that is an instance of reserved type: Promise { &apos;test&apos; }" name="TypeRef creating from value ignores value that is an instance of reserved type: Promise { &apos;test&apos; }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value success: Foo {}" name="TypeRef creating from value success: Foo {}" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value success: Bar {}" name="TypeRef creating from value success: Bar {}" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from value success: []" name="TypeRef creating from value success: []" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from type returns undefined for reserved types: function Object() { [native code] }" name="TypeRef creating from type returns undefined for reserved types: function Object() { [native code] }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from type returns undefined for reserved types: function Promise() { [native code] }" name="TypeRef creating from type returns undefined for reserved types: function Promise() { [native code] }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from type returns undefined for reserved types: function Function() { [native code] }" name="TypeRef creating from type returns undefined for reserved types: function Function() { [native code] }" time="0.001">
+    </testcase>
+    <testcase classname="TypeRef creating from type success: class Foo {
+    }" name="TypeRef creating from type success: class Foo {
+    }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from type success: class Bar extends Foo {
+    }" name="TypeRef creating from type success: class Bar extends Foo {
+    }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating from type success: function Array() { [native code] }" name="TypeRef creating from type success: function Array() { [native code] }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating predicate for type returns undefined for reserved types: function Object() { [native code] }" name="TypeRef creating predicate for type returns undefined for reserved types: function Object() { [native code] }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating predicate for type returns undefined for reserved types: function Promise() { [native code] }" name="TypeRef creating predicate for type returns undefined for reserved types: function Promise() { [native code] }" time="0.004">
+    </testcase>
+    <testcase classname="TypeRef creating predicate for type returns undefined for reserved types: function Function() { [native code] }" name="TypeRef creating predicate for type returns undefined for reserved types: function Function() { [native code] }" time="0">
+    </testcase>
+    <testcase classname="TypeRef creating predicate for type success" name="TypeRef creating predicate for type success" time="0">
+    </testcase>
+    <testcase classname="TypeRef checking if type is reserved success: class Foo {
+    }" name="TypeRef checking if type is reserved success: class Foo {
+    }" time="0">
+    </testcase>
+    <testcase classname="TypeRef checking if type is reserved success: class Bar extends Foo {
+    }" name="TypeRef checking if type is reserved success: class Bar extends Foo {
+    }" time="0">
+    </testcase>
+    <testcase classname="TypeRef checking if type is reserved success: function RegExp() { [native code] }" name="TypeRef checking if type is reserved success: function RegExp() { [native code] }" time="0">
+    </testcase>
+    <testcase classname="TypeRef checking if type is reserved failed: function Object() { [native code] }" name="TypeRef checking if type is reserved failed: function Object() { [native code] }" time="0.001">
+    </testcase>
+    <testcase classname="TypeRef checking if type is reserved failed: function Promise() { [native code] }" name="TypeRef checking if type is reserved failed: function Promise() { [native code] }" time="0">
+    </testcase>
+    <testcase classname="TypeRef checking if type is reserved failed: function Function() { [native code] }" name="TypeRef checking if type is reserved failed: function Function() { [native code] }" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="serviceFactories" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.35" tests="3">
+    <testcase classname="serviceFactories factory applies a function with all given arguments and specific context" name="serviceFactories factory applies a function with all given arguments and specific context" time="0.006">
+    </testcase>
+    <testcase classname="serviceFactories constructor create a new object using provided constructor with given arguments" name="serviceFactories constructor create a new object using provided constructor with given arguments" time="0">
+    </testcase>
+    <testcase classname="serviceFactories value simply returns provided value regardless of arguments" name="serviceFactories value simply returns provided value regardless of arguments" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="integration" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.348" tests="2">
+    <testcase classname="integration service via decorators" name="integration service via decorators" time="0.008">
+    </testcase>
+    <testcase classname="integration manually created service" name="integration manually created service" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="ResolveArg" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.361" tests="8">
+    <testcase classname="ResolveArg resolves provided ContainerArg in struct case simple object with no ContainerArgs" name="ResolveArg resolves provided ContainerArg in struct case simple object with no ContainerArgs" time="0.003">
+    </testcase>
+    <testcase classname="ResolveArg resolves provided ContainerArg in struct case simple object with few container args" name="ResolveArg resolves provided ContainerArg in struct case simple object with few container args" time="0">
+    </testcase>
+    <testcase classname="ResolveArg resolves provided ContainerArg in struct case object with nested properties" name="ResolveArg resolves provided ContainerArg in struct case object with nested properties" time="0.001">
+    </testcase>
+    <testcase classname="ResolveArg resolves provided ContainerArg in struct case omits non plain objects" name="ResolveArg resolves provided ContainerArg in struct case omits non plain objects" time="0">
+    </testcase>
+    <testcase classname="ResolveArg resolves provided ContainerArg in struct case ignores primitive: string" name="ResolveArg resolves provided ContainerArg in struct case ignores primitive: string" time="0.001">
+    </testcase>
+    <testcase classname="ResolveArg resolves provided ContainerArg in struct case ignores primitive: undefined" name="ResolveArg resolves provided ContainerArg in struct case ignores primitive: undefined" time="0">
+    </testcase>
+    <testcase classname="ResolveArg resolves provided ContainerArg in struct case ignores primitive: null" name="ResolveArg resolves provided ContainerArg in struct case ignores primitive: null" time="0">
+    </testcase>
+    <testcase classname="ResolveArg resolves provided ContainerArg in struct case ignores primitive: number" name="ResolveArg resolves provided ContainerArg in struct case ignores primitive: number" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="assertNoCircularDependencies" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.368" tests="6">
+    <testcase classname="assertNoCircularDependencies simple circular dependency" name="assertNoCircularDependencies simple circular dependency" time="0.003">
+    </testcase>
+    <testcase classname="assertNoCircularDependencies simple circular dependency for services with regular arguments" name="assertNoCircularDependencies simple circular dependency for services with regular arguments" time="0">
+    </testcase>
+    <testcase classname="assertNoCircularDependencies 2 level circular dependency simple" name="assertNoCircularDependencies 2 level circular dependency simple" time="0">
+    </testcase>
+    <testcase classname="assertNoCircularDependencies 2 level circular dependency dependency of dependency" name="assertNoCircularDependencies 2 level circular dependency dependency of dependency" time="0.001">
+    </testcase>
+    <testcase classname="assertNoCircularDependencies 2 level circular dependency with multi services arg" name="assertNoCircularDependencies 2 level circular dependency with multi services arg" time="0">
+    </testcase>
+    <testcase classname="assertNoCircularDependencies 3 levels circular dependency" name="assertNoCircularDependencies 3 levels circular dependency" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="activation" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.382" tests="3">
+    <testcase classname="activation call on activation hook after service gets created" name="activation call on activation hook after service gets created" time="0.004">
+    </testcase>
+    <testcase classname="activation properly handles non-promise result from next function" name="activation properly handles non-promise result from next function" time="0.001">
+    </testcase>
+    <testcase classname="activation multiple hooks" name="activation multiple hooks" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="ConfigRequestArg" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.392" tests="8">
+    <testcase classname="ConfigRequestArg is ContainerArg" name="ConfigRequestArg is ContainerArg" time="0.003">
+    </testcase>
+    <testcase classname="ConfigRequestArg creating with default value" name="ConfigRequestArg creating with default value" time="0.001">
+    </testcase>
+    <testcase classname="ConfigRequestArg creating without default value" name="ConfigRequestArg creating without default value" time="0">
+    </testcase>
+    <testcase classname="ConfigRequestArg path cannot be empty" name="ConfigRequestArg path cannot be empty" time="0.006">
+    </testcase>
+    <testcase classname="ConfigRequestArg undefined as default value" name="ConfigRequestArg undefined as default value" time="0">
+    </testcase>
+    <testcase classname="ConfigRequestArg ConfigRequestArg.create" name="ConfigRequestArg ConfigRequestArg.create" time="0">
+    </testcase>
+    <testcase classname="ConfigRequestArg as argument resolves to config" name="ConfigRequestArg as argument resolves to config" time="0.001">
+    </testcase>
+    <testcase classname="ConfigRequestArg as argument has no dependencies" name="ConfigRequestArg as argument has no dependencies" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Annotation" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.423" tests="24">
+    <testcase classname="Annotation via static create" name="Annotation via static create" time="0.002">
+    </testcase>
+    <testcase classname="Annotation using constructor" name="Annotation using constructor" time="0.001">
+    </testcase>
+    <testcase classname="Annotation using class" name="Annotation using class" time="0.001">
+    </testcase>
+    <testcase classname="Annotation using factory" name="Annotation using factory" time="0">
+    </testcase>
+    <testcase classname="Annotation using factory with type" name="Annotation using factory with type" time="0">
+    </testcase>
+    <testcase classname="Annotation using value" name="Annotation using value" time="0">
+    </testcase>
+    <testcase classname="Annotation setting args" name="Annotation setting args" time="0.001">
+    </testcase>
+    <testcase classname="Annotation annotation" name="Annotation annotation" time="0">
+    </testcase>
+    <testcase classname="Annotation multiple annotations" name="Annotation multiple annotations" time="0">
+    </testcase>
+    <testcase classname="Annotation locking makes object immutable" name="Annotation locking makes object immutable" time="0.001">
+    </testcase>
+    <testcase classname="Annotation Modify modyfing name" name="Annotation Modify modyfing name" time="0">
+    </testcase>
+    <testcase classname="Annotation Modify modifying annotations" name="Annotation Modify modifying annotations" time="0">
+    </testcase>
+    <testcase classname="Annotation Modify modifying args" name="Annotation Modify modifying args" time="0">
+    </testcase>
+    <testcase classname="Annotation Modify modifying multiple things at a time" name="Annotation Modify modifying multiple things at a time" time="0">
+    </testcase>
+    <testcase classname="Annotation setting owner success" name="Annotation setting owner success" time="0.001">
+    </testcase>
+    <testcase classname="Annotation setting owner owner cannot be set twice" name="Annotation setting owner owner cannot be set twice" time="0">
+    </testcase>
+    <testcase classname="Annotation aliasing treating name uses the same" name="Annotation aliasing treating name uses the same" time="0.001">
+    </testcase>
+    <testcase classname="Annotation aliasing treating name allows to change" name="Annotation aliasing treating name allows to change" time="0">
+    </testcase>
+    <testcase classname="Annotation aliasing annotations passes no annotations by default" name="Annotation aliasing annotations passes no annotations by default" time="0">
+    </testcase>
+    <testcase classname="Annotation aliasing annotations passes all annotations if flag set to true" name="Annotation aliasing annotations passes all annotations if flag set to true" time="0">
+    </testcase>
+    <testcase classname="Annotation aliasing annotations passes no annotations if flag set to false" name="Annotation aliasing annotations passes no annotations if flag set to false" time="0">
+    </testcase>
+    <testcase classname="Annotation aliasing annotations passes annotation that satisfies predicate" name="Annotation aliasing annotations passes annotation that satisfies predicate" time="0">
+    </testcase>
+    <testcase classname="Annotation aliasing creating success" name="Annotation aliasing creating success" time="0.001">
+    </testcase>
+    <testcase classname="Annotation aliasing creating fails if aliased definition has no container" name="Annotation aliasing creating fails if aliased definition has no container" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="autowiring" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.416" tests="11">
+    <testcase classname="autowiring simple" name="autowiring simple" time="0.004">
+    </testcase>
+    <testcase classname="autowiring with properties" name="autowiring with properties" time="0">
+    </testcase>
+    <testcase classname="autowiring nothing to autowire" name="autowiring nothing to autowire" time="0.001">
+    </testcase>
+    <testcase classname="autowiring overwriting an argument with type reference" name="autowiring overwriting an argument with type reference" time="0.001">
+    </testcase>
+    <testcase classname="autowiring overwriting an argument with explicit reference" name="autowiring overwriting an argument with explicit reference" time="0">
+    </testcase>
+    <testcase classname="autowiring overwriting an argument interface reference" name="autowiring overwriting an argument interface reference" time="0.001">
+    </testcase>
+    <testcase classname="autowiring fails could not autowire interfaces" name="autowiring fails could not autowire interfaces" time="0.001">
+    </testcase>
+    <testcase classname="autowiring fails could not use @Inject without arg for arguments" name="autowiring fails could not use @Inject without arg for arguments" time="0">
+    </testcase>
+    <testcase classname="autowiring fails could not autowire union types" name="autowiring fails could not autowire union types" time="0">
+    </testcase>
+    <testcase classname="autowiring fails multiple instances of same type" name="autowiring fails multiple instances of same type" time="0.001">
+    </testcase>
+    <testcase classname="autowiring fails explicit referencing reserved type" name="autowiring fails explicit referencing reserved type" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="createAnnotationFactory" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.432" tests="10">
+    <testcase classname="createAnnotationFactory predicate accepts object that is an annotation of given name" name="createAnnotationFactory predicate accepts object that is an annotation of given name" time="0.005">
+    </testcase>
+    <testcase classname="createAnnotationFactory predicate ignores other: undefined" name="createAnnotationFactory predicate ignores other: undefined" time="0">
+    </testcase>
+    <testcase classname="createAnnotationFactory predicate ignores other: null" name="createAnnotationFactory predicate ignores other: null" time="0">
+    </testcase>
+    <testcase classname="createAnnotationFactory predicate ignores other: { name: &apos;bar&apos; }" name="createAnnotationFactory predicate ignores other: { name: &apos;bar&apos; }" time="0">
+    </testcase>
+    <testcase classname="createAnnotationFactory andPredicate returns false if extra predicate is not satisfied" name="createAnnotationFactory andPredicate returns false if extra predicate is not satisfied" time="0.001">
+    </testcase>
+    <testcase classname="createAnnotationFactory andPredicate return true if extra predicate is satisfied" name="createAnnotationFactory andPredicate return true if extra predicate is satisfied" time="0.001">
+    </testcase>
+    <testcase classname="createAnnotationFactory with extra attributes factory &quot;name&quot; property cannot be overwritten" name="createAnnotationFactory with extra attributes factory &quot;name&quot; property cannot be overwritten" time="0">
+    </testcase>
+    <testcase classname="createAnnotationFactory with extra attributes factory adds returned properties to final annotation object" name="createAnnotationFactory with extra attributes factory adds returned properties to final annotation object" time="0">
+    </testcase>
+    <testcase classname="createAnnotationFactory without extra attributes factory" name="createAnnotationFactory without extra attributes factory" time="0">
+    </testcase>
+    <testcase classname="createAnnotationFactory using decorator" name="createAnnotationFactory using decorator" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="loadServices" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.427" tests="3">
+    <testcase classname="loadServices basic example" name="loadServices basic example" time="0.038">
+    </testcase>
+    <testcase classname="loadServices pattern" name="loadServices pattern" time="0.025">
+    </testcase>
+    <testcase classname="loadServices with extension filter" name="loadServices with extension filter" time="0.012">
+    </testcase>
+  </testsuite>
+  <testsuite name="index" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.456" tests="2">
+    <testcase classname="index standard container all options" name="index standard container all options" time="0.004">
+    </testcase>
+    <testcase classname="index simple create" name="index simple create" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="decorators" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.501" tests="13">
+    <testcase classname="decorators simple service" name="decorators simple service" time="0.003">
+    </testcase>
+    <testcase classname="decorators simple service without explicit name" name="decorators simple service without explicit name" time="0">
+    </testcase>
+    <testcase classname="decorators service with injected args" name="decorators service with injected args" time="0.001">
+    </testcase>
+    <testcase classname="decorators Injecting advanced reference" name="decorators Injecting advanced reference" time="0">
+    </testcase>
+    <testcase classname="decorators injecting type ref" name="decorators injecting type ref" time="0">
+    </testcase>
+    <testcase classname="decorators Inject accepts only string or object of ContainerArg class" name="decorators Inject accepts only string or object of ContainerArg class" time="0.001">
+    </testcase>
+    <testcase classname="decorators service with injected args and properties" name="decorators service with injected args and properties" time="0.001">
+    </testcase>
+    <testcase classname="decorators fails if not all constructor arguments have @Inject decorators" name="decorators fails if not all constructor arguments have @Inject decorators" time="0.008">
+    </testcase>
+    <testcase classname="decorators fails it there is an argument, in the middle of other arguments, without @Inject decorator" name="decorators fails it there is an argument, in the middle of other arguments, without @Inject decorator" time="0">
+    </testcase>
+    <testcase classname="decorators using container set container via Service.useContainer()" name="decorators using container set container via Service.useContainer()" time="0">
+    </testcase>
+    <testcase classname="decorators Defining annotation" name="decorators Defining annotation" time="0">
+    </testcase>
+    <testcase classname="decorators defining annotation when @Service decorator is used first" name="decorators defining annotation when @Service decorator is used first" time="0.001">
+    </testcase>
+    <testcase classname="decorators Service warning is no container registered test" name="decorators Service warning is no container registered test" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Container" errors="0" failures="0" skipped="0" timestamp="2024-01-22T20:13:52" time="2.51" tests="48">
+    <testcase classname="Container defining services registering definition sets its owner" name="Container defining services registering definition sets its owner" time="0.003">
+    </testcase>
+    <testcase classname="Container defining services registering definition" name="Container defining services registering definition" time="0.001">
+    </testcase>
+    <testcase classname="Container defining services register definition with the same name" name="Container defining services register definition with the same name" time="0">
+    </testcase>
+    <testcase classname="Container defining services creating with registration" name="Container defining services creating with registration" time="0.001">
+    </testcase>
+    <testcase classname="Container defining services (as constructor) with registration" name="Container defining services (as constructor) with registration" time="0">
+    </testcase>
+    <testcase classname="Container defining services (as constructor) with registration without name" name="Container defining services (as constructor) with registration without name" time="0.001">
+    </testcase>
+    <testcase classname="Container defining services creating (as factory) with registration" name="Container defining services creating (as factory) with registration" time="0.001">
+    </testcase>
+    <testcase classname="Container defining services creating (as factory) with registration without name" name="Container defining services creating (as factory) with registration without name" time="0.001">
+    </testcase>
+    <testcase classname="Container defining services creating (as value) with registration with global type" name="Container defining services creating (as value) with registration with global type" time="0">
+    </testcase>
+    <testcase classname="Container defining services creating (as value) with registration with class type" name="Container defining services creating (as value) with registration with class type" time="0">
+    </testcase>
+    <testcase classname="Container defining services creating (as value) without name" name="Container defining services creating (as value) without name" time="0.001">
+    </testcase>
+    <testcase classname="Container finding by name" name="Container finding by name" time="0">
+    </testcase>
+    <testcase classname="Container finding by predicate" name="Container finding by predicate" time="0">
+    </testcase>
+    <testcase classname="Container finding by annotation by some predicate" name="Container finding by annotation by some predicate" time="0">
+    </testcase>
+    <testcase classname="Container finding by annotation with annotation" name="Container finding by annotation with annotation" time="0">
+    </testcase>
+    <testcase classname="Container finding by annotation without annotation" name="Container finding by annotation without annotation" time="0">
+    </testcase>
+    <testcase classname="Container getting instances by name" name="Container getting instances by name" time="0">
+    </testcase>
+    <testcase classname="Container getting instances by predicate" name="Container getting instances by predicate" time="0">
+    </testcase>
+    <testcase classname="Container getting instances by annotation" name="Container getting instances by annotation" time="0">
+    </testcase>
+    <testcase classname="Container getting instances by annotation with annotation" name="Container getting instances by annotation with annotation" time="0.001">
+    </testcase>
+    <testcase classname="Container getting instances by annotation without annotation" name="Container getting instances by annotation without annotation" time="0">
+    </testcase>
+    <testcase classname="Container creating services definition factory is called only once and previously returned value is being returned all the time" name="Container creating services definition factory is called only once and previously returned value is being returned all the time" time="0">
+    </testcase>
+    <testcase classname="Container creating services definition factory is called with definition arguments" name="Container creating services definition factory is called with definition arguments" time="0.001">
+    </testcase>
+    <testcase classname="Container creating services container args are resolved before providing to definition factory" name="Container creating services container args are resolved before providing to definition factory" time="0.002">
+    </testcase>
+    <testcase classname="Container creating services fails if definition contains circular reference" name="Container creating services fails if definition contains circular reference" time="0.024">
+    </testcase>
+    <testcase classname="Container creating services fails if definition dependency contains circular reference" name="Container creating services fails if definition dependency contains circular reference" time="0.001">
+    </testcase>
+    <testcase classname="Container creating services fails if service definition with given name does not exist" name="Container creating services fails if service definition with given name does not exist" time="0">
+    </testcase>
+    <testcase classname="Container creating services fails if definition is incomplete" name="Container creating services fails if definition is incomplete" time="0">
+    </testcase>
+    <testcase classname="Container middlewares call onMiddlewareAttached method once attached to container" name="Container middlewares call onMiddlewareAttached method once attached to container" time="0.001">
+    </testcase>
+    <testcase classname="Container middlewares are called one by one in order of registration to container" name="Container middlewares are called one by one in order of registration to container" time="0">
+    </testcase>
+    <testcase classname="Container middlewares if middleware returns non-thenable value then the value gets converted to promise" name="Container middlewares if middleware returns non-thenable value then the value gets converted to promise" time="0.001">
+    </testcase>
+    <testcase classname="Container middlewares middleware can break the call chain preventing other middlewares to be called" name="Container middlewares middleware can break the call chain preventing other middlewares to be called" time="0">
+    </testcase>
+    <testcase classname="Container middlewares middleware can override definition provided to other middlewares" name="Container middlewares middleware can override definition provided to other middlewares" time="0">
+    </testcase>
+    <testcase classname="Container Hierarchical middlewares registering child middleware does not affect parent" name="Container Hierarchical middlewares registering child middleware does not affect parent" time="0.001">
+    </testcase>
+    <testcase classname="Container Hierarchical middlewares middleware in parent and child" name="Container Hierarchical middlewares middleware in parent and child" time="0">
+    </testcase>
+    <testcase classname="Container Hierarchical finding by name from parent container" name="Container Hierarchical finding by name from parent container" time="0">
+    </testcase>
+    <testcase classname="Container Hierarchical finding by name from current container" name="Container Hierarchical finding by name from current container" time="0">
+    </testcase>
+    <testcase classname="Container Hierarchical finding by name definition from child container does not exist in parent container" name="Container Hierarchical finding by name definition from child container does not exist in parent container" time="0">
+    </testcase>
+    <testcase classname="Container Hierarchical finding by predicate returns all services for true predicate" name="Container Hierarchical finding by predicate returns all services for true predicate" time="0.001">
+    </testcase>
+    <testcase classname="Container Hierarchical finding by predicate returns services that satisfies predicate" name="Container Hierarchical finding by predicate returns services that satisfies predicate" time="0">
+    </testcase>
+    <testcase classname="Container Hierarchical finding by annotation predicate returns all services for true predicate" name="Container Hierarchical finding by annotation predicate returns all services for true predicate" time="0">
+    </testcase>
+    <testcase classname="Container Hierarchical finding by annotation predicate returns services that match predicate" name="Container Hierarchical finding by annotation predicate returns services that match predicate" time="0">
+    </testcase>
+    <testcase classname="Container Hierarchical finding by annotation predicate child containers are ignored when looking in parent container" name="Container Hierarchical finding by annotation predicate child containers are ignored when looking in parent container" time="0">
+    </testcase>
+    <testcase classname="Container Hierarchical getting instance from parent does not cache result in current container" name="Container Hierarchical getting instance from parent does not cache result in current container" time="0">
+    </testcase>
+    <testcase classname="Container slow log success" name="Container slow log success" time="0.153">
+    </testcase>
+    <testcase classname="Container slow log disabling" name="Container slow log disabling" time="0.153">
+    </testcase>
+    <testcase classname="Container slow log custom threshold" name="Container slow log custom threshold" time="0.552">
+    </testcase>
+    <testcase classname="Container aliasing success" name="Container aliasing success" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>

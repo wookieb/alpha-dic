@@ -8,4 +8,4 @@ exports[`autowiring fails could not use @Inject without arg for arguments 1`] = 
 
 exports[`autowiring fails explicit referencing reserved type 1`] = `"Inferred type for constructor (of Example) argument nr: 0 is an interface, union type or built-in object that is not supported"`;
 
-exports[`autowiring fails multiple instances of same type 1`] = `"Multiple services found (foo, another) with following lookup: by type: instance of class \\"Foo\\""`;
+exports[`autowiring fails multiple instances of same type 1`] = `"Multiple services found (foo, another) with following lookup: by type: instance of class "Foo""`;
