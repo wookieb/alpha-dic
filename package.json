@@ -1,6 +1,6 @@
 {
   "name": "alpha-dic",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "Asynchronous dependency injection container",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
